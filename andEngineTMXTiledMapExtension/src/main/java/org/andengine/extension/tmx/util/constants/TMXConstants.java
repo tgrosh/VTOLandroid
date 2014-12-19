@@ -24,6 +24,7 @@ public interface TMXConstants {
 	public static final String TAG_MAP_ATTRIBUTE_HEIGHT = "height";
 	public static final String TAG_MAP_ATTRIBUTE_TILEWIDTH = "tilewidth";
 	public static final String TAG_MAP_ATTRIBUTE_TILEHEIGHT = "tileheight";
+    public static final String TAG_MAP_ATTRIBUTE_BGCOLOR = "backgroundcolor";
 
 	public static final String TAG_TILESET = "tileset";
 	public static final String TAG_TILESET_ATTRIBUTE_FIRSTGID = "firstgid";
@@ -68,12 +69,12 @@ public interface TMXConstants {
 	public static final String TAG_DATA_ATTRIBUTE_COMPRESSION_VALUE_GZIP = "gzip";
 	public static final String TAG_DATA_ATTRIBUTE_COMPRESSION_VALUE_ZLIB = "zlib";
 
-
 	public static final String TAG_OBJECTGROUP = "objectgroup";
 	public static final String TAG_OBJECTGROUP_ATTRIBUTE_NAME = "name";
 	public static final String TAG_OBJECTGROUP_ATTRIBUTE_WIDTH = "width";
 	public static final String TAG_OBJECTGROUP_ATTRIBUTE_HEIGHT = "height";
     public static final String TAG_OBJECTGROUP_ATTRIBUTE_COLOR = "color";
+    public static final String TAG_OBJECTGROUP_ATTRIBUTE_VISIBLE = "visible";
 
 	public static final String TAG_OBJECT = "object";
 	public static final String TAG_OBJECT_ATTRIBUTE_NAME = "name";
@@ -87,7 +88,7 @@ public interface TMXConstants {
 	public static final Object TAG_TILEOFFSET = "tileoffset";
 	public static final Object TAG_TERRAIN = "terrain";
 
-	// ===========================================================
+    // ===========================================================
 	// Methods
 	// ===========================================================
 }

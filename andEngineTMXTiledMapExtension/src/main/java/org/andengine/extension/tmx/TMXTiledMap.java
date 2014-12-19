@@ -30,6 +30,7 @@ public class TMXTiledMap implements TMXConstants {
 	private final int mTilesRows;
 	private final int mTileWidth;
 	private final int mTileHeight;
+    private final String mBackgroundColor;
 
 	private final ArrayList<TMXTileSet> mTMXTileSets = new ArrayList<TMXTileSet>();
 	private final ArrayList<TMXLayer> mTMXLayers = new ArrayList<TMXLayer>();
@@ -40,11 +41,12 @@ public class TMXTiledMap implements TMXConstants {
 
 	private final TMXProperties<TMXTiledMapProperty> mTMXTiledMapProperties = new TMXProperties<TMXTiledMapProperty>();
 
-	// ===========================================================
+    // ===========================================================
 	// Constructors
 	// ===========================================================
 
-	TMXTiledMap(final Attributes pAttributes) {
+
+    TMXTiledMap(final Attributes pAttributes) {
 		this.mOrientation = pAttributes.getValue("", TMXConstants.TAG_MAP_ATTRIBUTE_ORIENTATION);
 		if(!this.mOrientation.equals(TMXConstants.TAG_MAP_ATTRIBUTE_ORIENTATION_VALUE_ORTHOGONAL)) {
 			throw new IllegalArgumentException(TMXConstants.TAG_MAP_ATTRIBUTE_ORIENTATION + ": '" + this.mOrientation + "' is not supported.");
@@ -53,6 +55,7 @@ public class TMXTiledMap implements TMXConstants {
 		this.mTilesRows = SAXUtils.getIntAttributeOrThrow(pAttributes, TMXConstants.TAG_MAP_ATTRIBUTE_HEIGHT);
 		this.mTileWidth = SAXUtils.getIntAttributeOrThrow(pAttributes, TMXConstants.TAG_MAP_ATTRIBUTE_TILEWIDTH);
 		this.mTileHeight = SAXUtils.getIntAttributeOrThrow(pAttributes, TMXConstants.TAG_MAP_ATTRIBUTE_TILEHEIGHT);
+        this.mBackgroundColor = SAXUtils.getAttribute(pAttributes, TMXConstants.TAG_MAP_ATTRIBUTE_BGCOLOR, "");
 	}
 
 	// ===========================================================
@@ -92,9 +95,13 @@ public class TMXTiledMap implements TMXConstants {
 		return this.mTileWidth;
 	}
 
-	public final int getTileHeight() {
+	public int getTileHeight() {
 		return this.mTileHeight;
 	}
+
+    public final String getBackgroundColor() {
+        return mBackgroundColor;
+    }
 
 	void addTMXTileSet(final TMXTileSet pTMXTileSet) {
 		this.mTMXTileSets.add(pTMXTileSet);

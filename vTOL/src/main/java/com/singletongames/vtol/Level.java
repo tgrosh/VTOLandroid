@@ -13,7 +13,6 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
-import org.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
 import org.andengine.extension.tmx.TMXLayer;
 import org.andengine.extension.tmx.TMXLoader;
 import org.andengine.extension.tmx.TMXObject;
@@ -29,13 +28,6 @@ import org.andengine.util.debug.Debug;
 import android.util.Pair;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.ChainShape;
-import com.badlogic.gdx.physics.box2d.EdgeShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.singletongames.vtol.objectives.ObjectiveZone;
 
@@ -125,7 +117,6 @@ public class Level implements IDisposable {
 		final TMXLoader tmxLoader = new TMXLoader(Resources.mActivity.getAssets(), mEngine.getTextureManager(), mEngine.getVertexBufferObjectManager());
 		try {
 			map = tmxLoader.loadFromAsset("levels/Level" + this.getChapterID() + "-" + this.getLevelID() + ".tmx");
-            //map = tmxLoader.loadFromAsset("levels/untitled.tmx");
 		} catch (TMXLoadException e) {
 			Debug.e(e);
 			return;
@@ -139,10 +130,13 @@ public class Level implements IDisposable {
 		
 		for (TMXObjectGroup grp:map.getTMXObjectGroups()){
 			for (TMXObject obj:grp.getTMXObjects()){
-                if (grp.getName().equals("ground")){
+                if (!grp.isVisible()){
+                    continue;
+                }
+                //if the label has a property called sceneLayer, it should be drawn as such
+                if (grp.getTMXObjectGroupProperties().containsTMXProperty("sceneLayer", "")){
                     LinkedList<Pair<Float,Float>> vertices = obj.getTMXObjectPolyline();
-                    float[] xVerts = new float[vertices.size()],
-                            yVerts = new float[vertices.size()];
+                    float[] xVerts = new float[vertices.size()], yVerts = new float[vertices.size()];
                     for (int x = 0; x< vertices.size(); x++){
                         Pair<Float, Float> pair = vertices.get(x);
                         xVerts[x] = pair.first;
@@ -152,8 +146,15 @@ public class Level implements IDisposable {
                     float[] colorParts = ColorUtils.HexToOpenGL(grp.getColor());
                     poly.setColor(new Color(colorParts[0], colorParts[1], colorParts[2]));
                     scene.attachChild(poly);
+
+                    //if the layer OR the object has a property called physics, it should have box2d body created
+                    if (grp.getTMXObjectGroupProperties().containsTMXProperty("physics", "") ||
+                            obj.getTMXObjectProperties().containsTMXProperty("physics", "")){
+                        Util.createChainShape(obj.getX(), obj.getY(), obj.getTMXObjectPolyline());
+                    }
                 }
-                else if (grp.getName().equals("Props") && physics){ //just draw props
+
+                if (grp.getName().equals("Props") && physics){ //just draw props
 					 ITextureRegion tex = map.getTextureRegionFromGlobalTileID(obj.getGid());
 					 Sprite prop = new Sprite(obj.getX(), obj.getY() - 120f, tex, Resources.mEngine.getVertexBufferObjectManager());
 					 scene.attachChild(prop);
@@ -166,32 +167,7 @@ public class Level implements IDisposable {
 						scene.attachChild(rect);
 					}
 					else{
-						LinkedList<Pair<Float, Float>> vertices = obj.getTMXObjectPolyline();
-						if (vertices == null) {
-							Debug.e("Invalide vertices for Polyline");
-						}
-						else{
-							Vector2[] vectors = new Vector2[vertices.size()];
-							for(int i=0; i < vertices.size(); i++){
-								Pair<Float, Float> pair = vertices.get(i);
-								vectors[i] = new Vector2((pair.first+obj.getX())/PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT, (pair.second+obj.getY())/PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
-							}
-							
-							ChainShape myChain = new ChainShape();
-							myChain.createChain(vectors);
-							
-			                Body mChainBody;
-			                
-			                BodyDef mBodyDef = new BodyDef();
-			                mBodyDef.type = BodyType.StaticBody;
-			                mChainBody = Resources.mPhysicsWorld.createBody(mBodyDef);
-			                
-			                FixtureDef mFixtureDef = new FixtureDef();
-			                mFixtureDef.shape = myChain;
-			                mChainBody.createFixture(mFixtureDef);
-			                
-			                myChain.dispose();
-						}
+						Util.createChainShape(obj.getX(), obj.getY(), obj.getTMXObjectPolyline());
 					}
 				}
 				else if (grp.getName().equals("Preview")){ //camera preview layer
@@ -218,9 +194,9 @@ public class Level implements IDisposable {
 				}
 				else if (grp.getName().equals("Objectives")){
 					if (obj.getTMXObjectPolyline().isEmpty()){ //not a poly line, so a rectangle						
-						String type = Util.getTMXObjectProperty(obj.getTMXObjectProperties(), "type", "");
+						String type = Util.getTMXProperty(obj.getTMXObjectProperties(), "type", "");
 						if (type.equals("ZoneObjective") || type.equals("ObjectiveZone")){
-							int id = Util.getTMXObjectProperty(obj.getTMXObjectProperties(), "id", -1);
+							int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
 							if (id >= 0){
 								ObjectiveZone zone = new ObjectiveZone(obj.getX(), obj.getY(), obj.getWidth(), obj.getHeight(), id);
 								scene.attachChild(zone);
@@ -235,14 +211,14 @@ public class Level implements IDisposable {
 						String tileProp = Util.getTMXTilePropertyValue(map, objGid, "type", "");
 						if (!tileProp.equals("")){	
 							if (tileProp.equals("CargoDrop")){
-								int id = Util.getTMXObjectProperty(obj.getTMXObjectProperties(), "id", -1);
+								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
 								CargoDrop drop = new CargoDrop(obj.getX() + 30 - Resources.CargoDrop.getWidth()/2, obj.getY() - Resources.CargoDrop.getHeight(), id, null);
 								drop.setZIndex(15);
 								cargoDrops.add(drop);
 								scene.attachChild(drop);
 							}
 							else if (tileProp.equals("WoodenBox")){
-								int id = Util.getTMXObjectProperty(obj.getTMXObjectProperties(), "id", -1);
+								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
 								WoodenBox box = new WoodenBox(obj.getX() + 30 - Resources.WoodenBox.getWidth()/2, obj.getY() - 60f, id);
 								box.setZIndex(20);
 								scene.attachChild(box);
@@ -254,7 +230,7 @@ public class Level implements IDisposable {
 								this.launchPad = pad;
 							}
 							else if (tileProp.equals("LandingPad")){
-								int id = Util.getTMXObjectProperty(obj.getTMXObjectProperties(), "id", -1);
+								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
 								LandingPad pad = new LandingPad(obj.getX() + 30 - Resources.LandingPad.getWidth()/2, obj.getY() - 60, id, null);
 								pad.setZIndex(10);
 								scene.attachChild(pad);
@@ -293,7 +269,7 @@ public class Level implements IDisposable {
 		scene.sortChildren();
 	}
 
-	public Lander getLander() {
+    public Lander getLander() {
 		return lander;
 	}
 
@@ -367,4 +343,19 @@ public class Level implements IDisposable {
 	public List<CargoDrop> getCargoDrops() {
 		return cargoDrops;
 	}
+
+    public List<Vector2> buildListOfVector2(float[] pX, float [] pY )
+    {
+        assert(pX.length == pY.length );
+        ArrayList<Vector2> vectors = new ArrayList<Vector2>( pX.length );
+
+        for( int i = 0; i < pX.length; i++ )
+        {
+            // TODO avoid using new
+            Vector2 v = new Vector2( pX[i], pY[i]);
+            vectors.add(v);
+        }
+
+        return vectors;
+    }
 }

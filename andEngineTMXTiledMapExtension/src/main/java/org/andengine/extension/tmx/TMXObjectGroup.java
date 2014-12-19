@@ -28,6 +28,7 @@ public class TMXObjectGroup implements TMXConstants {
 	private final ArrayList<TMXObject> mTMXObjects = new ArrayList<TMXObject>();
 	private final TMXProperties<TMXObjectGroupProperty> mTMXObjectGroupProperties = new TMXProperties<TMXObjectGroupProperty>();
     private final String mColor;
+    private final boolean mVisible;
 
     // ===========================================================
 	// Constructors
@@ -38,6 +39,7 @@ public class TMXObjectGroup implements TMXConstants {
 		this.mWidth = SAXUtils.getIntAttribute(pAttributes, TMXConstants.TAG_OBJECTGROUP_ATTRIBUTE_WIDTH, 0);
 		this.mHeight = SAXUtils.getIntAttribute(pAttributes, TMXConstants.TAG_OBJECTGROUP_ATTRIBUTE_HEIGHT, 0);
         this.mColor = SAXUtils.getAttribute(pAttributes, TMXConstants.TAG_OBJECTGROUP_ATTRIBUTE_COLOR, "#000000");
+        this.mVisible = SAXUtils.getIntAttribute(pAttributes, TMXConstants.TAG_OBJECTGROUP_ATTRIBUTE_VISIBLE, 1) == 1;
 	}
 
 	// ===========================================================
@@ -76,7 +78,11 @@ public class TMXObjectGroup implements TMXConstants {
 		return this.mTMXObjectGroupProperties;
 	}
 
-	// ===========================================================
+    public boolean isVisible() {
+        return mVisible;
+    }
+
+    // ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 

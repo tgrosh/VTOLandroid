@@ -30,7 +30,7 @@ public class Resources {
 	public static Engine mEngine;
 	public static Level mCurrentLevel;
 	
-	public static boolean DEBUG_DRAW = false;
+	public static boolean DEBUG_DRAW = true;
 	public static boolean ClearPrefernces = false; /////////////////////////////////////////////////////////
 	
 	public static int TrainingProgress = 0;

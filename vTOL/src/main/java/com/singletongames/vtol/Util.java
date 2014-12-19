@@ -3,6 +3,7 @@ package com.singletongames.vtol;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.andengine.engine.Engine;
@@ -28,6 +29,7 @@ import org.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
 import org.andengine.extension.tmx.TMXObject;
 import org.andengine.extension.tmx.TMXObjectProperty;
 import org.andengine.extension.tmx.TMXProperties;
+import org.andengine.extension.tmx.TMXProperty;
 import org.andengine.extension.tmx.TMXTileProperty;
 import org.andengine.extension.tmx.TMXTileSet;
 import org.andengine.extension.tmx.TMXTiledMap;
@@ -52,11 +54,13 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.Pair;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -159,8 +163,32 @@ public class Util {
 		
 		return result;
 	}
-	
-	enum BodyShape{
+
+    public static void createChainShape(float x, float y, LinkedList<Pair<Float, Float>> vertices) {
+        Vector2[] vectors = new Vector2[vertices.size()];
+
+        for(int i=0; i < vertices.size(); i++){
+            Pair<Float, Float> pair = vertices.get(i);
+            vectors[i] = new Vector2((pair.first+x)/ PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT, (pair.second+y)/PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
+        }
+
+        ChainShape myChain = new ChainShape();
+        myChain.createChain(vectors);
+
+        Body mChainBody;
+
+        BodyDef mBodyDef = new BodyDef();
+        mBodyDef.type = BodyType.StaticBody;
+        mChainBody = Resources.mPhysicsWorld.createBody(mBodyDef);
+
+        FixtureDef mFixtureDef = PhysicsFactory.createFixtureDef(1000, 0f, 1f);
+        mFixtureDef.shape = myChain;
+        mChainBody.createFixture(mFixtureDef);
+
+        myChain.dispose();
+    }
+
+    enum BodyShape{
 		Box,
 		Circle,
 		Polygon,
@@ -266,38 +294,54 @@ public class Util {
 		}
 		return null;		
 	}
-	
-	public static String getTMXTiledMapProperty(TMXProperties<TMXTiledMapProperty> properties, String propertyName, String defaultValue){
-		String returnValue = defaultValue;
-		for (TMXTiledMapProperty prop: properties){
-			if (prop.getName().toLowerCase().equals(propertyName.toLowerCase())){
-				returnValue = prop.getValue();
-			}
-		}
-		return returnValue;
-	}
-	public static float getTMXTiledMapProperty(TMXProperties<TMXTiledMapProperty> properties, String propertyName, float defaultValue){
-		return Float.parseFloat(getTMXTiledMapProperty(properties, propertyName, String.valueOf(defaultValue)));
-	}
-	public static int getTMXTiledMapProperty(TMXProperties<TMXTiledMapProperty> properties, String propertyName, int defaultValue){
-		return Integer.parseInt(getTMXTiledMapProperty(properties, propertyName, String.valueOf(defaultValue)));
-	}
-	
-	public static String getTMXObjectProperty(TMXProperties<TMXObjectProperty> properties, String propertyName, String defaultValue){
-		String returnValue = defaultValue;
-		for (TMXObjectProperty prop: properties){
-			if (prop.getName().toLowerCase().equals(propertyName.toLowerCase())){
-				returnValue = prop.getValue();
-			}
-		}
-		return returnValue;
-	}
-	public static float getTMXObjectProperty(TMXProperties<TMXObjectProperty> properties, String propertyName, float defaultValue){
-		return Float.parseFloat(getTMXObjectProperty(properties, propertyName, String.valueOf(defaultValue)));
-	}
-	public static int getTMXObjectProperty(TMXProperties<TMXObjectProperty> properties, String propertyName, int defaultValue){
-		return Integer.parseInt(getTMXObjectProperty(properties, propertyName, String.valueOf(defaultValue)));
-	}
+//
+//	public static String getTMXTiledMapProperty(TMXProperties<TMXTiledMapProperty> properties, String propertyName, String defaultValue){
+//		String returnValue = defaultValue;
+//		for (TMXTiledMapProperty prop: properties){
+//			if (prop.getName().toLowerCase().equals(propertyName.toLowerCase())){
+//				returnValue = prop.getValue();
+//			}
+//		}
+//		return returnValue;
+//	}
+//	public static float getTMXTiledMapProperty(TMXProperties<TMXTiledMapProperty> properties, String propertyName, float defaultValue){
+//		return Float.parseFloat(getTMXTiledMapProperty(properties, propertyName, String.valueOf(defaultValue)));
+//	}
+//	public static int getTMXTiledMapProperty(TMXProperties<TMXTiledMapProperty> properties, String propertyName, int defaultValue){
+//		return Integer.parseInt(getTMXTiledMapProperty(properties, propertyName, String.valueOf(defaultValue)));
+//	}
+//
+//	public static String getTMXObjectProperty(TMXProperties<TMXObjectProperty> properties, String propertyName, String defaultValue){
+//		String returnValue = defaultValue;
+//		for (TMXObjectProperty prop: properties){
+//			if (prop.getName().toLowerCase().equals(propertyName.toLowerCase())){
+//				returnValue = prop.getValue();
+//			}
+//		}
+//		return returnValue;
+//	}
+//	public static float getTMXObjectProperty(TMXProperties<TMXObjectProperty> properties, String propertyName, float defaultValue){
+//		return Float.parseFloat(getTMXObjectProperty(properties, propertyName, String.valueOf(defaultValue)));
+//	}
+//	public static int getTMXObjectProperty(TMXProperties<TMXObjectProperty> properties, String propertyName, int defaultValue){
+//		return Integer.parseInt(getTMXObjectProperty(properties, propertyName, String.valueOf(defaultValue)));
+//	}
+
+    public static <T extends TMXProperty> float getTMXProperty(TMXProperties<T> properties, String propertyName, float defaultValue){
+        return Float.parseFloat(getTMXProperty(properties, propertyName, String.valueOf(defaultValue)));
+    }
+    public static <T extends TMXProperty> int getTMXProperty(TMXProperties<T> properties, String propertyName, int defaultValue){
+        return Integer.parseInt(getTMXProperty(properties, propertyName, String.valueOf(defaultValue)));
+    }
+    public static <T extends TMXProperty> String getTMXProperty(TMXProperties<T> properties, String propertyName, String defaultValue){
+        String returnValue = defaultValue;
+        for (T prop: properties){
+            if (prop.getName().toLowerCase().equals(propertyName.toLowerCase())){
+                returnValue = prop.getValue();
+            }
+        }
+        return returnValue;
+    }
 
 	public static int getTMXTilePropertyValue(TMXTileSet tiles, int gid, String name, int defaultValue){
 		return Integer.parseInt(getTMXTilePropertyValue(tiles,gid,name,String.valueOf(defaultValue)));
@@ -496,11 +540,6 @@ public class Util {
 	}
 
 
-	/** Gives the coordinates on the given sprite in meters
-	 * @param iTextureRegion
-	 * @param pixelVector
-	 * @return
-	 */
 	public static Vector2 getBodyPoint(ITextureRegion iTextureRegion,	Vector2 pixelVector) {
 		Sprite s = new Sprite(0, 0, iTextureRegion, Resources.mEngine.getVertexBufferObjectManager());
 		
