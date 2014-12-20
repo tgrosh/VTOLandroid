@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 public class BasicLander extends Lander {
 
 	public BasicLander(float pX, float pY, ILanderListener listener) {
-		super(pX - Resources.landerHauler.getWidth()/2, pY - Resources.landerHauler.getHeight(), LanderDB.getInstance().getLander(0), Resources.landerHauler, getFixtureDefs(Resources.landerHauler), getFixtureUserData(), listener);		
+		super(pX, pY, LanderDB.getInstance().getLander(0), Resources.landerHauler, getFixtureDefs(Resources.landerHauler), getFixtureUserData(), listener);
 	}
 
 	private static List<FixtureDef> getFixtureDefs(TiledTextureRegion tex) {		

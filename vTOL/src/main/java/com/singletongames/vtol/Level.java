@@ -212,26 +212,26 @@ public class Level implements IDisposable {
 						if (!tileProp.equals("")){	
 							if (tileProp.equals("CargoDrop")){
 								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
-								CargoDrop drop = new CargoDrop(obj.getX() + 30 - Resources.CargoDrop.getWidth()/2, obj.getY() - Resources.CargoDrop.getHeight(), id, null);
+								CargoDrop drop = new CargoDrop(obj.getX() + 30 - Resources.CargoDrop.getWidth()/2, obj.getY() + 30 - Resources.CargoDrop.getHeight(), id, null);
 								drop.setZIndex(15);
 								cargoDrops.add(drop);
 								scene.attachChild(drop);
 							}
 							else if (tileProp.equals("WoodenBox")){
 								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
-								WoodenBox box = new WoodenBox(obj.getX() + 30 - Resources.WoodenBox.getWidth()/2, obj.getY() - 60f, id);
+								WoodenBox box = new WoodenBox(obj.getX() + 30 - Resources.WoodenBox.getWidth()/2, obj.getY() + 30 - Resources.WoodenBox.getHeight(), id);
 								box.setZIndex(20);
 								scene.attachChild(box);
 							}
 							else if (tileProp.equals("LaunchPad")){
-								LaunchPad pad = new LaunchPad(obj.getX() + 30 - Resources.LaunchPad.getWidth()/2, obj.getY() - 180, null);
+								LaunchPad pad = new LaunchPad(obj.getX() + 30 - Resources.LaunchPad.getWidth()/2, obj.getY() + 30 - Resources.LaunchPad.getHeight(), null);
 								pad.setZIndex(10);
 								scene.attachChild(pad);
 								this.launchPad = pad;
 							}
 							else if (tileProp.equals("LandingPad")){
 								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
-								LandingPad pad = new LandingPad(obj.getX() + 30 - Resources.LandingPad.getWidth()/2, obj.getY() - 60, id, null);
+								LandingPad pad = new LandingPad(obj.getX() + 30 - Resources.LandingPad.getWidth()/2, obj.getY() + 30 - Resources.LandingPad.getHeight(), id, null);
 								pad.setZIndex(10);
 								scene.attachChild(pad);
 								this.landingPad = pad;
@@ -239,15 +239,15 @@ public class Level implements IDisposable {
 							else if (tileProp.equals("Lander")){
 								switch (Resources.selectedLander){
 									case 0:{
-										lander = new BasicLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY(), null);										
+										lander = new BasicLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY() + 30 - Resources.landerHauler.getHeight(), null);
 										break;
 									}
 									case 1:{
-										lander = new LunarLander(obj.getX() + 30 - Resources.landerLuna.getWidth()/2, obj.getY(), null);
+										lander = new LunarLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY() + 30 - Resources.landerHauler.getHeight(), null);
 										break;
 									}
 									default:{
-										lander = new BasicLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY(), null);
+										lander = new BasicLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY() + 30 - Resources.landerHauler.getHeight(), null);
 									}
 								}
 								lander.setZIndex(20);

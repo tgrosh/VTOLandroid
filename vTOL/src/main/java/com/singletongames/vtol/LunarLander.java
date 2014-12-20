@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 public class LunarLander extends Lander {
 
 	public LunarLander(float pX, float pY, ILanderListener listener) {
-		super(pX - Resources.landerLuna.getWidth()/2, pY - Resources.landerLuna.getHeight(), LanderDB.getInstance().getLander(1), Resources.landerLuna, getFixtureDefs(Resources.landerLuna), getFixtureUserData(), listener);
+		super(pX, pY, LanderDB.getInstance().getLander(1), Resources.landerLuna, getFixtureDefs(Resources.landerLuna), getFixtureUserData(), listener);
 	}
 
 	@Override

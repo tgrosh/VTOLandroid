@@ -67,16 +67,6 @@ public class MainMenuScene extends GameScene {
 	}
 
 	protected void Load() {
-//		Resources.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false);
-//				
-//		Resources.mCurrentLevel = new Level(Resources.mEngine, "0-0", 0, "0-0", false, false, false, 0);
-//		Resources.mCurrentLevel.Load(this, Resources.DEBUG_DRAW, false, null);		
-//		float mapScale = .25f;
-//		Resources.mCurrentLevel.getMap().getTMXLayers().get(0).setScaleCenter(0, 0);
-//		Resources.mCurrentLevel.getMap().getTMXLayers().get(0).setScale(mapScale);				
-//		mCamera.setCenterDirect((Resources.CAMERA_WIDTH/2), (Resources.CAMERA_HEIGHT/2));
-			
-		
 		Sprite bg = new Sprite(0,0,Resources.MainMenuBackground,Resources.mEngine.getVertexBufferObjectManager());
 		bg.setScale(1.1f);
 		this.attachChild(bg);
@@ -87,8 +77,7 @@ public class MainMenuScene extends GameScene {
 		ButtonSprite startButton = new ButtonSprite(0,0,Resources.StartButton, Resources.mEngine.getVertexBufferObjectManager(), new OnClickListener() {			
 			@Override
 			public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {				
-				//Util.FadeToBlack(mScene, new ChapterSelectScene());
-                Util.FadeToBlack(mScene, new PolygonTestScene());
+				Util.FadeToBlack(mScene, new ChapterSelectScene());
 			}
 		});		
 		startButton.setPosition(Resources.CAMERA_WIDTH/2 - startButton.getWidth()/2, logo.getY() + logo.getHeight() + 100);

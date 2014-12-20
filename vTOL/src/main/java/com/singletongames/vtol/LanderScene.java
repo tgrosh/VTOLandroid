@@ -18,6 +18,7 @@ import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
@@ -35,6 +36,7 @@ import org.andengine.input.touch.detector.PinchZoomDetector;
 import org.andengine.input.touch.detector.SurfaceScrollDetector;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.util.color.Color;
+import org.andengine.util.color.ColorUtils;
 import org.andengine.util.debug.Debug;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseExponentialOut;
@@ -88,8 +90,7 @@ public class LanderScene extends GameScene implements SensorEventListener {
 	public LanderScene(boolean preview, int chapterID, int levelID){
 		this.chapterID = chapterID;
 		this.levelID = levelID;
-		
-		Resources.mEngine.registerUpdateHandler(new FPSLogger(5));
+
 		
 		Util.ResetCamera((SmoothCamera) Resources.mEngine.getCamera());
 		mHud = Util.NewHud(Resources.mEngine.getCamera());
@@ -107,6 +108,7 @@ public class LanderScene extends GameScene implements SensorEventListener {
 	}
 	
 	protected void Load() {
+        Resources.mEngine.registerUpdateHandler(new FPSLogger(5));
 		Util.InitializePhysicsWorld(Resources.mEngine, new Vector2(0, SensorManager.GRAVITY_EARTH), false);
 		Resources.mPhysicsWorld.setContactListener(GameContactListener.getInstance());
 		
@@ -473,6 +475,12 @@ public class LanderScene extends GameScene implements SensorEventListener {
 		float mapWidth = map.getTileColumns() * map.getTileWidth();		
 		((SmoothCamera) Resources.mEngine.getCamera()).setBounds(0,0,mapWidth,mapHeight);
 		((SmoothCamera) Resources.mEngine.getCamera()).setBoundsEnabled(true);
+
+        String bgColor = Resources.mCurrentLevel.getMap().getBackgroundColor();
+        if (!bgColor.equals("")) {
+            float[] colorParts = ColorUtils.HexToOpenGL(bgColor);
+            this.setBackground(new Background(new Color(colorParts[0], colorParts[1], colorParts[2])));
+        }
 		
 		for (NoFlyZone noFly: Resources.mCurrentLevel.getNoFlyZones()){
 			noFly.addListener(NoFlyListenerManager.getInstance());
