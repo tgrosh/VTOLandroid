@@ -28,6 +28,7 @@ import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
+import org.andengine.entity.util.FPSCounter;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.extension.debugdraw.primitives.Ellipse;
 import org.andengine.extension.tmx.TMXTiledMap;
@@ -85,9 +86,10 @@ public class LanderScene extends GameScene implements SensorEventListener {
 	private Sprite gaugeGreen;
 	private Sprite gaugeRed;
 	private Sprite pingButton;
-	private boolean pingEnabled; 
-	
-	public LanderScene(boolean preview, int chapterID, int levelID){
+	private boolean pingEnabled;
+    private Text fpsCount;
+
+    public LanderScene(boolean preview, int chapterID, int levelID){
 		this.chapterID = chapterID;
 		this.levelID = levelID;
 
@@ -96,8 +98,9 @@ public class LanderScene extends GameScene implements SensorEventListener {
 		mHud = Util.NewHud(Resources.mEngine.getCamera());
 		mPreview = preview;
 		
-		Resources.mCurrentLevel = LevelDB.getInstance().getLevel(chapterID, levelID);
-		
+		//Resources.mCurrentLevel = LevelDB.getInstance().getLevel(chapterID, levelID);
+        Resources.mCurrentLevel = new Level(Resources.mEngine, 0, 0, "0-0", false, false, false, 0);
+
 		TimerHandler delay = new TimerHandler(1f, new ITimerCallback() {			
 			@Override
 			public void onTimePassed(TimerHandler pTimerHandler) {
@@ -108,39 +111,38 @@ public class LanderScene extends GameScene implements SensorEventListener {
 	}
 	
 	protected void Load() {
-        Resources.mEngine.registerUpdateHandler(new FPSLogger(5));
 		Util.InitializePhysicsWorld(Resources.mEngine, new Vector2(0, SensorManager.GRAVITY_EARTH), false);
 		Resources.mPhysicsWorld.setContactListener(GameContactListener.getInstance());
-		
-		Resources.mEngine.registerUpdateHandler(new IUpdateHandler() {			
+
+		Resources.mEngine.registerUpdateHandler(new IUpdateHandler() {
 			@Override
 			public void reset() {
-			}			
+			}
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
 				if (Resources.mCurrentLevel != null && Resources.mCurrentLevel.getLander() != null){
                 	float fuelPct = Resources.mCurrentLevel.getLander().getCurrentFuelPercentage();
                 	updateFuel(fuelPct);
-                	
+
                 	float healthPct = Resources.mCurrentLevel.getLander().getCurrentHealthPercentage();
                 	updateHealth(healthPct);
                 }
 			}
 		});
-		
+
 		mHud.setTouchAreaBindingOnActionDownEnabled(true);
 		mHud.setTouchAreaBindingOnActionMoveEnabled(true);
 		mHud.setOnAreaTouchTraversalFrontToBack();
-		
+
 		this.setTouchAreaBindingOnActionDownEnabled(true);
 		this.setTouchAreaBindingOnActionMoveEnabled(true);
-		
-		this.setOnSceneTouchListener(new IOnSceneTouchListener() {			
+
+		this.setOnSceneTouchListener(new IOnSceneTouchListener() {
 			@Override
 			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 //				mScrollDetector.setEnabled(true);
 //                mScrollDetector.onTouchEvent(pSceneTouchEvent);
-	
+
                 if (mPreview && Resources.mCurrentLevel != null && Resources.mCurrentLevel.getPreview() != null){
                 	Resources.mCurrentLevel.getPreview().SkipToEnd();
                 }
@@ -165,17 +167,17 @@ public class LanderScene extends GameScene implements SensorEventListener {
 //				((SmoothCamera) Resources.mEngine.getCamera()).setMaxVelocity(400f, 400f);
 //			}
 //		});
-//		
+//
 		SensorManager sensorManager = (SensorManager)Resources.mActivity.getSystemService(Context.SENSOR_SERVICE);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
-                        
+
         throttleBackground = new Sprite(30, Resources.CAMERA_HEIGHT - 30 - Resources.mThrottleBackground.getHeight(), Resources.mThrottleBackground, Resources.mEngine.getVertexBufferObjectManager()){
         	private float throttleButtonTouchY;
         	@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 				if (!paused){
 					if (pSceneTouchEvent.isActionDown()){
-						movingThrottle = true;	
+						movingThrottle = true;
 						throttleButtonTouchY = pSceneTouchEvent.getY();
 						throttleButton.setPosition(throttleButton.getX(), throttleButtonTouchY - throttleButton.getHeight()/2);
 						if (throttleButton.getY() < throttleMaxPosition){
@@ -191,7 +193,7 @@ public class LanderScene extends GameScene implements SensorEventListener {
 					}
 					else if (pSceneTouchEvent.isActionMove()){
 						if (movingThrottle){
-							float moveAmount = throttleButtonTouchY - pSceneTouchEvent.getY();							
+							float moveAmount = throttleButtonTouchY - pSceneTouchEvent.getY();
 							throttleButton.setPosition(throttleButton.getX(), throttleButton.getY() - moveAmount);
 						}
 						if (throttleButton.getY() < throttleMaxPosition){
@@ -202,7 +204,7 @@ public class LanderScene extends GameScene implements SensorEventListener {
 						}
 						throttleButtonTouchY = pSceneTouchEvent.getY();
 					}
-					
+
 					currentThrottle = (throttleStartingPosition - throttleButton.getY()) / (throttleStartingPosition - throttleMaxPosition); //0-1
 					throttlePercent.setText(String.valueOf((int)(currentThrottle*100)) + "%");
 					throttlePercent.setPosition(throttleButton.getX() + throttleButton.getWidth() + 30, throttleButton.getY() + throttleButton.getHeight()/2 - throttlePercent.getHeight()/2);
@@ -211,7 +213,7 @@ public class LanderScene extends GameScene implements SensorEventListener {
 					}
 				}
 				return true;
-			}        	
+			}
         };
         throttleStartingPosition = throttleBackground.getY() + throttleBackground.getHeight() - throttleBackgroundPadding - Resources.mThrottleButton.getHeight();
         throttleMaxPosition = throttleBackground.getY() + throttleBackgroundPadding;
@@ -221,7 +223,7 @@ public class LanderScene extends GameScene implements SensorEventListener {
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent,float pTouchAreaLocalX, float pTouchAreaLocalY) {
 				if (!paused){
 					if (pSceneTouchEvent.isActionDown()){
-						movingThrottle = true;	
+						movingThrottle = true;
 						throttleButtonTouchY = pSceneTouchEvent.getY();
 					}
 					else if (pSceneTouchEvent.isActionUp()){
@@ -230,7 +232,7 @@ public class LanderScene extends GameScene implements SensorEventListener {
 					}
 					else if (pSceneTouchEvent.isActionMove()){
 						if (movingThrottle){
-							float moveAmount = throttleButtonTouchY - pSceneTouchEvent.getY();							
+							float moveAmount = throttleButtonTouchY - pSceneTouchEvent.getY();
 							throttleButton.setPosition(throttleButton.getX(), throttleButton.getY() - moveAmount);
 							if (throttleButton.getY() < throttleMaxPosition){
 								throttleButton.setPosition(throttleButton.getX(), throttleMaxPosition);
@@ -241,7 +243,7 @@ public class LanderScene extends GameScene implements SensorEventListener {
 							throttleButtonTouchY = pSceneTouchEvent.getY();
 						}
 					}
-					
+
 					currentThrottle = (throttleStartingPosition - throttleButton.getY()) / (throttleStartingPosition - throttleMaxPosition); //0-1
 					throttlePercent.setText(String.valueOf((int)(currentThrottle*100)) + "%");
 					throttlePercent.setPosition(throttleButton.getX() + throttleButton.getWidth() + 30, throttleButton.getY() + throttleButton.getHeight()/2 - throttlePercent.getHeight()/2);
@@ -254,24 +256,28 @@ public class LanderScene extends GameScene implements SensorEventListener {
 					return false;
 				}
 			}
-			
-		};		
+
+		};
 		mHud.attachChild(throttleBackground);
 		mHud.registerTouchArea(throttleBackground);
 		mHud.attachChild(throttleButton);
 		mHud.registerTouchArea(throttleButton);
-		
+
 		throttlePercent = new Text(0f, 0f, Resources.mFont_Green48, "0123456789%", 11, Resources.mEngine.getVertexBufferObjectManager());
 		throttlePercent.setText(String.valueOf((int)(currentThrottle*100)) + "%");
 		throttlePercent.setPosition(throttleButton.getX() + throttleButton.getWidth() + 30, throttleButton.getY() + throttleButton.getHeight()/2 - throttlePercent.getHeight()/2);
 		mHud.attachChild(throttlePercent);
-		
+
+        if (Resources.SHOW_FPS){
+            showFPS();
+        }
+
 		GaugeBackground = new Sprite(25, 30, Resources.GaugeBackground, Resources.mEngine.getVertexBufferObjectManager());
-		mHud.attachChild(GaugeBackground);		
+		mHud.attachChild(GaugeBackground);
 		updateFuel(1);
 		updateHealth(1);
-				
-		pauseButton = new ButtonSprite(0, 0, Resources.PauseButton, Resources.mEngine.getVertexBufferObjectManager(), new OnClickListener() {			
+
+		pauseButton = new ButtonSprite(0, 0, Resources.PauseButton, Resources.mEngine.getVertexBufferObjectManager(), new OnClickListener() {
 			@Override
 			public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {
 				if (!paused){
@@ -284,14 +290,14 @@ public class LanderScene extends GameScene implements SensorEventListener {
 		});
 		pauseButton.setPosition(Resources.CAMERA_WIDTH - pauseButton.getWidth() - 10, Resources.CAMERA_HEIGHT - pauseButton.getHeight() - 10);
 		mHud.attachChild(pauseButton);
-		mHud.registerTouchArea(pauseButton);	
-		
+		mHud.registerTouchArea(pauseButton);
+
 		if (mPreview){
 			setHudElementsVisible(false);
 		}
-		
+
         LoadTMXLevel();
-		
+
         //must be done after TMX map is loaded
 		objMgr = new ObjectiveManager(this, new Rectangle(Resources.CAMERA_WIDTH - 300, 50, 300, Resources.CAMERA_HEIGHT - 250, Resources.mEngine.getVertexBufferObjectManager()), Resources.mCurrentLevel.getChapterID(), Resources.mCurrentLevel.getLevelID(), new IObjectiveManagerListener() {
 			@Override
@@ -307,16 +313,31 @@ public class LanderScene extends GameScene implements SensorEventListener {
 			}
 		});
 		this.getHud().attachChild(objMgr);
-		
+
 		if (objMgr.getCurrentWaypoint() != null){
 			setPingEnabled(true);
 		}
 	}
-	
-	protected void createPing(final Vector2 center) {
+
+    private void showFPS() {
+        fpsCount = new Text(throttleButton.getX() - 10, throttleBackground.getY() - 70, Resources.mFont_Green48, "0123456789%", 11, Resources.mEngine.getVertexBufferObjectManager());
+
+        final FPSCounter fpsCounter = new FPSCounter();
+        Resources.mEngine.registerUpdateHandler(fpsCounter);
+        Resources.mEngine.registerUpdateHandler(new TimerHandler(1, true ,new ITimerCallback() {
+            @Override
+            public void onTimePassed(TimerHandler pTimerHandler) {
+                fpsCount.setText(String.valueOf(Math.round(fpsCounter.getFPS())));
+            }
+        }));
+
+        mHud.attachChild(fpsCount);
+    }
+
+    protected void createPing(final Vector2 center) {
 		final int pingCount = 5;
 		Resources.PingSound.play();
-		TimerHandler pingTimer = new TimerHandler(.2f, true, new ITimerCallback() {			
+		TimerHandler pingTimer = new TimerHandler(.2f, true, new ITimerCallback() {
 			private int currentPing = 1;
 
 			@Override
@@ -326,14 +347,14 @@ public class LanderScene extends GameScene implements SensorEventListener {
 				circle.setColor(0f,.8f,0f);
 				Vector2 landerPosition = new Vector2(Resources.mCurrentLevel.getLander().getX(), Resources.mCurrentLevel.getLander().getY());
 				float distanceToLander = Util.getPointDistance(landerPosition, center);
-				
-				ScaleModifier scaler = new ScaleModifier(1f, 1f, Math.abs(distanceToLander), new IEntityModifierListener() {					
+
+				ScaleModifier scaler = new ScaleModifier(1f, 1f, Math.abs(distanceToLander), new IEntityModifierListener() {
 					@Override
 					public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
 					}
 					@Override
 					public void onModifierFinished(IModifier<IEntity> pModifier, final IEntity pItem) {
-						Resources.mEngine.runOnUpdateThread(new Runnable() {							
+						Resources.mEngine.runOnUpdateThread(new Runnable() {
 							@Override
 							public void run() {
 								pItem.detachSelf();
@@ -343,10 +364,10 @@ public class LanderScene extends GameScene implements SensorEventListener {
 				});
 				AlphaModifier alpha = new AlphaModifier(1f, 1, 0, EaseStrongIn.getInstance());
 				ParallelEntityModifier par = new ParallelEntityModifier(scaler, alpha);
-				
+
 				circle.registerEntityModifier(par);
 				LanderScene.this.attachChild(circle);
-				
+
 				if (currentPing == pingCount){
 					Resources.mEngine.unregisterUpdateHandler(pTimerHandler);
 				}

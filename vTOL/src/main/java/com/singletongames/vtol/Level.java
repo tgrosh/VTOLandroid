@@ -133,7 +133,7 @@ public class Level implements IDisposable {
                 if (!grp.isVisible()){
                     continue;
                 }
-                //if the label has a property called sceneLayer, it should be drawn as such
+                //if the group has a property called sceneLayer, it should be drawn as such
                 if (grp.getTMXObjectGroupProperties().containsTMXProperty("sceneLayer", "")){
                     LinkedList<Pair<Float,Float>> vertices = obj.getTMXObjectPolyline();
                     float[] xVerts = new float[vertices.size()], yVerts = new float[vertices.size()];
@@ -143,24 +143,29 @@ public class Level implements IDisposable {
                         yVerts[x] = pair.second;
                     }
                     Polygon poly = new Polygon(obj.getX(), obj.getY(), xVerts, yVerts, Resources.mEngine.getVertexBufferObjectManager());
+
                     float[] colorParts = ColorUtils.HexToOpenGL(grp.getColor());
                     poly.setColor(new Color(colorParts[0], colorParts[1], colorParts[2]));
                     scene.attachChild(poly);
 
-                    //if the layer OR the object has a property called physics, it should have box2d body created
+                    //if the layer OR the object has a property called physics, it should have box2d chain shape body created
                     if (grp.getTMXObjectGroupProperties().containsTMXProperty("physics", "") ||
                             obj.getTMXObjectProperties().containsTMXProperty("physics", "")){
                         Util.createChainShape(obj.getX(), obj.getY(), obj.getTMXObjectPolyline());
                     }
                 }
 
-                if (grp.getName().equals("Props") && physics){ //just draw props
-					 ITextureRegion tex = map.getTextureRegionFromGlobalTileID(obj.getGid());
-					 Sprite prop = new Sprite(obj.getX(), obj.getY() - 120f, tex, Resources.mEngine.getVertexBufferObjectManager());
-					 scene.attachChild(prop);
+                if (grp.getTMXObjectGroupProperties().containsTMXProperty("props", "") || grp.getName().toUpperCase().equals("PROPS")){ //just draw props
+                    ITextureRegion tex = map.getTextureRegionFromGlobalTileID(obj.getGid());
+                    Sprite prop = new Sprite(obj.getX(), obj.getY() - tex.getHeight(), tex, Resources.mEngine.getVertexBufferObjectManager());
+                    prop.setRotationCenter(0, 0);
+                    prop.setRotation(obj.getRotation());
+                    prop.setFlipped(obj.isFlippedHorizontal(), obj.isFlippedVertical());
+                    prop.setCullingEnabled(true);
+                    scene.attachChild(prop);
 				}
-				else if (grp.getName().equals("Physics") && physics){ //box2d physics layer
-					if (obj.getTMXObjectPolyline().isEmpty()){ //not a poly line, so a rectangle (we dotn support elipse)
+				else if (grp.getName().toUpperCase().equals("PHYSICS") && physics){ //box2d physics layer
+					if (obj.getTMXObjectPolyline().isEmpty()){ //not a poly line, so a rectangle (we don't support ellipse)
 						Rectangle rect = new Rectangle(obj.getX(), obj.getY(), obj.getWidth(), obj.getHeight(), Resources.mEngine.getVertexBufferObjectManager());
 						rect.setVisible(false);
 						PhysicsFactory.createBoxBody(Resources.mPhysicsWorld, rect, BodyType.StaticBody, PhysicsFactory.createFixtureDef(1000, 0, .2f)); //fixture def should be configurable per tiled rectangle
@@ -170,7 +175,7 @@ public class Level implements IDisposable {
 						Util.createChainShape(obj.getX(), obj.getY(), obj.getTMXObjectPolyline());
 					}
 				}
-				else if (grp.getName().equals("Preview")){ //camera preview layer
+				else if (grp.getName().toUpperCase().equals("PREVIEW")){ //camera preview layer
 					if (!obj.getTMXObjectPolyline().isEmpty()){ //is a polyline
 						float startX = obj.getX();
 						float startY = obj.getY();
@@ -185,17 +190,17 @@ public class Level implements IDisposable {
 						preview = new ScenePreview(Resources.mEngine.getScene(), (SmoothCamera) Resources.mEngine.getCamera(), newPoints, scenePreviewListener);
 					}
 				}
-				else if (grp.getName().equals("NoFly")){
+				else if (grp.getName().toUpperCase().equals("NOFLY")){
 					if (obj.getTMXObjectPolyline().isEmpty()){ //not a poly line, so a rectangle
 						NoFlyZone noFly = new NoFlyZone(obj.getX(), obj.getY(), obj.getWidth(), obj.getHeight());						
 						scene.attachChild(noFly);
 						this.noFlyZones.add(noFly);
 					}
 				}
-				else if (grp.getName().equals("Objectives")){
+				else if (grp.getName().toUpperCase().equals("OBJECTIVES")){
 					if (obj.getTMXObjectPolyline().isEmpty()){ //not a poly line, so a rectangle						
 						String type = Util.getTMXProperty(obj.getTMXObjectProperties(), "type", "");
-						if (type.equals("ZoneObjective") || type.equals("ObjectiveZone")){
+						if (type.toUpperCase().equals("ZONEOBJECTIVE") || type.toUpperCase().equals("OBJECTIVEZONE")){
 							int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
 							if (id >= 0){
 								ObjectiveZone zone = new ObjectiveZone(obj.getX(), obj.getY(), obj.getWidth(), obj.getHeight(), id);
@@ -224,14 +229,14 @@ public class Level implements IDisposable {
 								scene.attachChild(box);
 							}
 							else if (tileProp.equals("LaunchPad")){
-								LaunchPad pad = new LaunchPad(obj.getX() + 30 - Resources.LaunchPad.getWidth()/2, obj.getY() + 30 - Resources.LaunchPad.getHeight(), null);
+								LaunchPad pad = new LaunchPad(obj.getX() + 30 - Resources.LaunchPad.getWidth()/2, obj.getY() - Resources.LaunchPad.getHeight(), null);
 								pad.setZIndex(10);
 								scene.attachChild(pad);
 								this.launchPad = pad;
 							}
 							else if (tileProp.equals("LandingPad")){
 								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
-								LandingPad pad = new LandingPad(obj.getX() + 30 - Resources.LandingPad.getWidth()/2, obj.getY() + 30 - Resources.LandingPad.getHeight(), id, null);
+								LandingPad pad = new LandingPad(obj.getX() + 30 - Resources.LandingPad.getWidth()/2, obj.getY() - Resources.LandingPad.getHeight(), id, null);
 								pad.setZIndex(10);
 								scene.attachChild(pad);
 								this.landingPad = pad;
@@ -239,15 +244,15 @@ public class Level implements IDisposable {
 							else if (tileProp.equals("Lander")){
 								switch (Resources.selectedLander){
 									case 0:{
-										lander = new BasicLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY() + 30 - Resources.landerHauler.getHeight(), null);
+										lander = new BasicLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY() - Resources.landerHauler.getHeight(), null);
 										break;
 									}
 									case 1:{
-										lander = new LunarLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY() + 30 - Resources.landerHauler.getHeight(), null);
+										lander = new LunarLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY() - Resources.landerHauler.getHeight(), null);
 										break;
 									}
 									default:{
-										lander = new BasicLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY() + 30 - Resources.landerHauler.getHeight(), null);
+										lander = new BasicLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY() - Resources.landerHauler.getHeight(), null);
 									}
 								}
 								lander.setZIndex(20);

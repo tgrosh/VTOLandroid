@@ -31,9 +31,13 @@ public class TMXObject implements TMXConstants {
 	private final float mWidth;
 	private final float mHeight;
 	private final int mGid;
+    private final long mGidRaw;
+    private final float mRotation;
 	private final TMXProperties<TMXObjectProperty> mTMXObjectProperties = new TMXProperties<TMXObjectProperty>();
 	private final LinkedList<Pair<Float,Float>> mTMXObjectPolyline = new LinkedList<Pair<Float,Float>>();
-	
+	private final boolean flippedHorizontal;
+    private final boolean flippedVertical;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -45,10 +49,33 @@ public class TMXObject implements TMXConstants {
 		this.mY = SAXUtils.getFloatAttributeOrThrow(pAttributes, TMXConstants.TAG_OBJECT_ATTRIBUTE_Y);
 		this.mWidth = SAXUtils.getFloatAttribute(pAttributes, TMXConstants.TAG_OBJECT_ATTRIBUTE_WIDTH, 0f);
 		this.mHeight = SAXUtils.getFloatAttribute(pAttributes, TMXConstants.TAG_OBJECT_ATTRIBUTE_HEIGHT, 0f);
-		this.mGid = SAXUtils.getIntAttribute(pAttributes, TMXConstants.TAG_TILE_ATTRIBUTE_GID, 0);
+		this.mGidRaw = SAXUtils.getLongAttribute(pAttributes, TMXConstants.TAG_TILE_ATTRIBUTE_GID, 0);
+        this.mGid = getGidAttribute(); //SAXUtils.getIntAttribute(pAttributes, TMXConstants.TAG_TILE_ATTRIBUTE_GID, 0);
+        this.mRotation = SAXUtils.getFloatAttribute(pAttributes, TMXConstants.TAG_OBJECT_ATTRIBUTE_ROTATION, 0);
+        flippedHorizontal = getFlippedHorizontalAttribute();
+        flippedVertical = getFlippedVerticalAttribute();
 	}
 
-	// ===========================================================
+    private boolean getFlippedVerticalAttribute() {
+        if (this.mGidRaw == 0) return false;
+        return (this.mGidRaw & FLIPPED_VERTICALLY_FLAG) > 0;
+    }
+
+    private boolean getFlippedHorizontalAttribute() {
+        if (this.mGidRaw == 0) return false;
+        return (this.mGidRaw & FLIPPED_HORIZONTALLY_FLAG) > 0;
+    }
+
+    private int getGidAttribute() {
+        if (this.mGidRaw == 0) return 0;
+
+        long gid = this.mGidRaw;
+        gid &= ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG);
+
+        return (int) gid;
+    }
+
+    // ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
@@ -79,6 +106,10 @@ public class TMXObject implements TMXConstants {
 	public int getGid() {
 		return this.mGid;
 	}
+
+    public float getRotation() {
+        return mRotation;
+    }
 
 	public void addTMXObjectProperty(final TMXObjectProperty pTMXObjectProperty) {
 		this.mTMXObjectProperties.add(pTMXObjectProperty);
@@ -115,7 +146,16 @@ public class TMXObject implements TMXConstants {
 	public LinkedList<Pair<Float,Float>> getTMXObjectPolyline() {
 	        return this.mTMXObjectPolyline;
 	}
-	// ===========================================================
+
+    public boolean isFlippedHorizontal() {
+        return flippedHorizontal;
+    }
+
+    public boolean isFlippedVertical() {
+        return flippedVertical;
+    }
+
+    // ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 

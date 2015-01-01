@@ -83,11 +83,15 @@ public interface TMXConstants {
 	public static final String TAG_OBJECT_ATTRIBUTE_Y = "y";
 	public static final String TAG_OBJECT_ATTRIBUTE_WIDTH = "width";
 	public static final String TAG_OBJECT_ATTRIBUTE_HEIGHT = "height";
+    public static final String TAG_OBJECT_ATTRIBUTE_ROTATION = "rotation";
 
 	public static final Object TAG_TERRAINTYPES = "terraintypes";
 	public static final Object TAG_TILEOFFSET = "tileoffset";
 	public static final Object TAG_TERRAIN = "terrain";
 
+    public static final long FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
+    public static final long FLIPPED_VERTICALLY_FLAG   = 0x40000000;
+    public static final long FLIPPED_DIAGONALLY_FLAG   = 0x20000000;
     // ===========================================================
 	// Methods
 	// ===========================================================

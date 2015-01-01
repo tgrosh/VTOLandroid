@@ -27,7 +27,8 @@ import android.graphics.Typeface;
 import android.hardware.SensorManager;
 
 public class Resources {
-	public static Engine mEngine;
+    public static final boolean SHOW_FPS = true;
+    public static Engine mEngine;
 	public static Level mCurrentLevel;
 	
 	public static boolean DEBUG_DRAW = false;
