@@ -44,6 +44,10 @@ public class GameContactListener implements	com.badlogic.gdx.physics.box2d.Conta
 		listeners.add(listener);
 	}
 
+    public void unRegisterContactListener(com.badlogic.gdx.physics.box2d.ContactListener listener){
+        listeners.remove(listener);
+    }
+
 	public static GameContactListener getInstance() {
 		return instance;
 	}

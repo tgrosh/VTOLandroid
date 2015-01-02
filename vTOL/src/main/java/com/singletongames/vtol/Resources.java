@@ -58,7 +58,7 @@ public class Resources {
 	public static List<TextureRegion> titleBars = new ArrayList<TextureRegion>();
 	public static List<TextureRegion> HighResLanders = new ArrayList<TextureRegion>();
 	public static TextureRegion mThrottleBackground, mThrottleButton, mFuelGaugeBackground, mFuelGaugeOverlay, MainMenuBackground, MessageFrame;
-	public static TextureRegion LaunchPad, LandingPad, vtol_logo, titleBar, LanderSelectLocked, TipFrame, TipArrow;
+	public static TextureRegion LaunchPad, LandingPad, vtol_logo, titleBar, LanderSelectLocked, TipFrame, TipArrow, refuelPad;
 	public static TiledTextureRegion ExplosionSequence, fireworks, CargoDrop;
 	public static TextureRegion ObjectiveBullet, ObjectiveCheck, WoodenBox, ChainLink;
 	public static TextureRegion GaugeBackground, GaugeGreen, GaugeRed, PingButton, CargoDropGlow;
@@ -140,6 +140,7 @@ public class Resources {
 			OKButton = Util.GetTiledTextureRegion("gfx/OkButton.png", 3, 1);
 			LaunchPad = Util.GetTextureRegion("gfx/LaunchPad.png");
 			LandingPad = Util.GetTextureRegion("gfx/LandingPad.png");
+            refuelPad = Util.GetTextureRegion("gfx/refuelPad.png");
 			LanderSelectLocked = Util.GetTextureRegion("gfx/LanderSelectLocked.png");
 			MainMenuBackground = Util.GetTextureRegion("gfx/MainMenuBackground.png");
 			TipFrame = Util.GetTextureRegion("gfx/TipFrame.png");

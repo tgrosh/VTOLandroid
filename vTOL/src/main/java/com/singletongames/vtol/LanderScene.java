@@ -127,6 +127,12 @@ public class LanderScene extends GameScene implements SensorEventListener {
                 	float healthPct = Resources.mCurrentLevel.getLander().getCurrentHealthPercentage();
                 	updateHealth(healthPct);
                 }
+                if (currentThrottle > 0){
+                    throttlePercent.setVisible(true);
+                }
+                else{
+                    throttlePercent.setVisible(false);
+                }
 			}
 		});
 
@@ -584,6 +590,29 @@ public class LanderScene extends GameScene implements SensorEventListener {
 				}
 			});
 		}
+
+        for (final RefuelPad refuelPad: Resources.mCurrentLevel.getRefuelPads()){
+            refuelPad.addListener(new IRefuelPadListener() {
+                @Override
+                public void onRefuelLanding() {
+                    Resources.mEngine.runOnUpdateThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            currentLander.startRefueling();
+                        }
+                    });
+                }
+                @Override
+                public void onRefuelTakeoff() {
+                    Resources.mEngine.runOnUpdateThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            currentLander.stopRefueling();
+                        }
+                    });
+                }
+            });
+        }
 	}
 	
 	private void setPingEnabled(boolean enabled){

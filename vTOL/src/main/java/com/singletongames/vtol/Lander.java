@@ -80,12 +80,14 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 	float damageThreshold = 1.5f;
 	ILanderListener listener;
 	boolean takeOffComplete = false;
-	
+	float refuelRate = .20f; //percentage of fuel restore per second
+
 	private List<ExhaustEmitter> exhaustEmitters = new ArrayList<ExhaustEmitter>();
 	private List<TakeoffEmitter> takeoffEmitters = new ArrayList<TakeoffEmitter>();
 	private boolean paused;
-	
-	public Lander(float pX, float pY, LanderInfo info, TiledTextureRegion landerTextureRegion, List<FixtureDef> fixtureDefs, List<Object> fixtureUserData, ILanderListener listener) {
+    boolean refueling = false;
+
+    public Lander(float pX, float pY, LanderInfo info, TiledTextureRegion landerTextureRegion, List<FixtureDef> fixtureDefs, List<Object> fixtureUserData, ILanderListener listener) {
 		super(pX,pY,landerTextureRegion,fixtureDefs, BodyType.DynamicBody, fixtureUserData, "Lander", null);
 		this.info = info;
 		currentFuel = info.maxFuel;
@@ -208,6 +210,10 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 				if (healthRemaining < info.toughness){
 					showDamageCritical();
 				}
+
+                if (refueling && getCurrentFuelPercentage() < 1){
+                    currentFuel += ((refuelRate * info.maxFuel) * pSecondsElapsed);
+                }
 								
 				float mainEngineThrust = 0f;
 				float bodyAngle = mBody.getAngle();
@@ -714,4 +720,12 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 	public float getCurrentHealthPercentage() {
 		return healthRemaining / totalHealth;
 	}
+
+    public void startRefueling() {
+        refueling = true;
+    }
+
+    public void stopRefueling() {
+        refueling = false;
+    }
 }

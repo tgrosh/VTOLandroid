@@ -48,8 +48,9 @@ public class Level implements IDisposable {
 	private List<NoFlyZone> noFlyZones = new ArrayList<NoFlyZone>();
 	private ScenePreview preview;
 	private List<ObjectiveZone> objectiveZones = new ArrayList<ObjectiveZone>();
-	
-	public Level(Engine pEngine, int ChapterID, int pLevelID, String name, boolean pLevelLocked, boolean pLevelFinished, boolean pLevelGemCaptured, int pLevelTime) {		
+    private List<RefuelPad> refuelPads = new ArrayList<RefuelPad>();
+
+    public Level(Engine pEngine, int ChapterID, int pLevelID, String name, boolean pLevelLocked, boolean pLevelFinished, boolean pLevelGemCaptured, int pLevelTime) {
 		this.mLevelID = pLevelID;
 		this.mChapterID = ChapterID;
 		this.mEngine = pEngine;
@@ -213,35 +214,42 @@ public class Level implements IDisposable {
 				else {
 					int objGid = obj.getGid();
 					if (objGid != 0){
-						String tileProp = Util.getTMXTilePropertyValue(map, objGid, "type", "");
+						String tileProp = Util.getTMXTilePropertyValue(map, objGid, "type", "").toUpperCase();
 						if (!tileProp.equals("")){	
-							if (tileProp.equals("CargoDrop")){
+							if (tileProp.equals("CARGODROP")){
 								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
 								CargoDrop drop = new CargoDrop(obj.getX() + 30 - Resources.CargoDrop.getWidth()/2, obj.getY() + 30 - Resources.CargoDrop.getHeight(), id, null);
 								drop.setZIndex(15);
 								cargoDrops.add(drop);
 								scene.attachChild(drop);
 							}
-							else if (tileProp.equals("WoodenBox")){
+							else if (tileProp.equals("WOODENBOX")){
 								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
 								WoodenBox box = new WoodenBox(obj.getX() + 30 - Resources.WoodenBox.getWidth()/2, obj.getY() + 30 - Resources.WoodenBox.getHeight(), id);
 								box.setZIndex(20);
 								scene.attachChild(box);
 							}
-							else if (tileProp.equals("LaunchPad")){
+							else if (tileProp.equals("LAUNCHPAD")){
 								LaunchPad pad = new LaunchPad(obj.getX() + 30 - Resources.LaunchPad.getWidth()/2, obj.getY() - Resources.LaunchPad.getHeight(), null);
 								pad.setZIndex(10);
 								scene.attachChild(pad);
 								this.launchPad = pad;
 							}
-							else if (tileProp.equals("LandingPad")){
+							else if (tileProp.equals("LANDINGPAD")){
 								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
 								LandingPad pad = new LandingPad(obj.getX() + 30 - Resources.LandingPad.getWidth()/2, obj.getY() - Resources.LandingPad.getHeight(), id, null);
 								pad.setZIndex(10);
 								scene.attachChild(pad);
 								this.landingPad = pad;
 							}
-							else if (tileProp.equals("Lander")){
+                            else if (tileProp.equals("REFUELPAD")){
+                                int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
+                                RefuelPad pad = new RefuelPad(obj.getX() + 30 - Resources.refuelPad.getWidth()/2, obj.getY() - Resources.refuelPad.getHeight(), id, null);
+                                pad.setZIndex(10);
+                                refuelPads.add(pad);
+                                scene.attachChild(pad);
+                            }
+							else if (tileProp.equals("LANDER")){
 								switch (Resources.selectedLander){
 									case 0:{
 										lander = new BasicLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY() - Resources.landerHauler.getHeight(), null);
@@ -362,5 +370,9 @@ public class Level implements IDisposable {
         }
 
         return vectors;
+    }
+
+    public List<RefuelPad> getRefuelPads() {
+        return refuelPads;
     }
 }
