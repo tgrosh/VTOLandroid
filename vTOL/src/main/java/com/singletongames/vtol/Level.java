@@ -244,7 +244,7 @@ public class Level implements IDisposable {
 							}
                             else if (tileProp.equals("REFUELPAD")){
                                 int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
-                                RefuelPad pad = new RefuelPad(obj.getX() + 30 - Resources.refuelPad.getWidth()/2, obj.getY() - Resources.refuelPad.getHeight(), id, null);
+                                RefuelPad pad = new RefuelPad((LanderScene)scene, obj.getX() + 30 - Resources.refuelPad.getWidth()/2, obj.getY() - Resources.refuelPad.getHeight(), id, null);
                                 pad.setZIndex(10);
                                 refuelPads.add(pad);
                                 scene.attachChild(pad);

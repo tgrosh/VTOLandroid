@@ -211,10 +211,15 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 					showDamageCritical();
 				}
 
+                if (refueling && getCurrentFuelPercentage() >= 1){
+                    stopRefueling();
+                    Resources.Ding.play();
+                    listener.onRefuelComplete();
+                }
                 if (refueling && getCurrentFuelPercentage() < 1){
                     currentFuel += ((refuelRate * info.maxFuel) * pSecondsElapsed);
                 }
-								
+
 				float mainEngineThrust = 0f;
 				float bodyAngle = mBody.getAngle();
 				airborn = (baseContacts.size() == 0);

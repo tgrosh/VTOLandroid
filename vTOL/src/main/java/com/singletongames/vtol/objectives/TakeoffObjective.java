@@ -91,8 +91,13 @@ public class TakeoffObjective extends Objective  {
 				// TODO Auto-generated method stub
 				
 			}
-			
-			@Override
+
+            @Override
+            public void onLanderRefuelComplete() {
+
+            }
+
+            @Override
 			public void onLanderTakeoff() {
 				if (prerequisiteComplete) setComplete();
 			}

@@ -9,6 +9,7 @@ public interface ILanderSceneListener {
 	public void onCameraLookComplete();
 	public void onLanderTakeoff();
 	public void onLanderTouchdown();
+    public void onLanderRefuelComplete();
 	public void onSafeLanding(LandingPad pad);
 	public void onSafeReturn();
 	public void onLanderDestroy();

@@ -104,8 +104,13 @@ public class ZoneObjective extends Objective {
 				// TODO Auto-generated method stub
 				
 			}
-			
-			@Override
+
+            @Override
+            public void onLanderRefuelComplete() {
+
+            }
+
+            @Override
 			public void onLanderTakeoff() {
 				// TODO Auto-generated method stub
 				

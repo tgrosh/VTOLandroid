@@ -57,7 +57,12 @@ public class LandingPadObjective extends Objective implements ILanderSceneListen
 		
 	}
 
-	@Override
+    @Override
+    public void onLanderRefuelComplete() {
+
+    }
+
+    @Override
 	public void onSafeLanding(LandingPad pad) {
 		if (this.prerequisiteComplete && pad.getId() == this.landingPadId){
 			setComplete();

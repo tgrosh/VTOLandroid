@@ -59,7 +59,12 @@ public class DeliverCargoObjective extends Objective implements ILanderSceneList
 		
 	}
 
-	@Override
+    @Override
+    public void onLanderRefuelComplete() {
+
+    }
+
+    @Override
 	public void onSafeLanding(LandingPad pad) {
 		// TODO Auto-generated method stub
 		

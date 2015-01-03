@@ -10,8 +10,6 @@ import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.AlphaModifier;
-import org.andengine.entity.modifier.ColorModifier;
-import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
@@ -22,27 +20,21 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.util.FPSCounter;
-import org.andengine.entity.util.FPSLogger;
 import org.andengine.extension.debugdraw.primitives.Ellipse;
 import org.andengine.extension.tmx.TMXTiledMap;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.input.touch.detector.PinchZoomDetector;
-import org.andengine.input.touch.detector.SurfaceScrollDetector;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.util.color.Color;
 import org.andengine.util.color.ColorUtils;
-import org.andengine.util.debug.Debug;
 import org.andengine.util.modifier.IModifier;
-import org.andengine.util.modifier.ease.EaseExponentialOut;
 import org.andengine.util.modifier.ease.EaseStrongIn;
-import org.andengine.util.modifier.ease.EaseStrongOut;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -495,7 +487,14 @@ public class LanderScene extends GameScene implements SensorEventListener {
 					l.onLanderTakeoff();
 				}
 			}
-		});
+
+            @Override
+            public void onRefuelComplete() {
+                for (ILanderSceneListener l: listeners){
+                    l.onLanderRefuelComplete();
+                }
+            }
+        });
 		
 		TMXTiledMap map = Resources.mCurrentLevel.getMap();
 		float mapHeight = map.getTileRows() * map.getTileHeight();
@@ -594,7 +593,7 @@ public class LanderScene extends GameScene implements SensorEventListener {
         for (final RefuelPad refuelPad: Resources.mCurrentLevel.getRefuelPads()){
             refuelPad.addListener(new IRefuelPadListener() {
                 @Override
-                public void onRefuelLanding() {
+                public void onRefuelLanding(RefuelPad self) {
                     Resources.mEngine.runOnUpdateThread(new Runnable() {
                         @Override
                         public void run() {
@@ -603,7 +602,7 @@ public class LanderScene extends GameScene implements SensorEventListener {
                     });
                 }
                 @Override
-                public void onRefuelTakeoff() {
+                public void onRefuelTakeoff(RefuelPad self) {
                     Resources.mEngine.runOnUpdateThread(new Runnable() {
                         @Override
                         public void run() {

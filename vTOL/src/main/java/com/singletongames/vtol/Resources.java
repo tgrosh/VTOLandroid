@@ -61,7 +61,7 @@ public class Resources {
 	public static TextureRegion LaunchPad, LandingPad, vtol_logo, titleBar, LanderSelectLocked, TipFrame, TipArrow, refuelPad;
 	public static TiledTextureRegion ExplosionSequence, fireworks, CargoDrop;
 	public static TextureRegion ObjectiveBullet, ObjectiveCheck, WoodenBox, ChainLink;
-	public static TextureRegion GaugeBackground, GaugeGreen, GaugeRed, PingButton, CargoDropGlow;
+	public static TextureRegion GaugeBackground, GaugeGreen, GaugeRed, PingButton, CargoDropGlow, FuelIcon;
 	
 	public static TextureRegion smokeParticle;
 	
@@ -102,7 +102,7 @@ public class Resources {
 	public static Font mFont_Green18;
 	public static Font mFont_Green24;
 	
-	public static Sound RocketEngine0, LanderExplosion, PingSound;
+	public static Sound RocketEngine0, LanderExplosion, PingSound, Glug, Ding;
 	
 	public static Sound mRolling, timertick, timergotick, ButtonSound1,ButtonSound2,ButtonSound3,ButtonSound4, ButtonSound1rev,ButtonSound2rev,ButtonSound3rev,ButtonSound4rev;
 	public static Sound mSoundDing1, mSoundDing2, mSoundDing3, mKidsCheer, mBallBounce1, mBallBounce2, mBallBounce3, mBallBounce4, mTrampBounce, mWooshIn, mWooshOut, mFail;
@@ -154,6 +154,7 @@ public class Resources {
 			GaugeRed = Util.GetTextureRegion("gfx/GaugeRed.png");
 			PingButton = Util.GetTextureRegion("gfx/PingButton.png");
 			CargoDropGlow = Util.GetTextureRegion("gfx/CargoDropGlow.png");
+            FuelIcon = Util.GetTextureRegion("gfx/FuelIcon.png");
 			
 			landerDebris[0] = Util.GetTextureRegion("gfx/LanderDebris1.png");
 			landerDebris[1] = Util.GetTextureRegion("gfx/LanderDebris2.png");
@@ -199,6 +200,8 @@ public class Resources {
 			RocketEngine0.setLooping(true);
 			LanderExplosion = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), pActivity, "sfx/LanderExplosion.ogg");
 			PingSound = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), pActivity, "sfx/Ping.ogg");
+            Glug = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), pActivity, "sfx/glug.ogg");
+            Ding = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), pActivity, "sfx/ding.ogg");
 			
 			mFont_Green96 = Util.GetGradientStrokeFont(96, Util.SimpletonTextColorScheme.GRADIENT_GREEN,Color.BLACK, 4, true, mEngine);
 			mFont_Yellow96 = Util.GetGradientStrokeFont(96, Util.SimpletonTextColorScheme.GRADIENT_REDORANGE,Color.BLACK, 4, true, mEngine);
