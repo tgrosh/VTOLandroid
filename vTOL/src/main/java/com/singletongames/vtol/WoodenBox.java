@@ -27,7 +27,7 @@ public class WoodenBox extends Cargo {
 	private static List<FixtureDef> getFixtureDefs(TextureRegion tex) {		
 		List<FixtureDef> defs = new ArrayList<FixtureDef>();
 		
-		defs.add(Util.createPolygonFixtureDef(getBodyVertices(tex), PhysicsFactory.createFixtureDef(.05f, 0, .75f)));
+		defs.add(Util.createPolygonFixtureDef(getBodyVertices(tex), PhysicsFactory.createFixtureDef(.025f, 0, .75f)));
 		defs.add(Util.createPolygonFixtureDef(getCargoAttachmentVertices(tex), PhysicsFactory.createFixtureDef(0f, 0f, 0f, true)));
 				
 		return defs;

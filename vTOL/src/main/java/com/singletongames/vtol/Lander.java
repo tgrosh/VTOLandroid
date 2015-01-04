@@ -426,6 +426,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
     protected void clearDamageCritical(){
         this.unregisterEntityModifier(damageCriticalLooper);
         damageCriticalLooper = null;
+        this.setColor(Color.WHITE);
     }
 
 	protected void attachCargo() {
