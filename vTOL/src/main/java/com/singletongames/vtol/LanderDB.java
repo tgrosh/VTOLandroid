@@ -29,13 +29,13 @@ public class LanderDB extends SQLiteOpenHelper {
 	static final String fLocked = "Locked";
 	
 	private List<LanderInfo> mAllLanders = null;
-	
-	static final int mDBVersion = 13;
+
+    // THE VALUE ON THE NEXT LINE REPRESENTS THE VERSION NUMBER OF THE DATABASE
+    // IN THE FUTURE IF YOU MAKE CHANGES TO THE DATABASE, YOU NEED TO INCREMENT THIS NUMBER
+    // DOING SO WILL CAUSE THE METHOD onUpgrade() TO AUTOMATICALLY GET TRIGGERED
+	static final int mDBVersion = 16;
 	
 	public LanderDB(Context context) {
-		// THE VALUE OF 1 ON THE NEXT LINE REPRESENTS THE VERSION NUMBER OF THE DATABASE
-		// IN THE FUTURE IF YOU MAKE CHANGES TO THE DATABASE, YOU NEED TO INCREMENT THIS NUMBER
-		// DOING SO WILL CAUSE THE METHOD onUpgrade() TO AUTOMATICALLY GET TRIGGERED
 		super(context, dbName, null, mDBVersion);
 	}
 

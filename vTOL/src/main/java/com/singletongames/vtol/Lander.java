@@ -77,7 +77,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 	int direction = 0;
 	float totalHealth = 0;
 	float healthRemaining = 0;
-	float damageThreshold = 3f;
+	float damageThreshold = 2f;
 	ILanderListener listener;
 	boolean takeOffComplete = false;
 	float refuelRate = .20f; //percentage of fuel restore per second
@@ -88,6 +88,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 	private boolean paused;
     boolean refueling = false;
     boolean repairing = false;
+    private LoopEntityModifier damageCriticalLooper = null;
 
     public Lander(float pX, float pY, LanderInfo info, TiledTextureRegion landerTextureRegion, List<FixtureDef> fixtureDefs, List<Object> fixtureUserData, ILanderListener listener) {
 		super(pX,pY,landerTextureRegion,fixtureDefs, BodyType.DynamicBody, fixtureUserData, "Lander", null);
@@ -212,6 +213,9 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 				if (healthRemaining < info.toughness){
 					showDamageCritical();
 				}
+                else{
+                    clearDamageCritical();
+                }
 
                 if (refueling && getCurrentFuelPercentage() >= 1){
                     stopRefueling();
@@ -319,8 +323,16 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 								if (cargo.isAttachable()) attachCargo();
 							}
 						}
-						
-						mBody.setAngularVelocity((float) (1f * ((desiredAngle-Math.toDegrees(bodyAngle))/20f)));
+
+                        double degreesToGo = desiredAngle - (Math.toDegrees(bodyAngle) % 360);
+                        if (degreesToGo > 180){ //dont flip over to get to correct angle
+                            //Debug.w("Tried to Flip Over! desiredAngle: " + desiredAngle + ", currentAngle: " + (Math.toDegrees(bodyAngle) % 360) + ", resulting in degreesToGo: " + degreesToGo);
+                            degreesToGo -= 360f;
+                        } else if (degreesToGo < -180){ //dont flip over to get to correct angle
+                            //Debug.w("Tried to Flip Over! desiredAngle: " + desiredAngle + ", currentAngle: " + (Math.toDegrees(bodyAngle) % 360) + ", resulting in degreesToGo: " + degreesToGo);
+                            degreesToGo += 360f;
+                        }
+                        mBody.setAngularVelocity((float) (1f * (degreesToGo / 20f))); //TODo
 												
 						for (int x=0; x<getExhaustPoints().size(); x++){
 							Vector2 bodyPoint = new Vector2(getExhaustPoints().get(x).x/PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT,getExhaustPoints().get(x).y/PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
@@ -388,26 +400,33 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 	}
 	
 	protected void showDamageCritical() {
-		ColorModifier damageCriticalColorModifier1 = new ColorModifier(.15f, Color.WHITE, Color.RED, new IEntityModifierListener() {			
-			@Override
-			public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
-			}			
-			@Override
-			public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
-			}
-		});
-		ColorModifier damageCriticalColorModifier2 = new ColorModifier(.15f, Color.RED, Color.WHITE, new IEntityModifierListener() {			
-			@Override
-			public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
-			}			
-			@Override
-			public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
-			}
-		});
-		SequenceEntityModifier seq = new SequenceEntityModifier(damageCriticalColorModifier1, damageCriticalColorModifier2);
-		LoopEntityModifier looper = new LoopEntityModifier(seq);
-		this.registerEntityModifier(looper);
+		if (damageCriticalLooper == null){
+            ColorModifier damageCriticalColorModifier1 = new ColorModifier(.15f, Color.WHITE, Color.RED, new IEntityModifierListener() {
+                @Override
+                public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+                }
+                @Override
+                public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+                }
+            });
+            ColorModifier damageCriticalColorModifier2 = new ColorModifier(.15f, Color.RED, Color.WHITE, new IEntityModifierListener() {
+                @Override
+                public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+                }
+                @Override
+                public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+                }
+            });
+            SequenceEntityModifier seq = new SequenceEntityModifier(damageCriticalColorModifier1, damageCriticalColorModifier2);
+            damageCriticalLooper = new LoopEntityModifier(seq);
+            this.registerEntityModifier(damageCriticalLooper);
+        }
 	}
+
+    protected void clearDamageCritical(){
+        this.unregisterEntityModifier(damageCriticalLooper);
+        damageCriticalLooper = null;
+    }
 
 	protected void attachCargo() {
 		Resources.mEngine.runOnUpdateThread(new Runnable() {
@@ -532,7 +551,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 	}
 		
 	public void setAngle(float angle){
-		desiredAngle = angle;
+		desiredAngle = (360f + angle) % 360f;
 	}
 	
 	public void setThrottle(float throttle){

@@ -3,6 +3,8 @@ package com.singletongames.vtol;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.andengine.audio.sound.SoundManager;
 import org.andengine.engine.camera.SmoothCamera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -793,7 +795,7 @@ public class LanderScene extends GameScene implements SensorEventListener {
 		setHudElementsVisible(false);
 		Resources.mEngine.unregisterUpdateHandler(Resources.mPhysicsWorld);					
 		Resources.mCurrentLevel.getLander().setPaused(true);
-		
+        
 		PauseScene pauseScene = new PauseScene(new IOnMenuItemClickListener() {						
 			@Override
 			public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem,	float pMenuItemLocalX, float pMenuItemLocalY) {
