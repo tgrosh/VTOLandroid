@@ -325,8 +325,8 @@ public class LanderSelectScene extends GameScene {
 	}
 
 	private int getToughnessRating(float value) {
-		float min = 2.5f;
-		float max = 12f;
+		float min = 5f;
+		float max = 24f;
 				
 		return (int) getRating(value, min, max);
 	}

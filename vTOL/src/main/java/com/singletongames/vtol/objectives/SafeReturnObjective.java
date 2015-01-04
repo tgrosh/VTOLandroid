@@ -102,6 +102,11 @@ public class SafeReturnObjective extends Objective {
             }
 
             @Override
+            public void onLanderRepairComplete() {
+                
+            }
+
+            @Override
 			public void onLanderTakeoff() {
 				// TODO Auto-generated method stub
 				

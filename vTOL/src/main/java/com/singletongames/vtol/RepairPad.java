@@ -20,45 +20,42 @@ import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
-import org.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
-import org.andengine.util.debug.Debug;
 import org.andengine.util.modifier.IModifier;
-import org.andengine.util.modifier.SequenceModifier;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Troy on 1/1/15.
+ * Created by Troy on 1/3/15.
  */
-public class RefuelPad extends PhysicsSprite {
+public class RepairPad extends PhysicsSprite {
     int id = -1;
-    List<IRefuelPadListener> refuelPadListeners = new ArrayList<IRefuelPadListener>();
-    final RefuelPad self = this;
-    private TimerHandler fuelingTimer;
+    List<IRepairPadListener> repairPadListeners = new ArrayList<IRepairPadListener>();
+    final RepairPad self = this;
+    private TimerHandler repairingTimer;
     LanderScene mScene;
 
     public int getId() {
         return id;
     }
 
-    public RefuelPad(LanderScene scene, float pX, float pY, IRefuelPadListener listener) {
+    public RepairPad(LanderScene scene, float pX, float pY, IRepairPadListener listener) {
         this(scene, pX, pY, -1, listener);
     }
 
-    public RefuelPad(LanderScene scene, float pX, float pY, int id, IRefuelPadListener listener) {
-        super(pX, pY, Resources.refuelPad, PhysicsFactory.createFixtureDef(1000f, .05f, .5f), "RefuelPad", BodyDef.BodyType.StaticBody, getVertices(), null);
+    public RepairPad(LanderScene scene, float pX, float pY, int id, IRepairPadListener listener) {
+        super(pX, pY, Resources.RepairPad, PhysicsFactory.createFixtureDef(1000f, .05f, .5f), "RepairPad", BodyDef.BodyType.StaticBody, getVertices(), null);
         this.id = id;
         mScene = scene;
 
         IPhysicsSpriteListener l = new IPhysicsSpriteListener() {
             @Override
             public void onContact(Fixture fixtureA, final Fixture fixtureB) {
-                if (fixtureA.getUserData() != null && fixtureA.getUserData().toString().toUpperCase().equals("REFUELPAD") &&
+                if (fixtureA.getUserData() != null && fixtureA.getUserData().toString().toUpperCase().equals("REPAIRPAD") &&
                         fixtureB.getUserData() != null && fixtureB.getUserData().toString().toUpperCase().equals("LANDERBASE")){
-                    for (final IRefuelPadListener listener: refuelPadListeners){
-                        listener.onRefuelLanding(self);
-                        startFueling();
+                    for (final IRepairPadListener listener: repairPadListeners){
+                        listener.onRepairLanding(self);
+                        startRepairing();
                     }
                 }
             }
@@ -78,17 +75,17 @@ public class RefuelPad extends PhysicsSprite {
                 if (contact.getFixtureA().getBody().equals(mBody) &&
                         contact.getFixtureB().getUserData() != null &&
                         contact.getFixtureB().getUserData().toString().toUpperCase().equals("LANDERBASE")){
-                    for (final IRefuelPadListener listener: refuelPadListeners){
-                        listener.onRefuelTakeoff(self);
-                        stopFueling();
+                    for (final IRepairPadListener listener: repairPadListeners){
+                        listener.onRepairTakeoff(self);
+                        stopRepairing();
                     }
                 }
                 else if (contact.getFixtureB().getBody().equals(mBody) &&
                         contact.getFixtureA().getUserData() != null &&
                         contact.getFixtureA().getUserData().toString().toUpperCase().equals("LANDERBASE")){
-                    for (final IRefuelPadListener listener: refuelPadListeners){
-                        listener.onRefuelTakeoff(self);
-                        stopFueling();
+                    for (final IRepairPadListener listener: repairPadListeners){
+                        listener.onRepairTakeoff(self);
+                        stopRepairing();
                     }
                 }
             }
@@ -98,7 +95,7 @@ public class RefuelPad extends PhysicsSprite {
         });
 
         //adds the listener that will listen for this refueling pad to register a landing
-        if (listener != null) this.refuelPadListeners.add(listener);
+        if (listener != null) this.repairPadListeners.add(listener);
 
         //adds the physics sprite listener that will look for landings (above) and broadcast when it happens
         this.listeners.add(l);
@@ -136,12 +133,12 @@ public class RefuelPad extends PhysicsSprite {
 
             @Override
             public void onLanderRefuelComplete() {
-                stopFueling();
+
             }
 
             @Override
             public void onLanderRepairComplete() {
-
+                stopRepairing();
             }
 
             @Override
@@ -206,18 +203,19 @@ public class RefuelPad extends PhysicsSprite {
         });
     }
 
-    public void addListener(IRefuelPadListener listener){
-        if (listener != null) this.refuelPadListeners.add(listener);
+    public void addListener(IRepairPadListener listener){
+        if (listener != null) this.repairPadListeners.add(listener);
     }
 
-    public void startFueling(){
-        fuelingTimer = new TimerHandler(1f, true, new ITimerCallback() {
+    public void startRepairing(){
+        Resources.RepairSound.play();
+        repairingTimer = new TimerHandler(1f, true, new ITimerCallback() {
             @Override
             public void onTimePassed(TimerHandler pTimerHandler) {
-                Sprite fuelIcon = new Sprite(215,40,Resources.FuelIcon, Resources.mEngine.getVertexBufferObjectManager());
-                fuelIcon.setAlpha(0);
-                fuelIcon.setScale(.5f);
-                MoveModifier mover = new MoveModifier(1.5f,fuelIcon.getX(),fuelIcon.getX(), fuelIcon.getY(), fuelIcon.getY()-50f);
+                Sprite repairIcon = new Sprite(2,59,Resources.RepairIcon, Resources.mEngine.getVertexBufferObjectManager());
+                repairIcon.setAlpha(0);
+                repairIcon.setScale(.5f);
+                MoveModifier mover = new MoveModifier(1.5f,repairIcon.getX(),repairIcon.getX(), repairIcon.getY(), repairIcon.getY()-50f);
                 AlphaModifier alpha1 = new AlphaModifier(.75f,0,1);
                 AlphaModifier alpha2 = new AlphaModifier(.75f,1,0);
                 ScaleModifier scale1 = new ScaleModifier(.75f, .5f, 1.5f);
@@ -238,24 +236,24 @@ public class RefuelPad extends PhysicsSprite {
                         });
                     }
                 }, new IEntityModifier[]{mover, seq1, seq2});
-                fuelIcon.registerEntityModifier(par);
-                self.attachChild(fuelIcon);
-                Resources.Glug.play();
+                repairIcon.registerEntityModifier(par);
+                self.attachChild(repairIcon);
             }
         });
-        Resources.mEngine.registerUpdateHandler(fuelingTimer);
+        Resources.mEngine.registerUpdateHandler(repairingTimer);
     }
 
-    public void stopFueling(){
-        Resources.mEngine.unregisterUpdateHandler(fuelingTimer);
+    public void stopRepairing(){
+        Resources.RepairSound.stop();
+        Resources.mEngine.unregisterUpdateHandler(repairingTimer);
     }
 
     private static Vector2[] getVertices() {
         Vector2[] vertices = new Vector2[4];
-        vertices[0] = Util.getBodyPoint(Resources.refuelPad, new Vector2(16, 90));
-        vertices[1] = Util.getBodyPoint(Resources.refuelPad, new Vector2(184, 90));
-        vertices[2] = Util.getBodyPoint(Resources.refuelPad, new Vector2(188, 100));
-        vertices[3] = Util.getBodyPoint(Resources.refuelPad, new Vector2(12, 100));
+        vertices[0] = Util.getBodyPoint(Resources.RepairPad, new Vector2(71, 91));
+        vertices[1] = Util.getBodyPoint(Resources.RepairPad, new Vector2(237, 91));
+        vertices[2] = Util.getBodyPoint(Resources.RepairPad, new Vector2(243, 100));
+        vertices[3] = Util.getBodyPoint(Resources.RepairPad, new Vector2(64, 100));
 
         return vertices;
     }

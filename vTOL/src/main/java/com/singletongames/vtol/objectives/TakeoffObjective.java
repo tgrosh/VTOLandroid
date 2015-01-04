@@ -98,6 +98,11 @@ public class TakeoffObjective extends Objective  {
             }
 
             @Override
+            public void onLanderRepairComplete() {
+
+            }
+
+            @Override
 			public void onLanderTakeoff() {
 				if (prerequisiteComplete) setComplete();
 			}

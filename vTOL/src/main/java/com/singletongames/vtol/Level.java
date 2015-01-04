@@ -49,6 +49,7 @@ public class Level implements IDisposable {
 	private ScenePreview preview;
 	private List<ObjectiveZone> objectiveZones = new ArrayList<ObjectiveZone>();
     private List<RefuelPad> refuelPads = new ArrayList<RefuelPad>();
+    private List<RepairPad> repairPads = new ArrayList<RepairPad>();;
 
     public Level(Engine pEngine, int ChapterID, int pLevelID, String name, boolean pLevelLocked, boolean pLevelFinished, boolean pLevelGemCaptured, int pLevelTime) {
 		this.mLevelID = pLevelID;
@@ -249,6 +250,13 @@ public class Level implements IDisposable {
                                 refuelPads.add(pad);
                                 scene.attachChild(pad);
                             }
+                            else if (tileProp.equals("REPAIRPAD")){
+                                int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
+                                RepairPad pad = new RepairPad((LanderScene)scene, obj.getX() + 30 - Resources.RepairPad.getWidth()/2, obj.getY() - Resources.RepairPad.getHeight(), id, null);
+                                pad.setZIndex(10);
+                                repairPads.add(pad);
+                                scene.attachChild(pad);
+                            }
 							else if (tileProp.equals("LANDER")){
 								switch (Resources.selectedLander){
 									case 0:{
@@ -374,5 +382,9 @@ public class Level implements IDisposable {
 
     public List<RefuelPad> getRefuelPads() {
         return refuelPads;
+    }
+
+    public List<RepairPad> getRepairPads() {
+        return repairPads;
     }
 }

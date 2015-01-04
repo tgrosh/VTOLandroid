@@ -494,6 +494,13 @@ public class LanderScene extends GameScene implements SensorEventListener {
                     l.onLanderRefuelComplete();
                 }
             }
+
+            @Override
+            public void onRepairComplete() {
+                for (ILanderSceneListener l: listeners){
+                    l.onLanderRepairComplete();
+                }
+            }
         });
 		
 		TMXTiledMap map = Resources.mCurrentLevel.getMap();
@@ -607,6 +614,29 @@ public class LanderScene extends GameScene implements SensorEventListener {
                         @Override
                         public void run() {
                             currentLander.stopRefueling();
+                        }
+                    });
+                }
+            });
+        }
+
+        for (final RepairPad repairPad: Resources.mCurrentLevel.getRepairPads()){
+            repairPad.addListener(new IRepairPadListener() {
+                @Override
+                public void onRepairLanding(RepairPad self) {
+                    Resources.mEngine.runOnUpdateThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            currentLander.startRepairing();
+                        }
+                    });
+                }
+                @Override
+                public void onRepairTakeoff(RepairPad self) {
+                    Resources.mEngine.runOnUpdateThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            currentLander.stopRepairing();
                         }
                     });
                 }
@@ -751,7 +781,6 @@ public class LanderScene extends GameScene implements SensorEventListener {
         			}
 	                
 	                if (Resources.mCurrentLevel != null && Resources.mCurrentLevel.getLander() != null){
-	                	//Resources.mCurrentLevel.getLander().setThrusterRatio(accellerometerSpeedX);
 	                	Resources.mCurrentLevel.getLander().setAngle(accellerometerSpeed*-9f);
 	                }
         		}

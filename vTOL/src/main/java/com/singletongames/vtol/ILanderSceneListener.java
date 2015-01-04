@@ -10,6 +10,7 @@ public interface ILanderSceneListener {
 	public void onLanderTakeoff();
 	public void onLanderTouchdown();
     public void onLanderRefuelComplete();
+    public void onLanderRepairComplete();
 	public void onSafeLanding(LandingPad pad);
 	public void onSafeReturn();
 	public void onLanderDestroy();

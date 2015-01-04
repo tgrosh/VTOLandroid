@@ -30,7 +30,7 @@ public class LanderDB extends SQLiteOpenHelper {
 	
 	private List<LanderInfo> mAllLanders = null;
 	
-	static final int mDBVersion = 12;
+	static final int mDBVersion = 13;
 	
 	public LanderDB(Context context) {
 		// THE VALUE OF 1 ON THE NEXT LINE REPRESENTS THE VERSION NUMBER OF THE DATABASE
@@ -54,8 +54,8 @@ public class LanderDB extends SQLiteOpenHelper {
 				fLocked + " TEXT " +
 				")");
 		
-		addLander(db, new LanderInfo(0, "Hauler", "The workhorse of the VTOL fleet, the Hauler is a stable, durable ship, capable of a wide range of missions.", 15f, 300f, 10f, 10f, .1f, false));
-		addLander(db, new LanderInfo(1, "Luna", "A mainstay of the V.A.S.A space fleet for decades, this lander excels in low gravity environments.", 12f, 200f, 10f, 3.5f, .09f, true));
+		addLander(db, new LanderInfo(0, "Hauler", "The workhorse of the VTOL fleet, the Hauler is a stable, durable ship, capable of a wide range of missions.", 15f, 300f, 10f, 20f, .1f, false));
+		addLander(db, new LanderInfo(1, "Luna", "A mainstay of the V.A.S.A space fleet for decades, this lander excels in low gravity environments.", 12f, 200f, 10f, 7f, .09f, true));
 	}
 
 	@Override

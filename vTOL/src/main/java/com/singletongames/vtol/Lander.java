@@ -77,15 +77,17 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 	int direction = 0;
 	float totalHealth = 0;
 	float healthRemaining = 0;
-	float damageThreshold = 1.5f;
+	float damageThreshold = 3f;
 	ILanderListener listener;
 	boolean takeOffComplete = false;
 	float refuelRate = .20f; //percentage of fuel restore per second
+    float repairRate = .10f; //percentage of health restore per second
 
 	private List<ExhaustEmitter> exhaustEmitters = new ArrayList<ExhaustEmitter>();
 	private List<TakeoffEmitter> takeoffEmitters = new ArrayList<TakeoffEmitter>();
 	private boolean paused;
     boolean refueling = false;
+    boolean repairing = false;
 
     public Lander(float pX, float pY, LanderInfo info, TiledTextureRegion landerTextureRegion, List<FixtureDef> fixtureDefs, List<Object> fixtureUserData, ILanderListener listener) {
 		super(pX,pY,landerTextureRegion,fixtureDefs, BodyType.DynamicBody, fixtureUserData, "Lander", null);
@@ -220,6 +222,15 @@ public abstract class Lander extends PhysicsAnimatedSprite {
                     currentFuel += ((refuelRate * info.maxFuel) * pSecondsElapsed);
                 }
 
+                if (repairing && getCurrentHealthPercentage() >= 1){
+                    stopRepairing();
+                    Resources.Ding.play();
+                    listener.onRepairComplete();
+                }
+                if (repairing && getCurrentHealthPercentage() < 1){
+                    healthRemaining += ((repairRate * totalHealth) * pSecondsElapsed);
+                }
+
 				float mainEngineThrust = 0f;
 				float bodyAngle = mBody.getAngle();
 				airborn = (baseContacts.size() == 0);
@@ -309,7 +320,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 							}
 						}
 						
-						mBody.setAngularVelocity((float) (1f * ((desiredAngle-Math.toDegrees(bodyAngle))/10f)));
+						mBody.setAngularVelocity((float) (1f * ((desiredAngle-Math.toDegrees(bodyAngle))/20f)));
 												
 						for (int x=0; x<getExhaustPoints().size(); x++){
 							Vector2 bodyPoint = new Vector2(getExhaustPoints().get(x).x/PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT,getExhaustPoints().get(x).y/PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
@@ -732,5 +743,13 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 
     public void stopRefueling() {
         refueling = false;
+    }
+
+    public void startRepairing() {
+        repairing = true;
+    }
+
+    public void stopRepairing() {
+        repairing = false;
     }
 }
