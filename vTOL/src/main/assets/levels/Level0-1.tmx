@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="70" height="70" tilewidth="60" tileheight="60" backgroundcolor="#6e6e6e">
- <tileset firstgid="1" source="levels/tiles/Lander Objects.tsx"/>
+ <tileset firstgid="1" source="tiles/Lander Objects.tsx"/>
  <objectgroup color="#5a5a5a" name="background3">
   <properties>
    <property name="sceneLayer" value=""/>
@@ -616,8 +616,8 @@
   </object>
  </objectgroup>
  <objectgroup color="#b4b4b4" name="objects">
-  <object gid="21" x="726" y="975"/>
-  <object gid="1" x="726" y="960"/>
+  <object gid="21" x="720" y="1005.5"/>
+  <object gid="1" x="721" y="991"/>
  </objectgroup>
  <objectgroup color="#aaff00" name="Objectives">
   <object x="443" y="333" width="689" height="285">

@@ -219,14 +219,14 @@ public class Level implements IDisposable {
 						if (!tileProp.equals("")){	
 							if (tileProp.equals("CARGODROP")){
 								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
-								CargoDrop drop = new CargoDrop(obj.getX() + 30 - Resources.CargoDrop.getWidth()/2, obj.getY() + 30 - Resources.CargoDrop.getHeight(), id, null);
+								CargoDrop drop = new CargoDrop(obj.getX() + 30 - Resources.CargoDrop.getWidth()/2, obj.getY() - Resources.CargoDrop.getHeight(), id, null);
 								drop.setZIndex(15);
 								cargoDrops.add(drop);
 								scene.attachChild(drop);
 							}
 							else if (tileProp.equals("WOODENBOX")){
 								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
-								WoodenBox box = new WoodenBox(obj.getX() + 30 - Resources.WoodenBox.getWidth()/2, obj.getY() + 30 - Resources.WoodenBox.getHeight(), id);
+								WoodenBox box = new WoodenBox(obj.getX() + 30 - Resources.WoodenBox.getWidth()/2, obj.getY() - Resources.WoodenBox.getHeight(), id);
 								box.setZIndex(20);
 								scene.attachChild(box);
 							}

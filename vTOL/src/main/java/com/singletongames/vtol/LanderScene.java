@@ -92,8 +92,8 @@ public class LanderScene extends GameScene implements SensorEventListener {
 		mHud = Util.NewHud(Resources.mEngine.getCamera());
 		mPreview = preview;
 		
-		//Resources.mCurrentLevel = LevelDB.getInstance().getLevel(chapterID, levelID);
-        Resources.mCurrentLevel = new Level(Resources.mEngine, 0, 0, "0-0", false, false, false, 0);
+		Resources.mCurrentLevel = LevelDB.getInstance().getLevel(chapterID, levelID);
+        //Resources.mCurrentLevel = new Level(Resources.mEngine, 0, 0, "0-0", false, false, false, 0);
 
 		TimerHandler delay = new TimerHandler(1f, new ITimerCallback() {			
 			@Override
@@ -382,6 +382,7 @@ public class LanderScene extends GameScene implements SensorEventListener {
 		
 		disableThrottle();
 		currentLander.stopEngines();
+        Resources.mEngine.unregisterUpdateHandler(Resources.mPhysicsWorld);
 				
 		TimerHandler timer = new TimerHandler(1f, false, new ITimerCallback() {			
 			@Override
@@ -795,7 +796,7 @@ public class LanderScene extends GameScene implements SensorEventListener {
 		setHudElementsVisible(false);
 		Resources.mEngine.unregisterUpdateHandler(Resources.mPhysicsWorld);					
 		Resources.mCurrentLevel.getLander().setPaused(true);
-        
+
 		PauseScene pauseScene = new PauseScene(new IOnMenuItemClickListener() {						
 			@Override
 			public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem,	float pMenuItemLocalX, float pMenuItemLocalY) {

@@ -447,7 +447,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 					ropeJointDef.maxLength = 2;				
 					ropeJointDef.collideConnected = true;
 					ropeJoint = (RopeJoint) Resources.mPhysicsWorld.createJoint(ropeJointDef);
-							
+
 					cargoConnected = true;
 				}
 			}
