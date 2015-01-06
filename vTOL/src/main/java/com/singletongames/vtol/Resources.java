@@ -61,7 +61,7 @@ public class Resources {
 	public static TextureRegion LaunchPad, LandingPad, vtol_logo, titleBar, LanderSelectLocked, TipFrame, TipArrow, refuelPad;
 	public static TiledTextureRegion ExplosionSequence, fireworks, CargoDrop;
 	public static TextureRegion ObjectiveBullet, ObjectiveCheck, WoodenBox, ChainLink;
-	public static TextureRegion GaugeBackground, GaugeGreen, GaugeRed, PingButton, CargoDropGlow, FuelIcon, RepairPad, RepairIcon;
+	public static TextureRegion GaugeBackground, GaugeGreen, GaugeRed, PingButton, CargoDropGlow, FuelIcon, RepairPad, RepairIcon, Doors;
 	
 	public static TextureRegion smokeParticle;
 	
@@ -157,6 +157,7 @@ public class Resources {
             FuelIcon = Util.GetTextureRegion("gfx/FuelIcon.png");
             RepairPad = Util.GetTextureRegion("gfx/repairPad.png");
             RepairIcon = Util.GetTextureRegion("gfx/RepairIcon.png");
+            Doors = Util.GetTextureRegion("gfx/Doors.png");
 
 			landerDebris[0] = Util.GetTextureRegion("gfx/LanderDebris1.png");
 			landerDebris[1] = Util.GetTextureRegion("gfx/LanderDebris2.png");

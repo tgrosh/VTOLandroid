@@ -36,4 +36,9 @@
    <property name="type" value="repairPad"/>
   </properties>
  </tile>
+ <tile id="25">
+  <properties>
+   <property name="type" value="doors"/>
+  </properties>
+ </tile>
 </tileset>

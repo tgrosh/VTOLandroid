@@ -257,6 +257,14 @@ public class Level implements IDisposable {
                                 repairPads.add(pad);
                                 scene.attachChild(pad);
                             }
+                            else if (tileProp.equals("DOORS")){
+                                float height = obj.getHeight();
+                                if (height == 0) height = Resources.Doors.getHeight();
+
+                                Door door = new Door(obj.getX() + 30 - Resources.Doors.getWidth()/2, obj.getY() - 30 - height/2, height);
+                                door.setZIndex(10);
+                                scene.attachChild(door);
+                            }
 							else if (tileProp.equals("LANDER")){
 								switch (Resources.selectedLander){
 									case 0:{
