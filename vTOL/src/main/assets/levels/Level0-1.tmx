@@ -418,7 +418,7 @@
  <objectgroup color="#b4b4b4" name="objects">
   <object gid="21" x="720" y="1005.5"/>
   <object gid="1" x="721" y="991"/>
-  <object gid="26" x="1250" y="487" height="255"/>
+  <object gid="26" x="1245" y="585" height="255"/>
  </objectgroup>
  <objectgroup color="#aaff00" name="Objectives">
   <object x="420" y="240" width="780" height="360">

@@ -426,7 +426,27 @@ public class LanderScene extends GameScene implements SensorEventListener {
 								ButtonSprite nextbutton = new ButtonSprite(Resources.CAMERA_WIDTH/2 + 20, restartbutton.getY(), Resources.NextButton, Resources.mEngine.getVertexBufferObjectManager(), new OnClickListener() {
 									@Override
 									public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {
-										NextLevel();
+                                        final Door door = Resources.mCurrentLevel.getDoor();
+                                        if (door != null) {
+                                            door.addListener(new IDoorListener() {
+                                                @Override
+                                                public void onDoorOpening() {
+                                                    SmoothCamera camera = (SmoothCamera) Resources.mEngine.getCamera();
+                                                    camera.setChaseEntity(door);
+                                                    camera.setZoomFactor(1.25f);
+                                                    mHud.setVisible(false);
+                                                }
+
+                                                @Override
+                                                public void onDoorOpened() {
+                                                    if (sceneComplete) {
+                                                        NextLevel();
+                                                    }
+                                                }
+                                            });
+
+                                            door.Open();
+                                        }
 									}
 								});	
 								
@@ -599,6 +619,8 @@ public class LanderScene extends GameScene implements SensorEventListener {
 				}
 			});
 		}
+
+
 
         for (final RefuelPad refuelPad: Resources.mCurrentLevel.getRefuelPads()){
             refuelPad.addListener(new IRefuelPadListener() {
@@ -879,15 +901,21 @@ public class LanderScene extends GameScene implements SensorEventListener {
 	}
 	
 	private void NextLevel() {
-		this.detachChildren();
-		this.clearChildScene();
-		Resources.mEngine.getCamera().setHUD(null);
-		Resources.mCurrentLevel.dispose();
-		if (LevelDB.getInstance().getLevel(this.chapterID, this.levelID+1) != null){			
-			Resources.mEngine.setScene(new LanderScene(true, chapterID, levelID + 1));
-		}
-		else{
-			Resources.mEngine.setScene(new LevelSelectScene(this.chapterID));
-		}
+        Resources.mEngine.runOnUpdateThread(new Runnable() {
+            @Override
+            public void run() {
+                mThis.detachChildren();
+                mThis.clearChildScene();
+                Resources.mEngine.getCamera().setHUD(null);
+                Resources.mCurrentLevel.dispose();
+                if (LevelDB.getInstance().getLevel(chapterID, levelID+1) != null){
+                    Resources.mEngine.setScene(new LanderScene(true, chapterID, levelID + 1));
+                }
+                else{
+                    Resources.mEngine.setScene(new LevelSelectScene(chapterID));
+                }
+            }
+        });
+
 	}
 }

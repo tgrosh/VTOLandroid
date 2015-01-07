@@ -50,6 +50,7 @@ public class Level implements IDisposable {
 	private List<ObjectiveZone> objectiveZones = new ArrayList<ObjectiveZone>();
     private List<RefuelPad> refuelPads = new ArrayList<RefuelPad>();
     private List<RepairPad> repairPads = new ArrayList<RepairPad>();;
+    private Door door;
 
     public Level(Engine pEngine, int ChapterID, int pLevelID, String name, boolean pLevelLocked, boolean pLevelFinished, boolean pLevelGemCaptured, int pLevelTime) {
 		this.mLevelID = pLevelID;
@@ -259,9 +260,9 @@ public class Level implements IDisposable {
                             }
                             else if (tileProp.equals("DOORS")){
                                 float height = obj.getHeight();
-                                if (height == 0) height = Resources.Doors.getHeight();
+                                if (height == 0) height = (Resources.DoorBase.getHeight()*2) + Resources.DoorBottom.getHeight() + Resources.DoorTop.getHeight();
 
-                                Door door = new Door(obj.getX() + 30 - Resources.Doors.getWidth()/2, obj.getY() - 30 - height/2, height);
+                                door = new Door(obj.getX(), obj.getY() - Resources.DoorBase.getHeight(), height, null);
                                 door.setZIndex(10);
                                 scene.attachChild(door);
                             }
@@ -394,5 +395,9 @@ public class Level implements IDisposable {
 
     public List<RepairPad> getRepairPads() {
         return repairPads;
+    }
+
+    public Door getDoor() {
+        return door;
     }
 }
