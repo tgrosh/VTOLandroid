@@ -3,6 +3,7 @@ package com.singletongames.vtol;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -248,9 +249,11 @@ public class Util {
 		
 		if (flippedHorizontal){
 			for (Vector2 v: pVertices){
-				v.x *= -1;
+                v.x *= -1;
 			}
 			pVertices = Util.ReverseVertices(pVertices);
+            for(Vector2 v: pVertices){
+            }
 		}		
 		if (flippedVertical){
 			for (Vector2 v: pVertices){
@@ -263,6 +266,7 @@ public class Util {
 	}
 	public static List<FixtureDef> TransformVertices(Sprite sprite, List<FixtureDef> fixtureDefs) {
 		if (fixtureDefs == null) return null;
+        List<FixtureDef> resultDefs = new ArrayList<FixtureDef>();
 		
 		for (FixtureDef def: fixtureDefs){
 			PolygonShape poly = (PolygonShape) def.shape;				
@@ -273,10 +277,10 @@ public class Util {
 				verts[vertIndex]=vertex;
 			}
 			verts = Util.TransformVertices(sprite, verts);
-			def = Util.createPolygonFixtureDef(verts, def);
+            resultDefs.add(Util.createPolygonFixtureDef(verts, def));
 		}
 		
-		return fixtureDefs;
+		return resultDefs;
 	}
 	
 	

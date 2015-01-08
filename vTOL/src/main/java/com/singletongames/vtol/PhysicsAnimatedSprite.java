@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -109,23 +110,34 @@ public class PhysicsAnimatedSprite extends AnimatedSprite {
 
 
 	private void ApplyPhysics() {
-		destroyPhysics();
-		if (mVertices != null){
-			mVertices = Util.TransformVertices(this, mVertices);
-		}
-		else if (mFixtureDefs != null){			
-			mFixtureDefs = Util.TransformVertices(this, mFixtureDefs);
-		}
-		mBody = Util.CreateBody(this, mFixtureDef, mBodyType, mBodyShape, mVertices, mFixtureDefs, mFixtureUserData, mBodyUserData);
-		if (mBodyUserData == null) mBody.setUserData(this);
+        destroyPhysics();
+        if (mVertices != null) {
+            mVertices = Util.TransformVertices(this, mVertices);
+        } else if (mFixtureDefs != null) {
+            mFixtureDefs = Util.TransformVertices(this, mFixtureDefs);
+        }
+        mBody = Util.CreateBody(this, mFixtureDef, mBodyType, mBodyShape, mVertices, mFixtureDefs, mFixtureUserData, mBodyUserData);
+
+        if (mBodyUserData == null) mBody.setUserData(this);
 		this.setUserData(mBody);
 		mPhysicsConnector = new PhysicsConnector(this, mBody);
 		Resources.mPhysicsWorld.registerPhysicsConnector(mPhysicsConnector);
 	}
 
-	
-		
-	private void destroyPhysics(){
+    private void debugFixtureDefs() {
+        for (FixtureDef def: mFixtureDefs){
+            Debug.d("**Lander fixture def:");
+            PolygonShape poly = (PolygonShape) def.shape;
+            for (int vertIndex=0;vertIndex<poly.getVertexCount(); vertIndex++){
+                Vector2 vertex = new Vector2();
+                poly.getVertex(vertIndex, vertex);
+                Debug.d("***Vector: " + vertex.x + "," + vertex.y);
+            }
+        }
+    }
+
+
+    private void destroyPhysics(){
 		if (mPhysicsConnector != null){
 			Resources.mPhysicsWorld.unregisterPhysicsConnector(mPhysicsConnector);			
 		}
@@ -136,13 +148,14 @@ public class PhysicsAnimatedSprite extends AnimatedSprite {
 
 	@Override
 	public void setFlippedVertical(boolean pFlippedVertical) {
-		super.setFlippedVertical(pFlippedVertical);		
+		super.setFlippedVertical(pFlippedVertical);
 		ApplyPhysics();
 	}
 
 	@Override
 	public void setFlippedHorizontal(boolean pFlippedHorizontal) {
-		super.setFlippedHorizontal(pFlippedHorizontal);		
+		super.setFlippedHorizontal(pFlippedHorizontal);
+        Debug.d("**flipped");
 		ApplyPhysics();
 	}
 
