@@ -901,21 +901,32 @@ public class LanderScene extends GameScene implements SensorEventListener {
 	}
 	
 	private void NextLevel() {
-        Resources.mEngine.runOnUpdateThread(new Runnable() {
+        Rectangle r = new Rectangle(Resources.mEngine.getCamera().getSceneCoordinatesFromCameraSceneCoordinates(0,0)[0], Resources.mEngine.getCamera().getSceneCoordinatesFromCameraSceneCoordinates(0,0)[1], Resources.CAMERA_WIDTH, Resources.CAMERA_HEIGHT, Resources.mEngine.getVertexBufferObjectManager());
+        r.setColor(org.andengine.util.color.Color.BLACK);
+        r.setAlpha(0);
+        AlphaModifier fader = new AlphaModifier(.7f, 0, 1, new IEntityModifierListener() {
             @Override
-            public void run() {
-                mThis.detachChildren();
-                mThis.clearChildScene();
-                Resources.mEngine.getCamera().setHUD(null);
-                Resources.mCurrentLevel.dispose();
-                if (LevelDB.getInstance().getLevel(chapterID, levelID+1) != null){
-                    Resources.mEngine.setScene(new LanderScene(true, chapterID, levelID + 1));
-                }
-                else{
-                    Resources.mEngine.setScene(new LevelSelectScene(chapterID));
-                }
+            public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {}
+            @Override
+            public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+                Resources.mEngine.runOnUpdateThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mThis.detachChildren();
+                        mThis.clearChildScene();
+                        Resources.mCurrentLevel.dispose();
+                        if (LevelDB.getInstance().getLevel(chapterID, levelID+1) != null){
+                            Resources.mEngine.setScene(new LanderScene(true, chapterID, levelID + 1));
+                        }
+                        else{
+                            Resources.mEngine.setScene(new LevelSelectScene(chapterID));
+                        }
+                    }
+                });
             }
         });
-
+        Resources.mEngine.getCamera().setHUD(null);
+        r.registerEntityModifier(fader);
+        this.attachChild(r);
 	}
 }

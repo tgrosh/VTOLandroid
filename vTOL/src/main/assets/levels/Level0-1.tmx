@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="60" tileheight="60" backgroundcolor="#efeac8">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="33" height="26" tilewidth="60" tileheight="60" backgroundcolor="#efeac8">
  <tileset firstgid="1" source="tiles/Lander Objects.tsx"/>
  <objectgroup color="#bab69b" name="background3">
   <properties>
@@ -147,68 +147,8 @@
   <object x="990" y="900">
    <polygon points="0,0 0,15 15,30 45,30 45,-105 45,-120 15,-120 0,-105 0,-90"/>
   </object>
-  <object x="2295" y="1770">
-   <polygon points="0,0 45,-60 60,-60 15,0"/>
-  </object>
-  <object x="2250" y="1710">
-   <polygon points="0,0 45,60 60,60 15,0"/>
-  </object>
-  <object x="2025" y="1770">
-   <polygon points="0,0 45,-60 60,-60 15,0"/>
-  </object>
-  <object x="2115" y="1770">
-   <polygon points="0,0 45,-60 60,-60 15,0"/>
-  </object>
-  <object x="1965" y="1770">
-   <polygon points="0,0 405,0 405,15 0,15"/>
-  </object>
-  <object x="2205" y="1770">
-   <polygon points="0,0 45,-60 60,-60 15,0"/>
-  </object>
-  <object x="2070" y="1710">
-   <polygon points="0,0 45,60 60,60 15,0"/>
-  </object>
-  <object x="1980" y="1710">
-   <polygon points="0,0 45,60 60,60 15,0"/>
-  </object>
-  <object x="1980" y="1710">
-   <polygon points="0,0 390,0 390,-15 -15,-15 -15,0"/>
-  </object>
-  <object x="2160" y="1710">
-   <polygon points="0,0 45,60 60,60 15,0"/>
-  </object>
   <object x="960" y="1770">
    <polygon points="0,-210 0,-375 -15,-390 -390,-390 -390,-210"/>
-  </object>
-  <object x="2235" y="1638">
-   <polygon points="0,0 0,-60 -15,-60 -15,0"/>
-  </object>
-  <object x="2235" y="1593">
-   <polygon points="0,0 -60,0 -60,-15 0,-15"/>
-  </object>
-  <object x="2190" y="1593">
-   <polygon points="0,0 0,-60 -15,-60 -15,0"/>
-  </object>
-  <object x="2190" y="1548">
-   <polygon points="0,0 -60,0 -60,-15 0,-15"/>
-  </object>
-  <object x="2145" y="1548">
-   <polygon points="0,0 0,-60 -15,-60 -15,0"/>
-  </object>
-  <object x="2145" y="1503">
-   <polygon points="0,0 -60,0 -60,-15 0,-15"/>
-  </object>
-  <object x="2100" y="1503">
-   <polygon points="0,0 0,-60 -15,-60 -15,0"/>
-  </object>
-  <object x="2100" y="1458">
-   <polygon points="0,0 -60,0 -60,-15 0,-15"/>
-  </object>
-  <object x="2025" y="1428">
-   <polygon points="0,0 -15,15 210,240 225,225"/>
-  </object>
-  <object x="2059" y="1395">
-   <polygon points="0,0 -15,15 210,240 225,225"/>
   </object>
   <object x="705" y="1233">
    <polygon points="0,0 0,-60 -15,-60 -15,0"/>
