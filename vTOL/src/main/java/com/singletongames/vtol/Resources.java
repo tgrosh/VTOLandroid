@@ -27,12 +27,12 @@ import android.graphics.Typeface;
 import android.hardware.SensorManager;
 
 public class Resources {
-    public static final boolean SHOW_FPS = true;
     public static Engine mEngine;
 	public static Level mCurrentLevel;
-	
-	public static boolean DEBUG_DRAW = false;
-	public static boolean ClearPrefernces = false; /////////////////////////////////////////////////////////
+
+    public static final boolean SHOW_FPS = false;
+    public static boolean DEBUG_DRAW = false;
+	public static boolean ClearPrefernces = false;
 	
 	public static int TrainingProgress = 0;
 	
@@ -58,12 +58,13 @@ public class Resources {
 	public static List<TextureRegion> titleBars = new ArrayList<TextureRegion>();
 	public static List<TextureRegion> HighResLanders = new ArrayList<TextureRegion>();
 	public static TextureRegion mThrottleBackground, mThrottleButton, mFuelGaugeBackground, mFuelGaugeOverlay, MainMenuBackground, MessageFrame;
-	public static TextureRegion LaunchPad, LandingPad, vtol_logo, titleBar, LanderSelectLocked, TipFrame, TipArrow, refuelPad;
+	public static TextureRegion LaunchPad, LaunchPadPillars, LandingPad, LandingPadRail, vtol_logo, titleBar, LanderSelectLocked, TipFrame, TipArrow, refuelPad;
 	public static TiledTextureRegion ExplosionSequence, fireworks, CargoDrop;
 	public static TextureRegion ObjectiveBullet, ObjectiveCheck, WoodenBox, ChainLink;
 	public static TextureRegion GaugeBackground, GaugeGreen, GaugeRed, PingButton, CargoDropGlow, FuelIcon, RepairPad, RepairIcon, DoorBase, DoorTop, DoorBottom;
-	
-	public static TextureRegion smokeParticle;
+    public static TiledTextureRegion LanderTrainer;
+
+    public static TextureRegion smokeParticle;
 	
 	public static TextureRegion LanderSelectFrame, LanderSelectArrow, LanderSelectInfoFrame;
 	public static TiledTextureRegion LanderSelectInfoProgress;
@@ -139,7 +140,9 @@ public class Resources {
         BackButton = Util.GetTiledTextureRegion("gfx/BackButton.png", 3, 1);
         OKButton = Util.GetTiledTextureRegion("gfx/OkButton.png", 3, 1);
         LaunchPad = Util.GetTextureRegion("gfx/LaunchPad.png");
+        LaunchPadPillars = Util.GetTextureRegion("gfx/LaunchPadPillars.png");
         LandingPad = Util.GetTextureRegion("gfx/LandingPad.png");
+        LandingPadRail = Util.GetTextureRegion("gfx/LandingPadRail.png");
         refuelPad = Util.GetTextureRegion("gfx/refuelPad.png");
         LanderSelectLocked = Util.GetTextureRegion("gfx/LanderSelectLocked.png");
         MainMenuBackground = Util.GetTextureRegion("gfx/MainMenuBackground.png");
@@ -161,6 +164,8 @@ public class Resources {
         DoorTop = Util.GetTextureRegion("gfx/DoorTop.png");
         DoorBottom = Util.GetTextureRegion("gfx/DoorBottom.png");
 
+
+
         landerDebris[0] = Util.GetTextureRegion("gfx/LanderDebris1.png");
         landerDebris[1] = Util.GetTextureRegion("gfx/LanderDebris2.png");
         landerDebris[2] = Util.GetTextureRegion("gfx/LanderDebris3.png");
@@ -175,8 +180,10 @@ public class Resources {
         chapterIcons.add(Util.GetTiledTextureRegion("gfx/ChapterIcons0.png", 3, 1));
         chapterIcons.add(Util.GetTiledTextureRegion("gfx/ChapterIcons1.png", 3, 1));
 
+        LanderTrainer = Util.GetTiledTextureRegion("gfx/LanderTrainer.png", 2, 1);
         landerLuna = Util.GetTiledTextureRegion("gfx/Lander.png", 2, 1);
         landerHauler = Util.GetTiledTextureRegion("gfx/Lander2.png", 2, 1);
+
         CargoDrop = Util.GetTiledTextureRegion("gfx/CargoDrop.png", 5, 1);
 
         mThrottleBackground = Util.GetTextureRegion("gfx/ThrottleBackground.png");
@@ -195,7 +202,8 @@ public class Resources {
         LanderSelectInfoFrame = Util.GetTextureRegion("gfx/LanderSelectInfoFrame.png");
         LanderSelectInfoProgress = Util.GetTiledTextureRegion("gfx/LanderSelectInfoProgress.png", 1, 11);
 
-        HighResLanders.add(Util.GetTextureRegion("gfx/Landerh0.png"));
+        //HighResLanders.add(Util.GetTextureRegion("gfx/Landerh0.png"));
+        HighResLanders.add(Util.GetTextureRegion("gfx/LanderTrainerHigh.png"));
         HighResLanders.add(Util.GetTextureRegion("gfx/Landerh1.png"));
 
 //			mTitle1 = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), pActivity, "sfx/title1.mp3");

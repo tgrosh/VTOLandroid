@@ -232,14 +232,14 @@ public class Level implements IDisposable {
 								scene.attachChild(box);
 							}
 							else if (tileProp.equals("LAUNCHPAD")){
-								LaunchPad pad = new LaunchPad(obj.getX() + 30 - Resources.LaunchPad.getWidth()/2, obj.getY() - Resources.LaunchPad.getHeight(), null);
+								LaunchPad pad = new LaunchPad(scene, obj.getX() + 30 - Resources.LaunchPad.getWidth()/2, obj.getY() - Resources.LaunchPad.getHeight(), null);
 								pad.setZIndex(10);
 								scene.attachChild(pad);
 								this.launchPad = pad;
 							}
 							else if (tileProp.equals("LANDINGPAD")){
 								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
-								LandingPad pad = new LandingPad(obj.getX() + 30 - Resources.LandingPad.getWidth()/2, obj.getY() - Resources.LandingPad.getHeight(), id, null);
+								LandingPad pad = new LandingPad(scene, obj.getX() + 30 - Resources.LandingPad.getWidth()/2, obj.getY() - Resources.LandingPad.getHeight(), id, null);
 								pad.setZIndex(10);
 								scene.attachChild(pad);
 								this.landingPad = pad;
@@ -269,15 +269,15 @@ public class Level implements IDisposable {
 							else if (tileProp.equals("LANDER")){
 								switch (Resources.selectedLander){
 									case 0:{
-										lander = new BasicLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY() - Resources.landerHauler.getHeight(), null);
+										lander = new LanderTrainer(obj.getX() + 30 - Resources.LanderTrainer.getWidth()/2, obj.getY() - Resources.LanderTrainer.getHeight(), null);
 										break;
 									}
 									case 1:{
-										lander = new LunarLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY() - Resources.landerHauler.getHeight(), null);
+										lander = new LunarLander(obj.getX() + 30 - Resources.LanderTrainer.getWidth()/2, obj.getY() - Resources.LanderTrainer.getHeight(), null);
 										break;
 									}
 									default:{
-										lander = new BasicLander(obj.getX() + 30 - Resources.landerHauler.getWidth()/2, obj.getY() - Resources.landerHauler.getHeight(), null);
+										lander = new LanderTrainer(obj.getX() + 30 - Resources.LanderTrainer.getWidth()/2, obj.getY() - Resources.LanderTrainer.getHeight(), null);
 									}
 								}
 								lander.setZIndex(20);

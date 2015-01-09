@@ -25,7 +25,7 @@ public class Door extends Entity {
     private ITextureRegion doorTopTexture;
     private float doorTopPosition;
     private float doorBottomPosition;
-    private float doorSpeed = 20f;
+    private float doorOpenDuration = 3f; //time (sec) it takes to open the door
 
     private final float mHeight;
 
@@ -104,6 +104,8 @@ public class Door extends Entity {
             for(IDoorListener listener: listeners){
                 listener.onDoorOpening();
             }
+
+            final float doorSpeed = doorBottom.getHeight() / doorOpenDuration;
 
             doorOpeningHandler = new IUpdateHandler() {
                 @Override

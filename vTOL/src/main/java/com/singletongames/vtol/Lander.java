@@ -255,7 +255,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 					}
 					else{						
 						mBody.applyForce(mainEngineVector, mBody.getWorldCenter());	//main engine
-						//DrawForceDebugLine(bodyBody.getWorldCenter(), mainEngineVector);	
+						//DrawForceDebugLine(mBody.getWorldCenter(), mainEngineVector);
 						
 						currentFuel -= (currentThrottle * info.fuelPerSecond) * pSecondsElapsed;
 					}

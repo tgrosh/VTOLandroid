@@ -359,7 +359,7 @@
   <object gid="21" x="720" y="1005.5"/>
   <object gid="1" x="721" y="991"/>
   <object gid="26" x="1755" y="585" height="255"/>
-  <object gid="22" x="1380" y="586">
+  <object gid="22" x="1380" y="585">
    <properties>
     <property name="id" value="0"/>
    </properties>
