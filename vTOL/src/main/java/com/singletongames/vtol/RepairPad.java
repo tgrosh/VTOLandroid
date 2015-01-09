@@ -212,7 +212,7 @@ public class RepairPad extends PhysicsSprite {
         repairingTimer = new TimerHandler(1f, true, new ITimerCallback() {
             @Override
             public void onTimePassed(TimerHandler pTimerHandler) {
-                Sprite repairIcon = new Sprite(2,59,Resources.RepairIcon, Resources.mEngine.getVertexBufferObjectManager());
+                Sprite repairIcon = new Sprite(2,89,Resources.RepairIcon, Resources.mEngine.getVertexBufferObjectManager());
                 repairIcon.setAlpha(0);
                 repairIcon.setScale(.5f);
                 MoveModifier mover = new MoveModifier(1.5f,repairIcon.getX(),repairIcon.getX(), repairIcon.getY(), repairIcon.getY()-50f);
@@ -249,11 +249,13 @@ public class RepairPad extends PhysicsSprite {
     }
 
     private static Vector2[] getVertices() {
-        Vector2[] vertices = new Vector2[4];
-        vertices[0] = Util.getBodyPoint(Resources.RepairPad, new Vector2(71, 91));
-        vertices[1] = Util.getBodyPoint(Resources.RepairPad, new Vector2(237, 91));
-        vertices[2] = Util.getBodyPoint(Resources.RepairPad, new Vector2(243, 100));
-        vertices[3] = Util.getBodyPoint(Resources.RepairPad, new Vector2(64, 100));
+        Vector2[] vertices = new Vector2[6];
+        vertices[0] = Util.getBodyPoint(Resources.RepairPad, new Vector2(40, 125));
+        vertices[1] = Util.getBodyPoint(Resources.RepairPad, new Vector2(40, 114));
+        vertices[2] = Util.getBodyPoint(Resources.RepairPad, new Vector2(60, 94));
+        vertices[3] = Util.getBodyPoint(Resources.RepairPad, new Vector2(332, 94));
+        vertices[4] = Util.getBodyPoint(Resources.RepairPad, new Vector2(312, 114));
+        vertices[5] = Util.getBodyPoint(Resources.RepairPad, new Vector2(312, 125));
 
         return vertices;
     }
