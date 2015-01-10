@@ -5,10 +5,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.Entity;
-import org.andengine.entity.shape.Shape;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.util.debug.Debug;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.texture.region.TiledTextureRegion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +19,12 @@ import java.util.List;
 public class Door extends Entity {
 
     private final List<IDoorListener> listeners = new ArrayList<IDoorListener>();
-    private PhysicsSprite doorTop;
-    private PhysicsSprite doorBottom;
-    private ITextureRegion doorBottomTexture;
-    private ITextureRegion doorTopTexture;
+    private final PhysicsAnimatedSprite doorBaseBottom;
+    private final PhysicsAnimatedSprite doorBaseTop;
+    private PhysicsAnimatedSprite doorTop;
+    private PhysicsAnimatedSprite doorBottom;
+    private ITiledTextureRegion doorBottomTexture;
+    private ITiledTextureRegion doorTopTexture;
     private float doorTopPosition;
     private float doorBottomPosition;
     private float doorOpenDuration = 3f; //time (sec) it takes to open the door
@@ -47,15 +49,15 @@ public class Door extends Entity {
         doorBottomTexture = getDoorBottomTexture(height);
         doorTopTexture = getDoorTopTexture(height);
 
-        doorBottomPosition = y-doorBottomTexture.getHeight();
-        doorTopPosition = y-height + (Resources.DoorBase.getHeight()*2);
-
-        doorTop = new PhysicsSprite(x + Resources.DoorBase.getWidth()/2 - doorTopTexture.getWidth()/2, doorTopPosition, doorTopTexture, PhysicsFactory.createFixtureDef(1000f, .05f, .5f), "DOOR_TOP", BodyType.KinematicBody, Util.BodyShape.Box, null);
-        doorBottom = new PhysicsSprite(x+ Resources.DoorBase.getWidth()/2 - doorBottomTexture.getWidth()/2, doorBottomPosition, doorBottomTexture, PhysicsFactory.createFixtureDef(1000f, .05f, .5f), "DOOR_BOTTOM", BodyType.KinematicBody, Util.BodyShape.Box, null);
-
-        PhysicsSprite doorBaseTop = new PhysicsSprite(x, y-height + Resources.DoorBase.getHeight(), Resources.DoorBase, PhysicsFactory.createFixtureDef(1000f, .05f, .5f), "DOORBASE_TOP", BodyType.StaticBody, getBaseVertices(), null);
-        PhysicsSprite doorBaseBottom = new PhysicsSprite(x, y, Resources.DoorBase, PhysicsFactory.createFixtureDef(1000f, .05f, .5f), "DOORBASE_BOTTOM", BodyType.StaticBody, getBaseVertices(), null);
+        doorBaseTop = new PhysicsAnimatedSprite(x, y-height + Resources.DoorBase.getTextureRegion(0).getHeight(), Resources.DoorBase, PhysicsFactory.createFixtureDef(1000f, .05f, .5f), "DOORBASE_TOP", BodyType.StaticBody, getBaseVertices(), null);
+        doorBaseBottom = new PhysicsAnimatedSprite(x, y, Resources.DoorBase, PhysicsFactory.createFixtureDef(1000f, .05f, .5f), "DOORBASE_BOTTOM", BodyType.StaticBody, getBaseVertices(), null);
         doorBaseBottom.setFlippedVertical(true);
+
+        doorBottomPosition = y-doorBottomTexture.getHeight();
+        doorTopPosition = y-height + (doorBaseBottom.getHeight()*2);
+
+        doorTop = new PhysicsAnimatedSprite(x + doorBaseBottom.getWidth()/2 - doorTopTexture.getWidth()/2, doorTopPosition, doorTopTexture, PhysicsFactory.createFixtureDef(1000f, .05f, .5f), "DOOR_TOP", BodyType.KinematicBody, Util.BodyShape.Box, null);
+        doorBottom = new PhysicsAnimatedSprite(x+ doorBaseBottom.getWidth()/2 - doorBottomTexture.getWidth()/2, doorBottomPosition, doorBottomTexture, PhysicsFactory.createFixtureDef(1000f, .05f, .5f), "DOOR_BOTTOM", BodyType.KinematicBody, Util.BodyShape.Box, null);
 
         Resources.mEngine.getScene().attachChild(doorBaseBottom);
         Resources.mEngine.getScene().attachChild(doorBaseTop);
@@ -65,33 +67,37 @@ public class Door extends Entity {
 
     private Vector2[] getBaseVertices() {
         Vector2[] vertices = new Vector2[4];
-        vertices[0] = Util.getBodyPoint(Resources.DoorBase, new Vector2(0, 0));
-        vertices[1] = Util.getBodyPoint(Resources.DoorBase, new Vector2(214, 0));
-        vertices[2] = Util.getBodyPoint(Resources.DoorBase, new Vector2(162, 64));
-        vertices[3] = Util.getBodyPoint(Resources.DoorBase, new Vector2(52, 64));
+        vertices[0] = Util.getBodyPoint(Resources.DoorBase.getTextureRegion(0), new Vector2(0, 0));
+        vertices[1] = Util.getBodyPoint(Resources.DoorBase.getTextureRegion(0), new Vector2(214, 0));
+        vertices[2] = Util.getBodyPoint(Resources.DoorBase.getTextureRegion(0), new Vector2(162, 30));
+        vertices[3] = Util.getBodyPoint(Resources.DoorBase.getTextureRegion(0), new Vector2(52, 30));
 
         return vertices;
     }
 
-    private static ITextureRegion getDoorBottomTexture(float height) {
-        float doorBottomHeight = ((height - (Resources.DoorBase.getHeight()*2)) / 2) + 12;
+    private static ITiledTextureRegion getDoorBottomTexture(float height) {
+        float doorBottomHeight = ((height - (Resources.DoorBase.getTextureRegion(0).getHeight()*2)) / 2) + 12;
 
-        return getTextureRegion(Resources.DoorBottom, doorBottomHeight, 0);
+        return getTiledTextureRegion(Resources.DoorBottom, doorBottomHeight, 0);
     }
 
-    private static ITextureRegion getDoorTopTexture(float height) {
-        float texHeight = Resources.DoorTop.getHeight();
-        float doorTopHeight = ((height - (Resources.DoorBase.getHeight()*2)) / 2) + 12;
+    private static ITiledTextureRegion getDoorTopTexture(float height) {
+        float texHeight = Resources.DoorTop.getTextureRegion(0).getHeight();
+        float doorTopHeight = ((height - (Resources.DoorBase.getTextureRegion(0).getHeight()*2)) / 2) + 12;
 
-        return getTextureRegion(Resources.DoorTop, doorTopHeight, texHeight - doorTopHeight);
+        return getTiledTextureRegion(Resources.DoorTop, doorTopHeight, texHeight - doorTopHeight);
     }
 
-    private static ITextureRegion getTextureRegion(ITextureRegion region, float height, float positionY){
-        ITextureRegion tex = region.deepCopy();
-        tex.setTextureHeight(height);
-        tex.setTexturePosition(0, positionY);
+    private static ITiledTextureRegion getTiledTextureRegion(TiledTextureRegion region, float height, float positionY){
+        TiledTextureRegion tiledTex = region.deepCopy();
+        ITextureRegion tex0 = tiledTex.getTextureRegion(0);
+        ITextureRegion tex1 = tiledTex.getTextureRegion(1);
+        tex0.setTextureHeight(height);
+        tex0.setTexturePosition(0, positionY);
+        tex1.setTextureHeight(height);
+        tex1.setTexturePosition(tex0.getWidth(), positionY);
 
-        return tex;
+        return tiledTex;
     }
 
     public void addListener(IDoorListener listener){
@@ -111,16 +117,21 @@ public class Door extends Entity {
                 @Override
                 public void onUpdate(float pSecondsElapsed) {
                     float newHeight = doorBottom.getHeight() - (doorSpeed * pSecondsElapsed);
-                    float newTopY = (mY-mHeight + (Resources.DoorBase.getHeight() * 2)) - (doorSpeed * pSecondsElapsed);
+                    float newTopY = (mY-mHeight + (doorBaseBottom.getHeight() * 2)) - (doorSpeed * pSecondsElapsed);
                     float newBottomY = doorBottom.getY() + (doorSpeed * pSecondsElapsed);
-                    doorBottomTexture = getTextureRegion(Resources.DoorBottom, newHeight, 0);
-                    doorTopTexture = getTextureRegion(Resources.DoorTop, newHeight, (Resources.DoorTop.getHeight() - newHeight));
+                    doorBottomTexture = getTiledTextureRegion(Resources.DoorBottom, newHeight, 0);
+                    doorTopTexture = getTiledTextureRegion(Resources.DoorTop, newHeight, (Resources.DoorTop.getHeight() - newHeight));
 
                     doorBottom.destroy();
                     doorTop.destroy();
 
-                    doorTop = new PhysicsSprite(mX+Resources.DoorBase.getWidth() / 2 - doorTopTexture.getWidth() / 2, newTopY, doorTopTexture, PhysicsFactory.createFixtureDef(1000f, .05f, .5f), "DOOR_TOP", BodyType.KinematicBody, Util.BodyShape.Box, null);
-                    doorBottom = new PhysicsSprite(mX+Resources.DoorBase.getWidth() / 2 - doorBottomTexture.getWidth() / 2, newBottomY, doorBottomTexture, PhysicsFactory.createFixtureDef(1000f, .05f, .5f), "DOOR_BOTTOM", BodyType.KinematicBody, Util.BodyShape.Box, null);
+                    doorTop = new PhysicsAnimatedSprite(mX + doorBaseBottom.getWidth() / 2 - doorTopTexture.getWidth() / 2, newTopY, doorTopTexture, PhysicsFactory.createFixtureDef(1000f, .05f, .5f), "DOOR_TOP", BodyType.KinematicBody, Util.BodyShape.Box, null);
+                    doorBottom = new PhysicsAnimatedSprite(mX + doorBaseBottom.getWidth() / 2 - doorBottomTexture.getWidth() / 2, newBottomY, doorBottomTexture, PhysicsFactory.createFixtureDef(1000f, .05f, .5f), "DOOR_BOTTOM", BodyType.KinematicBody, Util.BodyShape.Box, null);
+
+                    doorTop.setCurrentTileIndex(1);
+                    doorBottom.setCurrentTileIndex(1);
+                    doorBaseBottom.setCurrentTileIndex(1);
+                    doorBaseTop.setCurrentTileIndex(1);
 
                     Resources.mEngine.getScene().attachChild(doorTop);
                     Resources.mEngine.getScene().attachChild(doorBottom);

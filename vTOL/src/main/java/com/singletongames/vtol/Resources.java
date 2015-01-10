@@ -1,16 +1,17 @@
 package com.singletongames.vtol;
 
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.hardware.SensorManager;
 
-import org.andengine.engine.Engine;
+import com.badlogic.gdx.math.Vector2;
+
 import org.andengine.audio.music.Music;
 import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
+import org.andengine.engine.Engine;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.GradientStrokeFont;
@@ -19,12 +20,11 @@ import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.preferences.SimplePreferences;
 
-import com.badlogic.gdx.math.Vector2;
-
-import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.hardware.SensorManager;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class Resources {
     public static Engine mEngine;
@@ -61,8 +61,8 @@ public class Resources {
 	public static TextureRegion LaunchPad, LaunchPadPillars, LandingPad, LandingPadRail, vtol_logo, titleBar, LanderSelectLocked, TipFrame, TipArrow, refuelPad;
 	public static TiledTextureRegion ExplosionSequence, fireworks, CargoDrop;
 	public static TextureRegion ObjectiveBullet, ObjectiveCheck, WoodenBox, ChainLink;
-	public static TextureRegion GaugeBackground, GaugeGreen, GaugeRed, PingButton, CargoDropGlow, FuelIcon, RepairPad, RepairIcon, DoorBase, DoorTop, DoorBottom;
-    public static TiledTextureRegion LanderTrainer;
+	public static TextureRegion GaugeBackground, GaugeGreen, GaugeRed, PingButton, CargoDropGlow, FuelIcon, RepairPad, RepairIcon;
+    public static TiledTextureRegion LanderTrainer, DoorBase, DoorTop, DoorBottom;
 
     public static TextureRegion smokeParticle;
 	
@@ -160,9 +160,9 @@ public class Resources {
         FuelIcon = Util.GetTextureRegion("gfx/FuelIcon.png");
         RepairPad = Util.GetTextureRegion("gfx/repairPad.png");
         RepairIcon = Util.GetTextureRegion("gfx/RepairIcon.png");
-        DoorBase = Util.GetTextureRegion("gfx/DoorBase.png");
-        DoorTop = Util.GetTextureRegion("gfx/DoorTop.png");
-        DoorBottom = Util.GetTextureRegion("gfx/DoorBottom.png");
+        DoorBase = Util.GetTiledTextureRegion("gfx/DoorBase.png",2,1);
+        DoorTop = Util.GetTiledTextureRegion("gfx/DoorTop.png",2,1);
+        DoorBottom = Util.GetTiledTextureRegion("gfx/DoorBottom.png",2,1);
 
 
 

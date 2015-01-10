@@ -1,24 +1,23 @@
 package com.singletongames.vtol;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.singletongames.vtol.Util.BodyShape;
 
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.util.debug.Debug;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.singletongames.vtol.Util.BodyShape;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PhysicsAnimatedSprite extends AnimatedSprite {
 	FixtureDef mFixtureDef;
@@ -28,8 +27,8 @@ public class PhysicsAnimatedSprite extends AnimatedSprite {
 	BodyShape mBodyShape;
 	Vector2[] mVertices = null;
 	boolean markedForDeath = false;
-	List<FixtureDef> mFixtureDefs = null;
-	List<Object> mFixtureUserData = null;
+	List<FixtureDef> mFixtureDefs = new ArrayList<FixtureDef>();
+	List<Object> mFixtureUserData = new ArrayList<Object>();
 	Object mBodyUserData = null;
 	List<IPhysicsSpriteListener> listeners = new ArrayList<IPhysicsSpriteListener>();
 	
@@ -42,6 +41,7 @@ public class PhysicsAnimatedSprite extends AnimatedSprite {
 		mFixtureDef = pFixtureDef;
 		mBodyType = pBodyType;
 		mBodyShape = pBodyShape;
+        mBodyUserData = userData;
 		//mBody = Util.CreateBody(this, pFixtureDef, pBodyType, pBodyShape);
 		registerContactListener();
 		if (listener != null) {			
