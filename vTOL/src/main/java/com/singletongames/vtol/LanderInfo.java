@@ -12,14 +12,14 @@ public class LanderInfo  {
 	protected float densityPct;
 	protected boolean locked;
 
-    private final float maxEngineThrust = 70f;
-    private final float minEngineThrust = 25f;
+    private final float maxEngineThrust = 40f;
+    private final float minEngineThrust = 10f;
     private final float maxFuelCapacity = 500f;
     private final float minFuelCapacity = 150f;
     private final float maxToughness = 40f;
     private final float minToughness = 15f;
-    private final float maxDensity = .15f;
-    private final float minDensity = .05f;
+    private final float maxDensity = .40f;
+    private final float minDensity = .10f;
 	
 	public LanderInfo(int id, String name, String description, float engineThrustPct, float fuelCapacityPct, float fuelPerSecond, float toughnessPct, float densityPct, boolean locked) {
 		this.id = id;
