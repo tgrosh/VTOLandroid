@@ -1,17 +1,14 @@
 package com.singletongames.vtol;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.andengine.util.debug.Debug;
-
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LanderDB extends SQLiteOpenHelper {
 	private static LanderDB instance = new LanderDB(Resources.mActivity);
@@ -33,7 +30,7 @@ public class LanderDB extends SQLiteOpenHelper {
     // THE VALUE ON THE NEXT LINE REPRESENTS THE VERSION NUMBER OF THE DATABASE
     // IN THE FUTURE IF YOU MAKE CHANGES TO THE DATABASE, YOU NEED TO INCREMENT THIS NUMBER
     // DOING SO WILL CAUSE THE METHOD onUpgrade() TO AUTOMATICALLY GET TRIGGERED
-	static final int mDBVersion = 16;
+	static final int mDBVersion = 25;
 	
 	public LanderDB(Context context) {
 		super(context, dbName, null, mDBVersion);
@@ -53,9 +50,12 @@ public class LanderDB extends SQLiteOpenHelper {
 				fDensity + " REAL, " +
 				fLocked + " TEXT " +
 				")");
-		
-		addLander(db, new LanderInfo(0, "Hauler", "The workhorse of the VTOL fleet, the Hauler is a stable, durable ship, capable of a wide range of missions.", 15f, 300f, 10f, 20f, .1f, false));
-		addLander(db, new LanderInfo(1, "Luna", "A mainstay of the V.A.S.A space fleet for decades, this lander excels in low gravity environments.", 12f, 200f, 10f, 7f, .09f, true));
+
+        //id, name, desc, thrust, fuelCapacityPct, fuelPerSecond, toughnessPct, densityPct, locked
+		addLander(db, new LanderInfo(0, "Hauler", "The workhorse of the VTOL fleet, the Hauler is a stable, durable ship, capable of a wide range of missions.",
+                .5f, .6f, 10f, .6f, .5f, false));
+		addLander(db, new LanderInfo(1, "Luna", "A mainstay of the V.A.S.A space fleet for decades, this lander excels in low gravity environments.",
+                .2f, .8f, 5f, .1f, .2f, true));
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class LanderDB extends SQLiteOpenHelper {
 				float toughness = myCursor.getFloat(6);
 				float density = myCursor.getFloat(7);
 				boolean Locked = myCursor.getString(8).equals("true");				
-				
+
 				LanderInfo item = new LanderInfo(ID, Name, Description, maxThrust, maxFuel, fuelPerSecond, toughness, density, Locked);
 				mAllLanders.add(item);
 			}
@@ -103,11 +103,11 @@ public class LanderDB extends SQLiteOpenHelper {
         cv.put(fID, info.getId());
         cv.put(fName, info.getName());
         cv.put(fDescription, info.getDescription());
-        cv.put(fMaxThrust, info.getMaxEngineThrust());
-        cv.put(fMaxFuel, info.getMaxFuel());
+        cv.put(fMaxThrust, info.getEngineThrustPct());
+        cv.put(fMaxFuel, info.getFuelCapacityPct());
         cv.put(fFuelPerSecond, info.getFuelPerSecond());
-        cv.put(fToughness, info.getToughness());
-        cv.put(fDensity, info.getDensity());
+        cv.put(fToughness, info.getToughnessPct());
+        cv.put(fDensity, info.getDensityPct());
         cv.put(fLocked, String.valueOf(info.isLocked()));
         if (db.insert(tTableName, "", cv) == -1){
         	return false;
@@ -120,11 +120,11 @@ public class LanderDB extends SQLiteOpenHelper {
 		ContentValues cv = new ContentValues();
 		cv.put(fName, info.getName());
         cv.put(fDescription, info.getDescription());
-        cv.put(fMaxThrust, info.getMaxEngineThrust());
-        cv.put(fMaxFuel, info.getMaxFuel());
+        cv.put(fMaxThrust, info.getEngineThrustPct());
+        cv.put(fMaxFuel, info.getFuelCapacityPct());
         cv.put(fFuelPerSecond, info.getFuelPerSecond());
-        cv.put(fToughness, info.getToughness());        
-        cv.put(fDensity, info.getDensity());
+        cv.put(fToughness, info.getToughnessPct());
+        cv.put(fDensity, info.getDensityPct());
         cv.put(fLocked, String.valueOf(info.isLocked()));
         if (db.update(tTableName, cv, fID + "=?", new String[]{String.valueOf(pID)})  == -1){
         	return false;

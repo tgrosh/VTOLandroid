@@ -1,14 +1,22 @@
 package com.singletongames.vtol;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
+import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
+import com.singletongames.vtol.Util.BodyShape;
 
 import org.andengine.engine.camera.SmoothCamera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.ColorModifier;
-import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
@@ -21,32 +29,18 @@ import org.andengine.entity.particle.modifier.AlphaParticleModifier;
 import org.andengine.entity.particle.modifier.ExpireParticleInitializer;
 import org.andengine.entity.particle.modifier.ScaleParticleModifier;
 import org.andengine.entity.primitive.Line;
-import org.andengine.entity.shape.IAreaShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
-import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.util.Constants;
 import org.andengine.util.color.Color;
-import org.andengine.util.debug.Debug;
-import org.andengine.util.math.MathUtils;
 import org.andengine.util.modifier.IModifier;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Joint;
-import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
-import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
-import com.singletongames.vtol.Util.BodyShape;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Lander extends PhysicsAnimatedSprite {
 
@@ -77,7 +71,6 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 	int direction = 0;
 	float totalHealth = 0;
 	float healthRemaining = 0;
-	float damageThreshold = 2f;
 	ILanderListener listener;
 	boolean takeOffComplete = false;
 	float refuelRate = .20f; //percentage of fuel restore per second
@@ -93,8 +86,8 @@ public abstract class Lander extends PhysicsAnimatedSprite {
     public Lander(float pX, float pY, LanderInfo info, TiledTextureRegion landerTextureRegion, List<FixtureDef> fixtureDefs, List<Object> fixtureUserData, ILanderListener listener) {
 		super(pX,pY,landerTextureRegion,fixtureDefs, BodyType.DynamicBody, fixtureUserData, "Lander", null);
 		this.info = info;
-		currentFuel = info.maxFuel;
-		healthRemaining = totalHealth = info.toughness * 4;
+		currentFuel = info.getFuelCapacity();
+		healthRemaining = totalHealth = info.getToughness() * 10;
 		this.listener = listener;
 		
 		Load();
@@ -121,7 +114,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 			public void postSolve(Contact contact, ContactImpulse impulse) {				
 				if (destroyed) return;
 								
-				if (enginesOn && impulse.getNormalImpulses()[0] > damageThreshold && (contact.getFixtureA().getBody().equals(mBody) || contact.getFixtureB().getBody().equals(mBody))){
+				if (enginesOn && impulse.getNormalImpulses()[0] > (info.getToughness()/10) && (contact.getFixtureA().getBody().equals(mBody) || contact.getFixtureB().getBody().equals(mBody))){
 					healthRemaining -= impulse.getNormalImpulses()[0];
 					//Debug.w("DEBUG: Damage Taken: " + impulse.getNormalImpulses()[0]);
 					//Debug.w("DEBUG: Health Remaining: " + healthRemaining);
@@ -132,10 +125,10 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 					}
 				}				
 				
-				if (impulse.getNormalImpulses()[0] > info.toughness && contact.getFixtureA().getBody().equals(mBody)) {
+				if (impulse.getNormalImpulses()[0] > (totalHealth/2) && contact.getFixtureA().getBody().equals(mBody)) {
 					//Debug.w("DEBUG: Impact Detected (" + impulse.getNormalImpulses()[0] + ")");
 					Explode(contact.getWorldManifold().getPoints()[0].x*PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT,contact.getWorldManifold().getPoints()[0].y*PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
-				} else if (impulse.getNormalImpulses()[0] > info.toughness && contact.getFixtureB().getBody().equals(mBody)) {
+				} else if (impulse.getNormalImpulses()[0] > (totalHealth/2) && contact.getFixtureB().getBody().equals(mBody)) {
 					//Debug.w("DEBUG: Impact Detected (" + impulse.getNormalImpulses()[0] + ")");
 					Explode(contact.getWorldManifold().getPoints()[0].x*PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT,contact.getWorldManifold().getPoints()[0].y*PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
 				}
@@ -210,7 +203,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 					return;
 				}
 				
-				if (healthRemaining < info.toughness){
+				if (healthRemaining < (totalHealth * .25)){
 					showDamageCritical();
 				}
                 else{
@@ -223,7 +216,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
                     listener.onRefuelComplete();
                 }
                 if (refueling && getCurrentFuelPercentage() < 1){
-                    currentFuel += ((refuelRate * info.maxFuel) * pSecondsElapsed);
+                    currentFuel += ((refuelRate * info.getFuelCapacity()) * pSecondsElapsed);
                 }
 
                 if (repairing && getCurrentHealthPercentage() >= 1){
@@ -240,7 +233,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 				airborn = (baseContacts.size() == 0);
 				
 				if (currentFuel > 0f){								
-					mainEngineThrust = info.maxEngineThrust * currentThrottle;
+					mainEngineThrust = info.getEngineThrust() * currentThrottle;
 					
 					if (Math.abs(bodyAngle) < .1f) bodyAngle = 0;
 					float bodyAngleSin = (float) Math.sin(bodyAngle); 
@@ -257,7 +250,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 						mBody.applyForce(mainEngineVector, mBody.getWorldCenter());	//main engine
 						//DrawForceDebugLine(mBody.getWorldCenter(), mainEngineVector);
 						
-						currentFuel -= (currentThrottle * info.fuelPerSecond) * pSecondsElapsed;
+						currentFuel -= (currentThrottle * info.getFuelPerSecond()) * pSecondsElapsed;
 					}
 				}
 				else{
@@ -585,7 +578,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 	}
 
 	public float getCurrentFuelPercentage() {
-		return currentFuel / info.maxFuel;
+		return currentFuel / info.getFuelCapacity();
 	}
 
 	public void Explode(final float contactX, final float contactY){	

@@ -1,16 +1,13 @@
 package com.singletongames.vtol;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.andengine.entity.sprite.Sprite;
-import org.andengine.extension.physics.box2d.PhysicsFactory;
-import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.opengl.texture.region.TiledTextureRegion;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+
+import org.andengine.extension.physics.box2d.PhysicsFactory;
+import org.andengine.opengl.texture.region.TiledTextureRegion;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LanderTrainer extends Lander {
 
@@ -21,7 +18,7 @@ public class LanderTrainer extends Lander {
 	private static List<FixtureDef> getFixtureDefs(TiledTextureRegion tex) {		
 		List<FixtureDef> defs = new ArrayList<FixtureDef>();
 		
-		defs.add(Util.createPolygonFixtureDef(getBodyVertices(tex), PhysicsFactory.createFixtureDef(LanderDB.getInstance().getLander(0).density, .05f, .75f)));
+		defs.add(Util.createPolygonFixtureDef(getBodyVertices(tex), PhysicsFactory.createFixtureDef(LanderDB.getInstance().getLander(0).getDensity(), .05f, .75f)));
 		defs.add(Util.createPolygonFixtureDef(getBaseVertices(tex), PhysicsFactory.createFixtureDef(0f, 0f, 0f, true)));
 				
 		return defs;

@@ -1,10 +1,6 @@
 package com.singletongames.vtol;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.andengine.engine.camera.SmoothCamera;
-import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
@@ -19,14 +15,14 @@ import org.andengine.entity.text.AutoWrap;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.util.HorizontalAlign;
 import org.andengine.util.color.Color;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseBackOut;
-import org.andengine.util.modifier.ease.EaseElasticIn;
-import org.andengine.util.modifier.ease.EaseElasticOut;
 import org.andengine.util.modifier.ease.EaseSineIn;
 import org.andengine.util.modifier.ease.EaseSineOut;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class LanderSelectScene extends GameScene {
@@ -226,11 +222,11 @@ public class LanderSelectScene extends GameScene {
 		rectBottom.setSize(rectTop.getWidth(), rectTop.getHeight());
 		
 		tDescription.setText(landers.get(Index).getDescription());
-		
-		sInfoProgress1.setCurrentTileIndex(getPowerRating(landers.get(Index).getMaxEngineThrust()));
-		sInfoProgress2.setCurrentTileIndex(getToughnessRating(landers.get(Index).getToughness()));
-		sInfoProgress3.setCurrentTileIndex(getFuelRating(landers.get(Index).getMaxFuel()));
-		sInfoProgress4.setCurrentTileIndex(getWeightRating(landers.get(Index).getDensity()));
+
+		sInfoProgress1.setCurrentTileIndex((int) (landers.get(Index).getEngineThrustPct() * 10f));
+		sInfoProgress2.setCurrentTileIndex((int) (landers.get(Index).getToughnessPct() * 10f));
+		sInfoProgress3.setCurrentTileIndex((int) (landers.get(Index).getFuelCapacityPct() * 10f));
+		sInfoProgress4.setCurrentTileIndex((int) (landers.get(Index).getDensityPct() * 10f));
 		
 		//if current lander sprite is not the one we need to show
 		if (!currentLanderSprite.equals(landerSprites.get(Index))){		
@@ -301,41 +297,6 @@ public class LanderSelectScene extends GameScene {
 			mCurrentLanderIndex = LanderDB.getInstance().allLanders().size()-1;
 		}
 		ShowLanderInfo(mCurrentLanderIndex);
-	}
-	
-	private int getWeightRating(float value) {
-		float min = .05f;
-		float max = .25f;
-				
-		return (int) getRating(value, min, max);
-	}
-
-	private float getRating(float value, float minValue, float maxValue) {
-		if (value < minValue) return 0;
-		if (value > maxValue) return 10;
-		float pct = (value / (maxValue - minValue)) * 10f;
-		return pct;
-	}
-
-	private int getFuelRating(float value) {
-		float min = 150f;
-		float max = 500f;
-				
-		return (int) getRating(value, min, max);
-	}
-
-	private int getToughnessRating(float value) {
-		float min = 5f;
-		float max = 24f;
-				
-		return (int) getRating(value, min, max);
-	}
-
-	private int getPowerRating(float value) {
-		float min = 10f;
-		float max = 40f;
-				
-		return (int) getRating(value, min, max);
 	}
 
 }

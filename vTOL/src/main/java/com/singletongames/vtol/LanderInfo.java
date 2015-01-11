@@ -5,63 +5,77 @@ public class LanderInfo  {
 	protected int id;
 	protected String name;
 	protected String description;
-	protected float maxEngineThrust;
-	protected float maxFuel;
+    protected float engineThrustPct;
+	protected float fuelCapacityPct;
 	protected float fuelPerSecond;
-	protected float toughness;
-	protected float density;
+	protected float toughnessPct;
+	protected float densityPct;
 	protected boolean locked;
-		
+
+    private final float maxEngineThrust = 70f;
+    private final float minEngineThrust = 25f;
+    private final float maxFuelCapacity = 500f;
+    private final float minFuelCapacity = 150f;
+    private final float maxToughness = 40f;
+    private final float minToughness = 15f;
+    private final float maxDensity = .15f;
+    private final float minDensity = .05f;
 	
-	public LanderInfo(int id, String name, String description, float maxEngineThrust, float maxFuel, float fuelPerSecond, float toughness, float density, boolean locked) {
+	public LanderInfo(int id, String name, String description, float engineThrustPct, float fuelCapacityPct, float fuelPerSecond, float toughnessPct, float densityPct, boolean locked) {
 		this.id = id;
-		this.maxEngineThrust = maxEngineThrust;
-		this.maxFuel = maxFuel;
+		this.engineThrustPct = engineThrustPct;
+		this.fuelCapacityPct = fuelCapacityPct;
 		this.fuelPerSecond = fuelPerSecond;
-		this.toughness = toughness;
-		this.density = density;
+		this.toughnessPct = toughnessPct;
+		this.densityPct = densityPct;
 		this.name = name;
 		this.description = description;
 		this.locked = locked;
 	}
 
 
-	public float getMaxEngineThrust() {
-		return maxEngineThrust;
+	public float getEngineThrust() {
+		return minEngineThrust + (engineThrustPct * (maxEngineThrust - minEngineThrust));
 	}
-	public void setMaxEngineThrust(float maxEngineThrust) {
-		this.maxEngineThrust = maxEngineThrust;
+	public void setEngineThrust(float engineThrust) {
+		this.engineThrustPct = engineThrust;
 	}
-	public float getMaxFuel() {
-		return maxFuel;
+
+	public float getFuelCapacity() {
+		return minFuelCapacity + (fuelCapacityPct * (maxFuelCapacity - minFuelCapacity));
 	}
-	public void setMaxFuel(float maxFuel) {
-		this.maxFuel = maxFuel;
+	public void setFuelCapacity(float fuelCapacity) {
+		this.fuelCapacityPct = fuelCapacity;
 	}
+
 	public float getFuelPerSecond() {
 		return fuelPerSecond;
 	}
 	public void setFuelPerSecond(float fuelPerSecond) {
 		this.fuelPerSecond = fuelPerSecond;
 	}
+
 	public float getToughness() {
-		return toughness;
+		return minToughness + toughnessPct * (maxToughness - minToughness);
 	}
-	public void setToughnessf(float toughness) {
-		this.toughness = toughness;
+	public void setToughness(float toughness) {
+		this.toughnessPct = toughness;
 	}
+
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getDescription() {
 		return description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	public boolean isLocked() {
 		return locked;
 	}
@@ -69,30 +83,62 @@ public class LanderInfo  {
 		this.locked = locked;
 	}
 
-
 	public int getId() {
 		return id;
 	}
-
-
 	public void setId(int id) {
 		this.id = id;
 	}
 
-
 	public float getDensity() {
-		return density;
+		return minDensity + densityPct * (maxDensity - minDensity);
 	}
-
-
 	public void setDensity(float density) {
-		this.density = density;
+		this.densityPct = density;
 	}
 
+    public float getMinDensity() {
+        return minDensity;
+    }
+    public float getMaxEngineThrust() {
+        return maxEngineThrust;
+    }
+    public float getMinEngineThrust() {
+        return minEngineThrust;
+    }
+    public float getMaxFuelCapacity() {
+        return maxFuelCapacity;
+    }
+    public float getMinFuelCapacity() {
+        return minFuelCapacity;
+    }
+    public float getMaxToughness() {
+        return maxToughness;
+    }
+    public float getMinToughness() {
+        return minToughness;
+    }
+    public float getMaxDensity() {
+        return maxDensity;
+    }
 
-	@Override
+    public float getEngineThrustPct() {
+        return engineThrustPct;
+    }
+    public float getFuelCapacityPct() {
+        return fuelCapacityPct;
+    }
+    public float getToughnessPct() {
+        return toughnessPct;
+    }
+    public float getDensityPct() {
+        return densityPct;
+    }
+
+
+    @Override
 	public String toString() {
-		return String.format("{ID: %1$s, Name: %2$s, maxEngineThrust: %3$s, maxFuel: %4$s, fuelPerSecond: %5$s, toughness: %6$s, density: %7$s}", String.valueOf(this.getId()), this.getName(), String.valueOf(this.getMaxEngineThrust()), String.valueOf(this.getMaxFuel()), String.valueOf(this.getFuelPerSecond()), String.valueOf(this.getToughness()), String.valueOf(this.getDensity()));
+		return String.format("{ID: %1$s, Name: %2$s, engineThrustPct: %3$s, fuelCapacityPct: %4$s, fuelPerSecond: %5$s, toughnessPct: %6$s, densityPct: %7$s}", String.valueOf(this.getId()), this.getName(), String.valueOf(this.getEngineThrust()), String.valueOf(this.getFuelCapacity()), String.valueOf(this.getFuelPerSecond()), String.valueOf(this.getToughness()), String.valueOf(this.getDensity()));
 	}
 
 	

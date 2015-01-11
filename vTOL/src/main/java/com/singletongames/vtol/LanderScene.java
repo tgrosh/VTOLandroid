@@ -1,10 +1,23 @@
 package com.singletongames.vtol;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.view.Surface;
 
-import org.andengine.audio.sound.SoundManager;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.singletongames.vtol.objectives.IObjectiveManagerListener;
+import com.singletongames.vtol.objectives.IObjectiveZoneListener;
+import com.singletongames.vtol.objectives.Objective;
+import com.singletongames.vtol.objectives.ObjectiveManager;
+import com.singletongames.vtol.objectives.ObjectiveZone;
+import com.singletongames.vtol.objectives.WaypointObjective;
+
 import org.andengine.engine.camera.SmoothCamera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -38,21 +51,8 @@ import org.andengine.util.color.ColorUtils;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseStrongIn;
 
-import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.view.Surface;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.singletongames.vtol.objectives.IObjectiveManagerListener;
-import com.singletongames.vtol.objectives.IObjectiveZoneListener;
-import com.singletongames.vtol.objectives.Objective;
-import com.singletongames.vtol.objectives.ObjectiveManager;
-import com.singletongames.vtol.objectives.ObjectiveZone;
-import com.singletongames.vtol.objectives.WaypointObjective;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LanderScene extends GameScene implements SensorEventListener {
 	private Scene mThis = this;
@@ -382,7 +382,6 @@ public class LanderScene extends GameScene implements SensorEventListener {
 		
 		disableThrottle();
 		currentLander.stopEngines();
-        Resources.mEngine.unregisterUpdateHandler(Resources.mPhysicsWorld);
 				
 		TimerHandler timer = new TimerHandler(1f, false, new ITimerCallback() {			
 			@Override
