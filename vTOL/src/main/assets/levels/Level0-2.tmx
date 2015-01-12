@@ -1,98 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="33" height="26" tilewidth="60" tileheight="60" backgroundcolor="#efeac8">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="33" height="26" tilewidth="60" tileheight="60" backgroundcolor="#efeac8" nextobjectid="120">
  <tileset firstgid="1" source="tiles/Lander Objects.tsx"/>
+ <tileset firstgid="301" source="tiles/Objects.tsx"/>
  <objectgroup color="#bab69b" name="background3">
   <properties>
    <property name="sceneLayer" value=""/>
   </properties>
-  <object x="660" y="750">
+  <object id="1" x="660" y="750">
    <polygon points="0,0 300,0 330,-30 330,-90 360,-120 525,-120 525,120 90,120 60,150 60,270 0,270"/>
   </object>
-  <object x="1440" y="330">
+  <object id="2" x="1440" y="330">
    <polygon points="0,0 0,90 -30,120 -300,120 -330,105 -330,-105 0,-105"/>
   </object>
-  <object x="720" y="510">
+  <object id="3" x="720" y="510">
    <polygon points="0,0 0,135 15,150 45,150 60,135 60,0"/>
   </object>
-  <object x="720" y="600">
+  <object id="4" x="720" y="600">
    <polygon points="0,0 -210,0 -240,-30 -240,-105 -210,-105 -210,-45 -195,-30 0,-30"/>
   </object>
-  <object x="510" y="330">
+  <object id="5" x="510" y="330">
    <polygon points="0,0 510,0 525,-15 525,-105 0,-105"/>
   </object>
-  <object x="735" y="660">
+  <object id="6" x="735" y="660">
    <polygon points="0,0 0,90 30,90 30,0"/>
   </object>
-  <object x="1500" y="585">
+  <object id="7" x="1500" y="585">
    <polygon points="0,0 45,-45 45,-105 60,-135 465,-135 465,0"/>
   </object>
-  <object x="960" y="405">
+  <object id="8" x="960" y="405">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="870" y="405">
+  <object id="9" x="870" y="405">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="825" y="345">
+  <object id="10" x="825" y="345">
    <polygon points="0,0 390,0 390,-15 -15,-15 -15,0"/>
   </object>
-  <object x="810" y="405">
+  <object id="11" x="810" y="405">
    <polygon points="0,0 405,0 405,15 0,15"/>
   </object>
-  <object x="915" y="345">
+  <object id="12" x="915" y="345">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="1095" y="345">
+  <object id="13" x="1095" y="345">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="1140" y="405">
+  <object id="14" x="1140" y="405">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="1050" y="405">
+  <object id="15" x="1050" y="405">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="1005" y="345">
+  <object id="16" x="1005" y="345">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="825" y="345">
+  <object id="17" x="825" y="345">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="510" y="405">
+  <object id="18" x="510" y="405">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="420" y="405">
+  <object id="19" x="420" y="405">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="375" y="345">
+  <object id="20" x="375" y="345">
    <polygon points="0,0 390,0 390,-15 -15,-15 -15,0"/>
   </object>
-  <object x="360" y="405">
+  <object id="21" x="360" y="405">
    <polygon points="0,0 405,0 405,15 0,15"/>
   </object>
-  <object x="465" y="345">
+  <object id="22" x="465" y="345">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="645" y="345">
+  <object id="23" x="645" y="345">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="690" y="405">
+  <object id="24" x="690" y="405">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="600" y="405">
+  <object id="25" x="600" y="405">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="555" y="345">
+  <object id="26" x="555" y="345">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="375" y="345">
+  <object id="27" x="375" y="345">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="315" y="1425">
+  <object id="28" x="315" y="1425">
    <polygon points="525,0 225,0 195,-30 195,-90 165,-120 0,-120 0,120 435,120 525,120"/>
   </object>
-  <object x="255" y="585">
+  <object id="29" x="255" y="585">
    <polygon points="0,0 -120,0 -135,-15 -135,-60 -135,-90 -165,-105 -255,-105 -255,-285 0,-285"/>
   </object>
-  <object x="1095" y="1365">
+  <object id="30" x="1095" y="1365">
    <polygon points="0,0 345,0 375,-30 375,-195 405,-225 765,-225 795,-195 945,-195 945,15 825,15 825,195 0,195"/>
   </object>
  </objectgroup>
@@ -105,121 +106,121 @@
   <properties>
    <property name="sceneLayer" value=""/>
   </properties>
-  <object x="675" y="1065">
+  <object id="31" x="675" y="1065">
    <polygon points="0,0 0,-375 -15,-390 -675,-390 -675,0"/>
   </object>
-  <object x="285" y="525">
+  <object id="32" x="285" y="525">
    <polygon points="-225,0 255,0 285,-15 285,-345 375,-345 375,-15 405,0 675,0 705,-30 705,-345 -225,-345"/>
   </object>
-  <object x="900" y="1080">
+  <object id="33" x="900" y="1080">
    <polygon points="0,0 0,-420 30,-420 30,0"/>
   </object>
-  <object x="600" y="825">
+  <object id="34" x="600" y="825">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="645" y="885">
+  <object id="35" x="645" y="885">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="735" y="885">
+  <object id="36" x="735" y="885">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="690" y="825">
+  <object id="37" x="690" y="825">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="825" y="885">
+  <object id="38" x="825" y="885">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="780" y="825">
+  <object id="39" x="780" y="825">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="915" y="885">
+  <object id="40" x="915" y="885">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="870" y="825">
+  <object id="41" x="870" y="825">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="600" y="825">
+  <object id="42" x="600" y="825">
    <polygon points="0,0 390,0 390,-15 -15,-15 -15,0"/>
   </object>
-  <object x="585" y="885">
+  <object id="43" x="585" y="885">
    <polygon points="0,0 405,0 405,15 0,15"/>
   </object>
-  <object x="990" y="900">
+  <object id="44" x="990" y="900">
    <polygon points="0,0 0,15 15,30 45,30 45,-105 45,-120 15,-120 0,-105 0,-90"/>
   </object>
-  <object x="960" y="1770">
+  <object id="45" x="960" y="1770">
    <polygon points="0,-210 0,-375 -15,-390 -390,-390 -390,-210"/>
   </object>
-  <object x="705" y="1233">
+  <object id="46" x="705" y="1233">
    <polygon points="0,0 0,-60 -15,-60 -15,0"/>
   </object>
-  <object x="750" y="1233">
+  <object id="47" x="750" y="1233">
    <polygon points="0,0 -60,0 -60,-15 0,-15"/>
   </object>
-  <object x="750" y="1278">
+  <object id="48" x="750" y="1278">
    <polygon points="0,0 0,-60 -15,-60 -15,0"/>
   </object>
-  <object x="795" y="1278">
+  <object id="49" x="795" y="1278">
    <polygon points="0,0 -60,0 -60,-15 0,-15"/>
   </object>
-  <object x="705" y="1188">
+  <object id="50" x="705" y="1188">
    <polygon points="0,0 -60,0 -60,-15 0,-15"/>
   </object>
-  <object x="795" y="1323">
+  <object id="51" x="795" y="1323">
    <polygon points="0,0 0,-60 -15,-60 -15,0"/>
   </object>
-  <object x="664" y="1125">
+  <object id="52" x="664" y="1125">
    <polygon points="0,0 -15,15 210,240 225,225"/>
   </object>
-  <object x="630" y="1158">
+  <object id="53" x="630" y="1158">
    <polygon points="0,0 -15,15 210,240 225,225"/>
   </object>
-  <object x="840" y="1368">
+  <object id="54" x="840" y="1368">
    <polygon points="0,0 0,-60 -15,-60 -15,0"/>
   </object>
-  <object x="840" y="1323">
+  <object id="55" x="840" y="1323">
    <polygon points="0,0 -60,0 -60,-15 0,-15"/>
   </object>
-  <object x="1200" y="1560">
+  <object id="56" x="1200" y="1560">
    <polygon points="0,0 0,-270 30,-300 120,-300 150,-270 150,0"/>
   </object>
-  <object x="1245" y="1260">
+  <object id="57" x="1245" y="1260">
    <polygon points="0,0 0,-150 60,-150 60,0"/>
   </object>
-  <object x="1500" y="1380">
+  <object id="58" x="1500" y="1380">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="1410" y="1380">
+  <object id="59" x="1410" y="1380">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="1365" y="1320">
+  <object id="60" x="1365" y="1320">
    <polygon points="0,0 390,0 390,-15 -15,-15 -15,0"/>
   </object>
-  <object x="1350" y="1380">
+  <object id="61" x="1350" y="1380">
    <polygon points="0,0 405,0 405,15 0,15"/>
   </object>
-  <object x="1455" y="1320">
+  <object id="62" x="1455" y="1320">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="1635" y="1320">
+  <object id="63" x="1635" y="1320">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="1680" y="1380">
+  <object id="64" x="1680" y="1380">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="1590" y="1380">
+  <object id="65" x="1590" y="1380">
    <polygon points="0,0 45,-60 60,-60 15,0"/>
   </object>
-  <object x="1545" y="1320">
+  <object id="66" x="1545" y="1320">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="1365" y="1320">
+  <object id="67" x="1365" y="1320">
    <polygon points="0,0 45,60 60,60 15,0"/>
   </object>
-  <object x="1800" y="1260">
+  <object id="68" x="1800" y="1260">
    <polygon points="0,0 0,-345 60,-345 60,0"/>
   </object>
-  <object x="1755" y="1560">
+  <object id="69" x="1755" y="1560">
    <polygon points="0,0 0,-270 30,-300 120,-300 150,-270 150,0"/>
   </object>
  </objectgroup>
@@ -227,61 +228,61 @@
   <properties>
    <property name="sceneLayer" value=""/>
   </properties>
-  <object x="1035" y="795">
+  <object id="70" x="1035" y="795">
    <polygon points="0,0 -15,0 -30,15 -30,105 -15,120 0,120"/>
   </object>
-  <object x="660" y="1005">
+  <object id="71" x="660" y="1005">
    <polygon points="0,0 0,-120 -15,-135 -75,-135 -75,0"/>
   </object>
-  <object x="540" y="855">
+  <object id="72" x="540" y="855">
    <polygon points="0,0 105,0 120,-15 120,-105 90,-105 75,-120 75,-150 15,-150 0,-135"/>
   </object>
-  <object x="420" y="810">
+  <object id="73" x="420" y="810">
    <polygon points="0,0 45,0 60,-15 60,-90 45,-105 0,-105"/>
   </object>
-  <object x="480" y="870">
+  <object id="74" x="480" y="870">
    <polygon points="0,0 0,45 30,45 30,90 45,90 60,75 60,15 45,0"/>
   </object>
-  <object x="675" y="360">
+  <object id="75" x="675" y="360">
    <polygon points="0,0 0,120 45,150 105,150 105,60 165,60 180,45 180,0"/>
   </object>
-  <object x="675" y="330">
+  <object id="76" x="675" y="330">
    <polygon points="0,0 0,-75 15,-75 45,-60 45,-30 15,0"/>
   </object>
-  <object x="720" y="270">
+  <object id="77" x="720" y="270">
    <polygon points="0,0 180,0 180,30 0,30"/>
   </object>
-  <object x="900" y="270">
+  <object id="78" x="900" y="270">
    <polygon points="0,0 30,-15 45,-15 45,60 30,60 0,30"/>
   </object>
-  <object x="930" y="495">
+  <object id="79" x="930" y="495">
    <polygon points="0,0 0,-30 30,-30 30,-60 15,-75 -45,-75 -45,-15 -30,0"/>
   </object>
-  <object x="540" y="270">
+  <object id="80" x="540" y="270">
    <polygon points="0,0 0,195 15,210 15,225 -30,225 -30,210 -15,195 -15,0"/>
   </object>
-  <object x="480" y="270">
+  <object id="81" x="480" y="270">
    <polygon points="0,0 0,195 15,210 15,225 -30,225 -30,210 -15,195 -15,0"/>
   </object>
-  <object x="255" y="705">
+  <object id="82" x="255" y="705">
    <polygon points="0,0 -75,0 -90,15 -180,15 -195,30 -195,60 -180,75 -90,75 -75,90 -75,135 0,135"/>
   </object>
-  <object x="255" y="900">
+  <object id="83" x="255" y="900">
    <polygon points="0,0 -120,0 -120,-30 -135,-45 -255,-45 -255,45 0,45"/>
   </object>
-  <object x="105" y="270">
+  <object id="84" x="105" y="270">
    <polygon points="0,0 0,195 15,210 15,225 -30,225 -30,210 -15,195 -15,0"/>
   </object>
-  <object x="165" y="270">
+  <object id="85" x="165" y="270">
    <polygon points="0,0 0,195 15,210 15,225 -30,225 -30,210 -15,195 -15,0"/>
   </object>
-  <object x="225" y="270">
+  <object id="86" x="225" y="270">
    <polygon points="0,0 0,195 15,210 15,225 -30,225 -30,210 -15,195 -15,0"/>
   </object>
-  <object x="1230" y="1320">
+  <object id="87" x="1230" y="1320">
    <polygon points="0,0 30,-30 75,-30 75,120 0,120"/>
   </object>
-  <object x="1800" y="1290">
+  <object id="88" x="1800" y="1290">
    <polygon points="0,0 60,0 75,15 75,270 0,270"/>
   </object>
  </objectgroup>
@@ -290,7 +291,7 @@
    <property name="physics" value=""/>
    <property name="sceneLayer" value=""/>
   </properties>
-  <object x="540" y="1005">
+  <object id="89" x="540" y="1005">
    <polygon points="480,0 495,-15 495,-225 510,-240 615,-240 615,-405 630,-420 1485,-420 1485,-105 1470,-90 900,-90 885,-75 885,75 855,105 600,105 570,135 570,555 315,555 300,540 300,195 285,180 -210,180 -225,195 -225,540 -240,555 -540,555 -540,360 -540,15 -300,15 -285,0 -285,-690 -300,-705 -540,-705 -540,-1005 1485,-1005 1485,-690 1470,-675 630,-675 615,-690 615,-750 600,-765 -105,-765 -120,-750 -120,-180 -90,-180 -75,-165 -75,-15 -60,0"/>
   </object>
  </objectgroup>
@@ -298,72 +299,19 @@
   <properties>
    <property name="sceneLayer" value=""/>
   </properties>
-  <object x="1185" y="285">
-   <polygon points="0,0 15,0 30,15 30,30 135,30 165,15 195,30 315,30 345,15 375,30 495,30 525,15 555,30 765,30 765,15 780,0 795,0 795,-270 -1170,-270 -1170,0 -945,0 -915,30 -915,735 -930,750 -1170,750 -1170,1260 -885,1260 -885,900 -870,885 -315,885 -315,1245 -300,1260 -90,1260 -90,810 195,810 225,780 225,615 765,615 795,585 795,345 780,345 765,330 765,315 555,315 525,330 495,315 375,315 345,330 315,315 195,315 165,330 135,315 30,315 30,330 15,345 0,345 0,435 15,465 0,495 0,510 -15,525 -90,525 -105,540 -105,615 -90,645 -105,675 -105,735 -120,750 -225,750 -255,765 -285,750 -405,750 -435,765 -465,750 -585,750 -615,765 -645,750 -735,750 -750,735 -750,675 -765,645 -750,615 -750,585 -765,570 -795,570 -810,555 -810,495 -825,465 -810,435 -810,315 -825,285 -810,255 -810,135 -825,105 -810,75 -810,-45 -810,-60 -795,-75 -705,-75 -675,-90 -645,-75 -525,-75 -495,-90 -465,-75 -345,-75 -315,-90 -285,-75 -165,-75 -135,-90 -105,-75 -15,-75 0,-60"/>
-  </object>
-  <object x="1053" y="779.5" width="8" height="8"/>
-  <object x="1173.5" y="600.5" width="8" height="8"/>
-  <object x="920.5" y="1021.5">
-   <polygon points="0,0 9.5,5 19.5,0"/>
-  </object>
-  <object x="740.5" y="1020.5">
-   <polygon points="0,0 9.5,5 19.5,0"/>
-  </object>
-  <object x="559.5" y="1021.5">
-   <polygon points="0,0 9.5,5 19.5,0"/>
-  </object>
-  <object x="1339" y="595.5">
-   <polygon points="0,0 9.5,5 19.5,0"/>
-  </object>
-  <object x="1519.5" y="596">
-   <polygon points="0,0 9.5,5 19.5,0"/>
-  </object>
-  <object x="1699.5" y="597">
-   <polygon points="0,0 9.5,5 19.5,0"/>
-  </object>
-  <object x="1699" y="319">
-   <polygon points="0,0 11,-5.5 22,0"/>
-  </object>
-  <object x="1518.5" y="317">
-   <polygon points="0,0 11,-5.5 22,0"/>
-  </object>
-  <object x="1339.5" y="317.5">
-   <polygon points="0,0 11,-5.5 22,0"/>
-  </object>
-  <object x="1037.5" y="215">
-   <polygon points="0,0 11,-5.5 22,0"/>
-  </object>
-  <object x="858" y="215">
-   <polygon points="0,0 11,-5.5 22,0"/>
-  </object>
-  <object x="679" y="213.5">
-   <polygon points="0,0 11,-5.5 22,0"/>
-  </object>
-  <object x="498.5" y="213">
-   <polygon points="0,0 11,-5.5 22,0"/>
-  </object>
-  <object x="381" y="377.5">
-   <polygon points="0,0 -6,13.5 0,26"/>
-  </object>
-  <object x="380" y="557">
-   <polygon points="0,0 -6,13.5 0,26"/>
-  </object>
-  <object x="380" y="737.5">
-   <polygon points="0,0 -6,13.5 0,26"/>
-  </object>
-  <object x="437.5" y="918">
-   <polygon points="0,0 -6,13.5 0,26"/>
+  <object id="114" x="1185" y="285">
+   <polygon points="0,0 15,0 30,15 30,30 135,30 195,30 315,30 375,30 495,30 555,30 765,30 765,15 780,0 795,0 795,-270 -1170,-270 -1170,0 -945,0 -915,30 -915,735 -930,750 -1170,750 -1170,1260 -885,1260 -885,900 -870,885 -315,885 -315,1245 -300,1260 -90,1260 -90,810 195,810 225,780 225,615 765,615 795,585 795,345 780,345 765,330 765,315 555,315 495,315 375,315 315,315 195,315 135,315 30,315 30,330 15,345 0,345 0,435 0,495 0,510 -15,525 -90,525 -105,540 -105,615 -105,675 -105,735 -120,750 -225,750 -285,750 -405,750 -465,750 -585,750 -645,750 -735,750 -750,735 -750,675 -750,615 -750,585 -765,570 -795,570 -810,555 -810,495 -810,435 -810,315 -810,255 -810,135 -810,75 -810,-45 -810,-60 -795,-75 -705,-75 -645,-75 -525,-75 -465,-75 -345,-75 -285,-75 -165,-75 -105,-75 -15,-75 0,-60"/>
   </object>
  </objectgroup>
- <objectgroup color="#b4b4b4" name="objects">
-  <object gid="21" x="720" y="1005.5"/>
-  <object gid="1" x="721" y="991"/>
-  <object gid="26" x="1755" y="585" height="255"/>
-  <object gid="22" x="1380" y="585">
+ <objectgroup color="#b4b4b4" draworder="index" name="objects">
+  <object id="115" gid="303" x="540" y="1005"/>
+  <object id="116" gid="305" x="675" y="957"/>
+  <object id="117" gid="304" x="1200" y="585">
    <properties>
     <property name="id" value="0"/>
    </properties>
   </object>
+  <object id="119" gid="306" x="1710" y="584" height="255"/>
  </objectgroup>
  <objectgroup color="#aaff00" name="Objectives"/>
 </map>

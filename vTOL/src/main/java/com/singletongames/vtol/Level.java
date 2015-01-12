@@ -1,9 +1,11 @@
 package com.singletongames.vtol;
 
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import android.util.Pair;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.singletongames.vtol.objectives.ObjectiveZone;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.SmoothCamera;
@@ -25,11 +27,9 @@ import org.andengine.util.color.Color;
 import org.andengine.util.color.ColorUtils;
 import org.andengine.util.debug.Debug;
 
-import android.util.Pair;
-
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.singletongames.vtol.objectives.ObjectiveZone;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Level implements IDisposable {	
 	private int mLevelID;
@@ -220,45 +220,45 @@ public class Level implements IDisposable {
 						if (!tileProp.equals("")){	
 							if (tileProp.equals("CARGODROP")){
 								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
-								CargoDrop drop = new CargoDrop(obj.getX() + 30 - Resources.CargoDrop.getWidth()/2, obj.getY() - Resources.CargoDrop.getHeight(), id, null);
+								CargoDrop drop = new CargoDrop(obj.getX(), obj.getY() - Resources.CargoDrop.getHeight(), id, null);
 								drop.setZIndex(15);
 								cargoDrops.add(drop);
 								scene.attachChild(drop);
 							}
 							else if (tileProp.equals("WOODENBOX")){
 								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
-								WoodenBox box = new WoodenBox(obj.getX() + 30 - Resources.WoodenBox.getWidth()/2, obj.getY() - Resources.WoodenBox.getHeight(), id);
+								WoodenBox box = new WoodenBox(obj.getX(), obj.getY() - Resources.WoodenBox.getHeight(), id);
 								box.setZIndex(20);
 								scene.attachChild(box);
 							}
 							else if (tileProp.equals("LAUNCHPAD")){
-								LaunchPad pad = new LaunchPad(scene, obj.getX() + 30 - Resources.LaunchPad.getWidth()/2, obj.getY() - Resources.LaunchPad.getHeight(), null);
+								LaunchPad pad = new LaunchPad(scene, obj.getX(), obj.getY() - Resources.LaunchPad.getHeight(), null);
 								pad.setZIndex(10);
 								scene.attachChild(pad);
 								this.launchPad = pad;
 							}
 							else if (tileProp.equals("LANDINGPAD")){
 								int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
-								LandingPad pad = new LandingPad(scene, obj.getX() + 30 - Resources.LandingPad.getWidth()/2, obj.getY() - Resources.LandingPad.getHeight(), id, null);
+								LandingPad pad = new LandingPad(scene, obj.getX(), obj.getY() - Resources.LandingPad.getHeight(), id, null);
 								pad.setZIndex(10);
 								scene.attachChild(pad);
 								this.landingPad = pad;
 							}
                             else if (tileProp.equals("REFUELPAD")){
                                 int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
-                                RefuelPad pad = new RefuelPad((LanderScene)scene, obj.getX() + 30 - Resources.refuelPad.getWidth()/2, obj.getY() - Resources.refuelPad.getHeight(), id, null);
+                                RefuelPad pad = new RefuelPad((LanderScene)scene, obj.getX(), obj.getY() - Resources.refuelPad.getHeight(), id, null);
                                 pad.setZIndex(10);
                                 refuelPads.add(pad);
                                 scene.attachChild(pad);
                             }
                             else if (tileProp.equals("REPAIRPAD")){
                                 int id = Util.getTMXProperty(obj.getTMXObjectProperties(), "id", -1);
-                                RepairPad pad = new RepairPad((LanderScene)scene, obj.getX() + 30 - Resources.RepairPad.getWidth()/2, obj.getY() - Resources.RepairPad.getHeight(), id, null);
+                                RepairPad pad = new RepairPad((LanderScene)scene, obj.getX(), obj.getY() - Resources.RepairPad.getHeight(), id, null);
                                 pad.setZIndex(10);
                                 repairPads.add(pad);
                                 scene.attachChild(pad);
                             }
-                            else if (tileProp.equals("DOORS")){
+                            else if (tileProp.equals("DOORS") || tileProp.equals("DOOR")){
                                 float height = obj.getHeight();
                                 if (height == 0) height = (Resources.DoorBase.getHeight()*2) + Resources.DoorBottom.getHeight() + Resources.DoorTop.getHeight();
 
@@ -269,15 +269,15 @@ public class Level implements IDisposable {
 							else if (tileProp.equals("LANDER")){
 								switch (Resources.selectedLander){
 									case 0:{
-										lander = new LanderTrainer(obj.getX() + 30 - Resources.LanderTrainer.getWidth()/2, obj.getY() - Resources.LanderTrainer.getHeight(), null);
+										lander = new LanderTrainer(obj.getX(), obj.getY() - Resources.LanderTrainer.getHeight(), null);
 										break;
 									}
 									case 1:{
-										lander = new LunarLander(obj.getX() + 30 - Resources.LanderTrainer.getWidth()/2, obj.getY() - Resources.LanderTrainer.getHeight(), null);
+										lander = new LunarLander(obj.getX(), obj.getY() - Resources.LanderTrainer.getHeight(), null);
 										break;
 									}
 									default:{
-										lander = new LanderTrainer(obj.getX() + 30 - Resources.LanderTrainer.getWidth()/2, obj.getY() - Resources.LanderTrainer.getHeight(), null);
+										lander = new LanderTrainer(obj.getX(), obj.getY() - Resources.LanderTrainer.getHeight(), null);
 									}
 								}
 								lander.setZIndex(20);
