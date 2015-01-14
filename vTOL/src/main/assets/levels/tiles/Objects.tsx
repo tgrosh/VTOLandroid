@@ -10,7 +10,7 @@
   <properties>
    <property name="type" value="RefuelPad"/>
   </properties>
-  <image width="250" height="100" source="refuelPad.png"/>
+  <image width="420" height="120" source="refuelPad.png"/>
  </tile>
  <tile id="2">
   <properties>
