@@ -1,57 +1,6 @@
 package com.singletongames.vtol;
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.andengine.engine.Engine;
-import org.andengine.engine.camera.BoundCamera;
-import org.andengine.engine.camera.Camera;
-import org.andengine.engine.camera.SmoothCamera;
-import org.andengine.engine.camera.hud.HUD;
-import org.andengine.entity.Entity;
-import org.andengine.entity.IEntity;
-import org.andengine.entity.modifier.AlphaModifier;
-import org.andengine.entity.modifier.ParallelEntityModifier;
-import org.andengine.entity.modifier.ScaleModifier;
-import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
-import org.andengine.entity.primitive.Rectangle;
-import org.andengine.entity.scene.Scene;
-import org.andengine.entity.shape.RectangularShape;
-import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.text.AutoWrap;
-import org.andengine.entity.text.Text;
-import org.andengine.extension.physics.box2d.PhysicsFactory;
-import org.andengine.extension.physics.box2d.PhysicsWorld;
-import org.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
-import org.andengine.extension.tmx.TMXObject;
-import org.andengine.extension.tmx.TMXObjectProperty;
-import org.andengine.extension.tmx.TMXProperties;
-import org.andengine.extension.tmx.TMXProperty;
-import org.andengine.extension.tmx.TMXTileProperty;
-import org.andengine.extension.tmx.TMXTileSet;
-import org.andengine.extension.tmx.TMXTiledMap;
-import org.andengine.extension.tmx.TMXTiledMapProperty;
-import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.font.Font;
-import org.andengine.opengl.font.FontFactory;
-import org.andengine.opengl.font.GradientFontFactory;
-import org.andengine.opengl.font.GradientStrokeFont;
-import org.andengine.opengl.font.StrokeFont;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.opengl.texture.region.TiledTextureRegion;
-import org.andengine.util.debug.Debug;
-import org.andengine.util.modifier.IModifier;
-import org.andengine.util.modifier.ease.EaseBackOut;
-
-import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -66,6 +15,46 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+
+import org.andengine.engine.Engine;
+import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.SmoothCamera;
+import org.andengine.engine.camera.hud.HUD;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.AlphaModifier;
+import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
+import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.scene.Scene;
+import org.andengine.entity.shape.RectangularShape;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
+import org.andengine.extension.physics.box2d.PhysicsFactory;
+import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
+import org.andengine.extension.tmx.TMXProperties;
+import org.andengine.extension.tmx.TMXProperty;
+import org.andengine.extension.tmx.TMXTileProperty;
+import org.andengine.extension.tmx.TMXTileSet;
+import org.andengine.extension.tmx.TMXTiledMap;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.font.GradientFontFactory;
+import org.andengine.opengl.font.GradientStrokeFont;
+import org.andengine.opengl.font.StrokeFont;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.texture.region.TiledTextureRegion;
+import org.andengine.util.debug.Debug;
+import org.andengine.util.modifier.IModifier;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Util {
 	protected static Text GetStringTexture(final String text, float posX, float posY, int maxCharacters, Font font, Engine engine)	{
@@ -415,7 +404,8 @@ public class Util {
 		GRADIENT_RED,
 		GRADIENT_GREEN_GRAY,
 		TRANSPARENT,
-		WHITE
+		WHITE,
+        CYAN
 	}
 	
 	public static GradientStrokeFont GetGradientStrokeFont(final int size, SimpletonTextColorScheme ColorScheme, final int strokeColor, int strokeWidth, boolean Bold, Engine pEngine) {
@@ -467,6 +457,11 @@ public class Util {
 			fillColorTop = Color.WHITE;
 			fillColorBottom = Color.WHITE;
 		}
+        else if (ColorScheme == SimpletonTextColorScheme.CYAN)
+        {
+            fillColorTop = Color.rgb(204,255,255);
+            fillColorBottom = Color.rgb(204,255,255);
+        }
 		else
 		{
 			fillColorTop = Color.rgb(0,0,0);

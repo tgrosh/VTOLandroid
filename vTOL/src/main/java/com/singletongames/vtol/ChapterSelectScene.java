@@ -39,15 +39,15 @@ public class ChapterSelectScene extends GameScene {
 		Text title = new Text(0,0,Resources.mFont_Yellow24, "Chapter Select", Resources.mEngine.getVertexBufferObjectManager());
 		title.setPosition(titleBar.getWidth()/2 - title.getWidth()/2, titleBar.getHeight()/2 - title.getHeight()/2 - 2);
 		titleBar.attachChild(title);
-		
-		ButtonSprite backButton = new ButtonSprite(20, 20, Resources.BackButton, Resources.mEngine.getVertexBufferObjectManager(), new OnClickListener() {				
-			@Override
-			public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {
-				Util.FadeToBlack(mthis, new MainMenuScene());
-			}
-		});
-		this.registerTouchArea(backButton);
-		this.attachChild(backButton);
+        ButtonSprite backButton = new ButtonSprite(20, 20, Resources.BackButton, Resources.mEngine.getVertexBufferObjectManager(), new OnClickListener() {
+            @Override
+            public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {
+                Util.FadeToBlack(mthis, new MainMenuScene());
+            }
+        });
+        this.registerTouchArea(backButton);
+        this.attachChild(backButton);
+
 		
 		int numCols = 4;
 		int leftPadding = 120;

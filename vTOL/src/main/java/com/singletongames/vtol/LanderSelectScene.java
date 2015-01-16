@@ -7,15 +7,14 @@ import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
-import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.AutoWrap;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.util.color.Color;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseBackOut;
 import org.andengine.util.modifier.ease.EaseSineIn;
@@ -38,17 +37,15 @@ public class LanderSelectScene extends GameScene {
 	private List<Sprite> landerSprites;
 	private Sprite currentLanderSprite;
 	private Text tDescription;
-	private Sprite sFrame;
-	private Rectangle rectTop;
-	private Rectangle rectBottom;	
+	private Sprite panelLarge;
 	
 	private ILanderSelectListener listener;
 	private boolean transitioning = false;
 
 	private Text tLocked;
+    private Text tTapToSelect;
+    private Text title;
 
-	private Text tTapToSelect;
-	
 	public LanderSelectScene(ILanderSelectListener listener) {
 		this.listener = listener;
 		if (landers != null && landers.size() > 0){
@@ -58,64 +55,57 @@ public class LanderSelectScene extends GameScene {
 
 	private void Load() {
 		Util.ResetCamera((SmoothCamera) Resources.mEngine.getCamera());
-				
-		setBackgroundEnabled(false);
-		
-		Rectangle backDrop = new Rectangle(0, 0, Resources.CAMERA_WIDTH, Resources.CAMERA_HEIGHT, Resources.mEngine.getVertexBufferObjectManager());
-		backDrop.setColor(Color.BLACK);
-		backDrop.setAlpha(.4f);		
-		
-		sFrame = new Sprite(Resources.CAMERA_WIDTH/2 - Resources.LanderSelectFrame.getWidth()/2, Resources.CAMERA_HEIGHT/2 - Resources.LanderSelectFrame.getHeight()/2, Resources.LanderSelectFrame, Resources.mEngine.getVertexBufferObjectManager());
-		sFrame.setScale(.5f);
-		sFrame.setAlpha(0f);
-		
-		Text tCancel = new Text(669, 60, Resources.mFont_Yellow24, "Cancel", Resources.mEngine.getVertexBufferObjectManager()){
-			@Override
-			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				listener.onCancel();
-				return true;
-			}
-			
-		};
-		
-		tTapToSelect = new Text(0, 0, Resources.mFont_Yellow24, "Tap to Select", Resources.mEngine.getVertexBufferObjectManager());
-		tTapToSelect.setPosition(Resources.LanderSelectFrame.getWidth()/2 - tTapToSelect.getWidth()/2, 350);
-		tTapToSelect.setVisible(false);
-		
-		tLocked = new Text(0, 0, Resources.mFont_Red48, "Locked", Resources.mEngine.getVertexBufferObjectManager());
-		tLocked.setPosition(Resources.LanderSelectFrame.getWidth()/2 - tLocked.getWidth()/2, 335);
+        this.setBackgroundEnabled(false);
+
+		panelLarge = new Sprite(Resources.CAMERA_WIDTH/2 - Resources.LargePanel.getWidth()/2, Resources.CAMERA_HEIGHT/2 - Resources.LargePanel.getHeight()/2, Resources.LargePanel, Resources.mEngine.getVertexBufferObjectManager());
+		panelLarge.setScale(.5f);
+		panelLarge.setAlpha(0f);
+
+        title = new Text(0, 0, Resources.mFont_Cyan24, "Select Lander", Resources.mEngine.getVertexBufferObjectManager());
+        title.setPosition(Resources.LanderSelectFrame.getWidth() / 2 - title.getWidth() / 2, 10);
+
+        tLocked = new Text(0, 0, Resources.mFont_Red48, "Locked", Resources.mEngine.getVertexBufferObjectManager());
+		tLocked.setPosition(Resources.LanderSelectFrame.getWidth() / 2 - tLocked.getWidth() / 2, 335);
 		tLocked.setVisible(false);
-		
-		Sprite sArrowLeft = new Sprite(45, Resources.LanderSelectFrame.getHeight()/2 - Resources.LanderSelectArrow.getHeight()/2, Resources.LanderSelectArrow, Resources.mEngine.getVertexBufferObjectManager()){
-			@Override
-			public boolean onAreaTouched(TouchEvent pSceneTouchEvent,float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (pSceneTouchEvent.isActionUp() && !transitioning){
-					Prev();
-				}
-				return true;
-			}
-			
-		};
-		sArrowLeft.setFlippedHorizontal(true);
-		Sprite sArrowRight = new Sprite(Resources.LanderSelectFrame.getWidth() - Resources.LanderSelectArrow.getWidth() - 45, sArrowLeft.getY(), Resources.LanderSelectArrow, Resources.mEngine.getVertexBufferObjectManager()){
-			@Override
-			public boolean onAreaTouched(TouchEvent pSceneTouchEvent,float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (pSceneTouchEvent.isActionUp() && !transitioning){
-					Next();
-				}
-				return true;
-			}
-			
-		};
-		
-		Sprite sInfoFrameLeft = new Sprite(Resources.LanderSelectFrame.getWidth()/2 - Resources.LanderSelectInfoFrame.getWidth() - 20, 388, Resources.LanderSelectInfoFrame, Resources.mEngine.getVertexBufferObjectManager());
-		Sprite sInfoFrameRight = new Sprite(Resources.LanderSelectFrame.getWidth()/2 + 20, sInfoFrameLeft.getY(), Resources.LanderSelectInfoFrame, Resources.mEngine.getVertexBufferObjectManager());
-		
-		landerSprites = new ArrayList<Sprite>();
+        tLocked.setZIndex(101);
+
+        tTapToSelect = new Text(0, 0, Resources.mFont_Cyan24, "Tap to Select", Resources.mEngine.getVertexBufferObjectManager());
+        tTapToSelect.setPosition(Resources.LanderSelectFrame.getWidth()/2 - tTapToSelect.getWidth()/2, 350);
+        tTapToSelect.setVisible(false);
+        tTapToSelect.setZIndex(101);
+
+        Sprite sLanderFrameOverlay = new Sprite(panelLarge.getWidth()/2 - Resources.LanderPanelOverlay.getWidth()/2, 150, Resources.LanderPanelOverlay, Resources.mEngine.getVertexBufferObjectManager());
+        sLanderFrameOverlay.setZIndex(100);
+        Sprite sInfoFrameLeft = new Sprite(panelLarge.getWidth()/2 - Resources.InfoPanelOverlay.getWidth() - 20, 388, Resources.InfoPanelOverlay, Resources.mEngine.getVertexBufferObjectManager());
+		Sprite sInfoFrameRight = new Sprite(panelLarge.getWidth()/2 + 20, sInfoFrameLeft.getY(), Resources.InfoPanelOverlay, Resources.mEngine.getVertexBufferObjectManager());
+
+        Sprite sArrowLeft = new Sprite(65, sLanderFrameOverlay.getY() + sLanderFrameOverlay.getHeight()/2 - Resources.PanelArrowRight.getHeight()/2, Resources.PanelArrowRight, Resources.mEngine.getVertexBufferObjectManager()){
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                if (pSceneTouchEvent.isActionUp() && !transitioning){
+                    Prev();
+                }
+                return true;
+            }
+
+        };
+        sArrowLeft.setFlippedHorizontal(true);
+        Sprite sArrowRight = new Sprite(panelLarge.getWidth() - Resources.PanelArrowRight.getWidth() - 65, sArrowLeft.getY(), Resources.PanelArrowRight, Resources.mEngine.getVertexBufferObjectManager()){
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                if (pSceneTouchEvent.isActionUp() && !transitioning){
+                    Next();
+                }
+                return true;
+            }
+
+        };
+
+        landerSprites = new ArrayList<Sprite>();
 		for (int x=0; x<Resources.HighResLanders.size(); x++ ){
 			TextureRegion tex = Resources.HighResLanders.get(x);
 			
-			Sprite s = new Sprite(Resources.LanderSelectFrame.getWidth()/2 - tex.getWidth()/2, 265 - tex.getHeight()/2, tex, Resources.mEngine.getVertexBufferObjectManager()){
+			Sprite s = new Sprite(panelLarge.getWidth()/2 - tex.getWidth()/2, 265 - tex.getHeight()/2, tex, Resources.mEngine.getVertexBufferObjectManager()){
 				@Override
 				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,float pTouchAreaLocalX, float pTouchAreaLocalY) {
 					if (pSceneTouchEvent.isActionUp() && !transitioning){
@@ -128,84 +118,90 @@ public class LanderSelectScene extends GameScene {
 			
 			landerSprites.add(s);
 		}
-		currentLanderSprite = landerSprites.get(0);		
-		
-		sInfoProgress1 = new AnimatedSprite(sInfoFrameRight.getWidth()/2 + 5, 13, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
-		sInfoProgress2 = new AnimatedSprite(sInfoFrameRight.getWidth()/2 + 5, sInfoProgress1.getY() + 25, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
-		sInfoProgress3 = new AnimatedSprite(sInfoFrameRight.getWidth()/2 + 5, sInfoProgress2.getY() + 25, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
-		sInfoProgress4 = new AnimatedSprite(sInfoFrameRight.getWidth()/2 + 5, sInfoProgress3.getY() + 25, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
-		
-		tName = new Text(0, 0, Resources.mFont_White48, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", Resources.mEngine.getVertexBufferObjectManager());
-		
-		rectTop = new Rectangle(tName.getX() - 20, tName.getY() - 1, tName.getWidth() + 40, 8, Resources.mEngine.getVertexBufferObjectManager());
-		rectTop.setColor(Color.BLACK);
-		rectBottom = new Rectangle(rectTop.getX(), tName.getY() + tName.getHeight() - 2, rectTop.getWidth(), rectTop.getHeight(), Resources.mEngine.getVertexBufferObjectManager());
-		rectBottom.setColor(Color.BLACK);
-		
-		tDescription = new Text(0, 0, Resources.mFont_White18, landers.get(mCurrentLanderIndex).getDescription(), Resources.mEngine.getVertexBufferObjectManager());
+		currentLanderSprite = landerSprites.get(0);
+        currentLanderSprite.setZIndex(99);
+
+		tName = new Text(0, 0, Resources.mFont_Cyan48, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", Resources.mEngine.getVertexBufferObjectManager());
+        Sprite sNameOverlay = new Sprite(panelLarge.getWidth()/2 - Resources.LanderNameOverlay.getWidth()/2, 66, Resources.LanderNameOverlay, Resources.mEngine.getVertexBufferObjectManager());
+
+        tDescription = new Text(0, 0, Resources.mFont_Cyan18, landers.get(mCurrentLanderIndex).getDescription(), Resources.mEngine.getVertexBufferObjectManager());
 		tDescription.setAutoWrap(AutoWrap.WORDS);
-		tDescription.setAutoWrapWidth(sInfoFrameLeft.getWidth() - 30);
-		tDescription.setPosition(15, 10);
+		tDescription.setAutoWrapWidth(sInfoFrameLeft.getWidth() - 60);
+		tDescription.setPosition(sInfoFrameLeft.getX() + 30, sInfoFrameLeft.getY() + 15);
 		
-		Text attPower = new Text(0, 0, Resources.mFont_White24, "Power", Resources.mEngine.getVertexBufferObjectManager());
-		attPower.setPosition(sInfoFrameRight.getWidth()/2 - attPower.getWidth() - 5, 15);
-		Text attToughness = new Text(0, 0, Resources.mFont_White24, "Toughness", Resources.mEngine.getVertexBufferObjectManager());
-		attToughness.setPosition(sInfoFrameRight.getWidth()/2 - attToughness.getWidth() - 5, attPower.getY() + 25);
-		Text attFuel = new Text(0, 0, Resources.mFont_White24, "Fuel", Resources.mEngine.getVertexBufferObjectManager());
-		attFuel.setPosition(sInfoFrameRight.getWidth()/2 - attFuel.getWidth() - 5, attToughness.getY() + 25);
-		Text attWeight = new Text(0, 0, Resources.mFont_White24, "Weight", Resources.mEngine.getVertexBufferObjectManager());
-		attWeight.setPosition(sInfoFrameRight.getWidth()/2 - attWeight.getWidth() - 5, attFuel.getY() + 25);
-		
+		Text attPower = new Text(0, 0, Resources.mFont_Cyan24, "Power", Resources.mEngine.getVertexBufferObjectManager());
+		attPower.setPosition(sInfoFrameRight.getX() + sInfoFrameRight.getWidth()/2 - attPower.getWidth() + 25, sInfoFrameRight.getY() + 15);
+		Text attToughness = new Text(0, 0, Resources.mFont_Cyan24, "Toughness", Resources.mEngine.getVertexBufferObjectManager());
+		attToughness.setPosition(sInfoFrameRight.getX() + sInfoFrameRight.getWidth()/2 - attToughness.getWidth() + 25, attPower.getY() + 25);
+		Text attFuel = new Text(0, 0, Resources.mFont_Cyan24, "Fuel", Resources.mEngine.getVertexBufferObjectManager());
+		attFuel.setPosition(sInfoFrameRight.getX() + sInfoFrameRight.getWidth()/2 - attFuel.getWidth() + 25, attToughness.getY() + 25);
+		Text attWeight = new Text(0, 0, Resources.mFont_Cyan24, "Weight", Resources.mEngine.getVertexBufferObjectManager());
+		attWeight.setPosition(sInfoFrameRight.getX() + sInfoFrameRight.getWidth() / 2 - attWeight.getWidth() + 25, attFuel.getY() + 25);
+
+        sInfoProgress1 = new AnimatedSprite(sInfoFrameRight.getX() + sInfoFrameRight.getWidth()/2 + 30, sInfoFrameRight.getY() + 25, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
+        sInfoProgress2 = new AnimatedSprite(sInfoProgress1.getX(), sInfoProgress1.getY() + 25, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
+        sInfoProgress3 = new AnimatedSprite(sInfoProgress1.getX(), sInfoProgress2.getY() + 25, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
+        sInfoProgress4 = new AnimatedSprite(sInfoProgress1.getX(), sInfoProgress3.getY() + 25, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
+
+
+        ButtonSprite backButton = new ButtonSprite(40, 40, Resources.PanelBackButton, Resources.mEngine.getVertexBufferObjectManager(), new ButtonSprite.OnClickListener() {
+            @Override
+            public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {
+                listener.onCancel();
+            }
+        });
+        this.registerTouchArea(backButton);
+        panelLarge.attachChild(backButton);
+
 		ShowLanderInfo(mCurrentLanderIndex);
-		
-		sInfoFrameLeft.attachChild(tDescription);
-		
-		sInfoFrameRight.attachChild(attPower);
-		sInfoFrameRight.attachChild(attToughness);
-		sInfoFrameRight.attachChild(attFuel);
-		sInfoFrameRight.attachChild(attWeight);
-		
-		sInfoFrameRight.attachChild(sInfoProgress1);
-		sInfoFrameRight.attachChild(sInfoProgress2);
-		sInfoFrameRight.attachChild(sInfoProgress3);
-		sInfoFrameRight.attachChild(sInfoProgress4);
-		
-		sFrame.attachChild(tCancel);
-		sFrame.attachChild(tTapToSelect);
-		sFrame.attachChild(tLocked);
-		sFrame.attachChild(sArrowLeft);
-		sFrame.attachChild(sArrowRight);
-		sFrame.attachChild(sInfoFrameLeft);
-		sFrame.attachChild(sInfoFrameRight);
-		sFrame.attachChild(tName);
-		sFrame.attachChild(rectTop);
-		sFrame.attachChild(rectBottom);
+
+        panelLarge.attachChild(title);
+
+        panelLarge.attachChild(tDescription);
+
+        panelLarge.attachChild(attPower);
+        panelLarge.attachChild(attToughness);
+        panelLarge.attachChild(attFuel);
+        panelLarge.attachChild(attWeight);
+
+        panelLarge.attachChild(sInfoProgress1);
+        panelLarge.attachChild(sInfoProgress2);
+        panelLarge.attachChild(sInfoProgress3);
+        panelLarge.attachChild(sInfoProgress4);
+
+		panelLarge.attachChild(sArrowLeft);
+		panelLarge.attachChild(sArrowRight);
+		panelLarge.attachChild(sInfoFrameLeft);
+		panelLarge.attachChild(sInfoFrameRight);
+		panelLarge.attachChild(tName);
+        panelLarge.attachChild(sNameOverlay);
 		if (landerSprites.size() > 0){
-			sFrame.attachChild(currentLanderSprite);
+			panelLarge.attachChild(currentLanderSprite);
 		}
-		
-		this.attachChild(backDrop);
-		this.attachChild(sFrame);
-		
-		this.registerTouchArea(tCancel);
+        panelLarge.attachChild(sLanderFrameOverlay);
+        panelLarge.attachChild(tTapToSelect);
+        panelLarge.attachChild(tLocked);
+
+		this.attachChild(panelLarge);
+
 		this.registerTouchArea(sArrowLeft);
-		this.registerTouchArea(sArrowRight);	
-		if (landers.get(mCurrentLanderIndex).isLocked()){
-			Sprite sLocked = new Sprite(currentLanderSprite.getWidth()/2 - Resources.LanderSelectLocked.getWidth()/2,currentLanderSprite.getHeight()/2 - Resources.LanderSelectLocked.getHeight()/2,Resources.LanderSelectLocked,Resources.mEngine.getVertexBufferObjectManager());
-			currentLanderSprite.attachChild(sLocked);
-			tLocked.setVisible(true);
-			tTapToSelect.setVisible(false);
-		}
-		else{
-			this.registerTouchArea(currentLanderSprite);
-			tLocked.setVisible(false);
-			tTapToSelect.setVisible(true);
-		}
+		this.registerTouchArea(sArrowRight);
+        if (landers.get(mCurrentLanderIndex).isLocked()){
+            Sprite sLocked = new Sprite(currentLanderSprite.getWidth()/2 - Resources.LanderSelectLocked.getWidth()/2,currentLanderSprite.getHeight()/2 - Resources.LanderSelectLocked.getHeight()/2,Resources.LanderSelectLocked,Resources.mEngine.getVertexBufferObjectManager());
+            currentLanderSprite.attachChild(sLocked);
+            tLocked.setVisible(true);
+            tTapToSelect.setVisible(false);
+        }
+        else{
+            this.registerTouchArea(currentLanderSprite);
+            tLocked.setVisible(false);
+            tTapToSelect.setVisible(true);
+        }
 		
 		ScaleModifier scaleIn = new ScaleModifier(.5f, .5f, 1f, EaseBackOut.getInstance());
 		AlphaModifier alphaIn = new AlphaModifier(.25f, 0f, 1f);
 		ParallelEntityModifier par = new ParallelEntityModifier(scaleIn, alphaIn);
-		sFrame.registerEntityModifier(par);
+		panelLarge.registerEntityModifier(par);
 	}
 
 	protected void SelectLander(int index) {		
@@ -215,11 +211,7 @@ public class LanderSelectScene extends GameScene {
 
 	private void ShowLanderInfo(final int Index){
 		tName.setText(landers.get(Index).getName());
-		tName.setPosition(Resources.LanderSelectFrame.getWidth()/2 - tName.getWidth()/2, 93);
-		rectTop.setPosition(tName.getX() - 20, tName.getY() - 1);
-		rectTop.setSize(tName.getWidth() + 40, 8);
-		rectBottom.setPosition(rectTop.getX(), tName.getY() + tName.getHeight() - 2);
-		rectBottom.setSize(rectTop.getWidth(), rectTop.getHeight());
+		tName.setPosition(Resources.LanderSelectFrame.getWidth() / 2 - tName.getWidth() / 2, 70);
 		
 		tDescription.setText(landers.get(Index).getDescription());
 
@@ -244,9 +236,11 @@ public class LanderSelectScene extends GameScene {
 							currentLanderSprite.detachSelf();						
 							
 							currentLanderSprite = landerSprites.get(Index);
-							currentLanderSprite.setPosition(sFrame.getWidth()/2 - currentLanderSprite.getWidth()/2, newY);
+							currentLanderSprite.setPosition(panelLarge.getWidth()/2 - currentLanderSprite.getWidth()/2, newY);
 							currentLanderSprite.setAlpha(0f);
-							sFrame.attachChild(currentLanderSprite);
+                            currentLanderSprite.setZIndex(99);
+							panelLarge.attachChild(currentLanderSprite);
+                            panelLarge.sortChildren();
 							if (landers.get(Index).isLocked()){
 								Sprite sLocked = new Sprite(currentLanderSprite.getWidth()/2 - Resources.LanderSelectLocked.getWidth()/2,currentLanderSprite.getHeight()/2 - Resources.LanderSelectLocked.getHeight()/2,Resources.LanderSelectLocked,Resources.mEngine.getVertexBufferObjectManager());
 								currentLanderSprite.attachChild(sLocked);

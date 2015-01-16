@@ -51,7 +51,7 @@ public class Resources {
 	
 	public static int selectedLander = 0;
 	
-	public static TiledTextureRegion ResumeButton, StartButton, MenuButton, RestartButton, PauseButton, OKButton, BackButton,NextButton;
+	public static TiledTextureRegion ResumeButton, StartButton, MenuButton, RestartButton, PauseButton, OKButton, BackButton,NextButton, PanelBackButton;
 	public static TiledTextureRegion landerLuna, landerHauler;
 	public static TextureRegion[] landerDebris = new TextureRegion[6];	
 	public static List<TiledTextureRegion> chapterIcons = new ArrayList<TiledTextureRegion>();
@@ -63,6 +63,7 @@ public class Resources {
 	public static TextureRegion ObjectiveBullet, ObjectiveCheck, WoodenBox, ChainLink;
 	public static TextureRegion GaugeBackground, GaugeGreen, GaugeRed, PingButton, CargoDropGlow, FuelIcon, RepairPad, RepairIcon;
     public static TiledTextureRegion LanderTrainer, DoorBase, DoorTop, DoorBottom;
+    public static TextureRegion InfoPanelOverlay, LanderNameOverlay, LanderPanelOverlay, LargePanel, PanelArrowRight;
 
     public static TextureRegion smokeParticle;
 	
@@ -98,6 +99,9 @@ public class Resources {
 	public static Font mFont_White16;
 	public static Font mFont_White18;
 	public static Font mFont_White24;
+    public static Font mFont_Cyan18;
+    public static Font mFont_Cyan24;
+    public static Font mFont_Cyan48;
 	public static Font mFont_Blue36;
 	public static Font mFont_MessageGreen24;
 	public static Font mFont_Green18;
@@ -163,7 +167,12 @@ public class Resources {
         DoorBase = Util.GetTiledTextureRegion("gfx/DoorBase.png",2,1);
         DoorTop = Util.GetTiledTextureRegion("gfx/DoorTop.png",2,1);
         DoorBottom = Util.GetTiledTextureRegion("gfx/DoorBottom.png",2,1);
-
+        InfoPanelOverlay = Util.GetTextureRegion("gfx/InfoPanelOverlay.png");
+        LanderNameOverlay = Util.GetTextureRegion("gfx/LanderNameOverlay.png");
+        LanderPanelOverlay = Util.GetTextureRegion("gfx/LanderPanelOverlay.png");
+        LargePanel = Util.GetTextureRegion("gfx/LargePanel.png");
+        PanelArrowRight = Util.GetTextureRegion("gfx/PanelArrowRight.png");
+        PanelBackButton = Util.GetTiledTextureRegion("gfx/PanelBackButton.png", 3, 1);
 
 
         landerDebris[0] = Util.GetTextureRegion("gfx/LanderDebris1.png");
@@ -245,6 +254,9 @@ public class Resources {
         mFont_White16 = Util.GetGradientStrokeFont(16, Util.SimpletonTextColorScheme.WHITE,Color.BLACK, 1, true, mEngine);
         mFont_White18 = Util.GetGradientStrokeFont(18, Util.SimpletonTextColorScheme.WHITE,Color.BLACK, 1, true, mEngine);
         mFont_White24 = Util.GetGradientStrokeFont(18, Util.SimpletonTextColorScheme.WHITE,Color.BLACK, 1, true, mEngine);
+        mFont_Cyan18 = Util.GetGradientStrokeFont(18, Util.SimpletonTextColorScheme.CYAN,Color.rgb(57,142,172), 1, true, mEngine);
+        mFont_Cyan24 = Util.GetGradientStrokeFont(24, Util.SimpletonTextColorScheme.CYAN,Color.rgb(57,142,172), 1, true, mEngine);
+        mFont_Cyan48 = Util.GetGradientStrokeFont(48, Util.SimpletonTextColorScheme.CYAN,Color.rgb(57,142,172), 2, true, mEngine);
         mFont_Yellow24 = Util.GetStrokeFont(24, Color.YELLOW,Color.BLACK, 2, true, mEngine);
         mFont_Yellow36 = Util.GetStrokeFont(36, Color.YELLOW,Color.BLACK, 3, true, mEngine);
         mFont_MessageGreen24 = Util.GetStrokeFont(24, Color.parseColor("#00CC00"),Color.parseColor("#006600"), 2, true, mEngine);
