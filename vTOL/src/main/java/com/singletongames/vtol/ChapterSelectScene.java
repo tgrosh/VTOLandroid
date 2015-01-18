@@ -42,6 +42,7 @@ public class ChapterSelectScene extends GameScene {
         ButtonSprite backButton = new ButtonSprite(20, 20, Resources.BackButton, Resources.mEngine.getVertexBufferObjectManager(), new OnClickListener() {
             @Override
             public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {
+                Resources.soundButtonConfirm.play();
                 Util.FadeToBlack(mthis, new MainMenuScene());
             }
         });
@@ -71,7 +72,7 @@ public class ChapterSelectScene extends GameScene {
 					topPadding + (rowIndex*rowSize)  + rowSize/2 - Resources.chapterIcons.get(chapter.getId()).getHeight()/2, Resources.chapterIcons.get(chapter.getId()), Resources.mEngine.getVertexBufferObjectManager(), new OnClickListener() {				
 				@Override
 				public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {					
-					//Resources.mArcadeButton1.play();
+					Resources.soundButtonClick.play();
 					Util.FadeToBlack(mthis, new LevelSelectScene(chapter.getId()));
 				}
 			});

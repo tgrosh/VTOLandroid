@@ -32,7 +32,7 @@ public class Resources {
 
     public static final boolean SHOW_FPS = false;
     public static boolean DEBUG_DRAW = false;
-	public static boolean ClearPrefernces = false;
+	public static boolean ClearPrefernces = true;
 	
 	public static int TrainingProgress = 0;
 	
@@ -63,11 +63,10 @@ public class Resources {
 	public static TextureRegion ObjectiveBullet, ObjectiveCheck, WoodenBox, ChainLink;
 	public static TextureRegion GaugeBackground, GaugeGreen, GaugeRed, PingButton, CargoDropGlow, FuelIcon, RepairPad, RepairIcon;
     public static TiledTextureRegion LanderTrainer, DoorBase, DoorTop, DoorBottom;
-    public static TextureRegion InfoPanelOverlay, LanderNameOverlay, LanderPanelOverlay, LargePanel, PanelArrowRight;
+    public static TextureRegion InfoPanelOverlay, LanderNameOverlay, LanderPanelOverlay, LargePanel, PanelArrowRight, MultiPanel;
 
     public static TextureRegion smokeParticle;
-	
-	public static TextureRegion LanderSelectFrame, LanderSelectArrow, LanderSelectInfoFrame;
+
 	public static TiledTextureRegion LanderSelectInfoProgress;
 	
 	public static List<String> completedLevelIDs = new ArrayList<String>();	
@@ -108,7 +107,8 @@ public class Resources {
 	public static Font mFont_Green24;
 	
 	public static Sound RocketEngine0, LanderExplosion, PingSound, Glug, Ding, RepairSound, DoorOpened, DoorOpening;
-	
+    public static Sound soundButtonBad, soundButtonBlip, soundButtonClick, soundButtonConfirm, soundButtonStart;
+
 	public static Sound mRolling, timertick, timergotick, ButtonSound1,ButtonSound2,ButtonSound3,ButtonSound4, ButtonSound1rev,ButtonSound2rev,ButtonSound3rev,ButtonSound4rev;
 	public static Sound mSoundDing1, mSoundDing2, mSoundDing3, mKidsCheer, mBallBounce1, mBallBounce2, mBallBounce3, mBallBounce4, mTrampBounce, mWooshIn, mWooshOut, mFail;
 	public static Sound mGemApplause, mStartButtonSound, mArcadeButton1;
@@ -173,7 +173,7 @@ public class Resources {
         LargePanel = Util.GetTextureRegion("gfx/LargePanel.png");
         PanelArrowRight = Util.GetTextureRegion("gfx/PanelArrowRight.png");
         PanelBackButton = Util.GetTiledTextureRegion("gfx/PanelBackButton.png", 3, 1);
-
+        MultiPanel = Util.GetTextureRegion("gfx/MultiPanel.png");
 
         landerDebris[0] = Util.GetTextureRegion("gfx/LanderDebris1.png");
         landerDebris[1] = Util.GetTextureRegion("gfx/LanderDebris2.png");
@@ -206,12 +206,8 @@ public class Resources {
         smokeParticle = Util.GetTextureRegion("gfx/SmokeParticle.png");
 
         MessageFrame = Util.GetTextureRegion("gfx/MessageFrame.png");
-        LanderSelectFrame = Util.GetTextureRegion("gfx/LanderSelectFrame.png");
-        LanderSelectArrow = Util.GetTextureRegion("gfx/LanderSelectArrow.png");
-        LanderSelectInfoFrame = Util.GetTextureRegion("gfx/LanderSelectInfoFrame.png");
         LanderSelectInfoProgress = Util.GetTiledTextureRegion("gfx/LanderSelectInfoProgress.png", 1, 11);
 
-        //HighResLanders.add(Util.GetTextureRegion("gfx/Landerh0.png"));
         HighResLanders.add(Util.GetTextureRegion("gfx/LanderTrainerHigh.png"));
         HighResLanders.add(Util.GetTextureRegion("gfx/Landerh1.png"));
 
@@ -227,6 +223,12 @@ public class Resources {
         RepairSound = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), pActivity, "sfx/Repair.ogg");
         DoorOpened = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), pActivity, "sfx/doorOpened.ogg");
         DoorOpening = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), pActivity, "sfx/doorOpening.ogg");
+
+        soundButtonBad = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), pActivity, "sfx/vtol_button_bad.ogg");
+        soundButtonBlip = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), pActivity, "sfx/vtol_button_blip.ogg");
+        soundButtonClick = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), pActivity, "sfx/vtol_button_click.ogg");
+        soundButtonConfirm = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), pActivity, "sfx/vtol_button_confirm.ogg");
+        soundButtonStart = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), pActivity, "sfx/vtol_start.ogg");
 
         mFont_Green96 = Util.GetGradientStrokeFont(96, Util.SimpletonTextColorScheme.GRADIENT_GREEN,Color.BLACK, 4, true, mEngine);
         mFont_Yellow96 = Util.GetGradientStrokeFont(96, Util.SimpletonTextColorScheme.GRADIENT_REDORANGE,Color.BLACK, 4, true, mEngine);

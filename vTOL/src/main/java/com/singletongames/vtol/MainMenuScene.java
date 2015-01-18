@@ -1,38 +1,15 @@
 package com.singletongames.vtol;
 
+import android.app.AlertDialog;
+
 import org.andengine.engine.Engine;
-import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.SmoothCamera;
-import org.andengine.engine.camera.ZoomCamera;
-import org.andengine.engine.camera.hud.HUD;
-import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
-import org.andengine.entity.IEntity;
-import org.andengine.entity.modifier.AlphaModifier;
-import org.andengine.entity.modifier.IEntityModifier;
-import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
-import org.andengine.entity.modifier.ParallelEntityModifier;
-import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.scene.background.SpriteBackground;
-import org.andengine.entity.scene.background.modifier.ColorBackgroundModifier;
-import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.text.Text;
-import org.andengine.extension.physics.box2d.PhysicsWorld;
-import org.andengine.input.touch.TouchEvent;
-import org.andengine.util.color.Color;
-import org.andengine.util.debug.Debug;
-import org.andengine.util.modifier.IModifier;
-
-import android.app.AlertDialog;
-import android.hardware.SensorManager;
-
-import com.badlogic.gdx.math.Vector2;
 
 public class MainMenuScene extends GameScene {
 	protected SmoothCamera mCamera = (SmoothCamera) Resources.mEngine.getCamera();
@@ -76,7 +53,8 @@ public class MainMenuScene extends GameScene {
 		
 		ButtonSprite startButton = new ButtonSprite(0,0,Resources.StartButton, Resources.mEngine.getVertexBufferObjectManager(), new OnClickListener() {			
 			@Override
-			public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {				
+			public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {
+                Resources.soundButtonStart.play();
 				Util.FadeToBlack(mScene, new ChapterSelectScene());
 			}
 		});		

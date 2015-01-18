@@ -62,15 +62,15 @@ public class LanderSelectScene extends GameScene {
 		panelLarge.setAlpha(0f);
 
         title = new Text(0, 0, Resources.mFont_Cyan24, "Select Lander", Resources.mEngine.getVertexBufferObjectManager());
-        title.setPosition(Resources.LanderSelectFrame.getWidth() / 2 - title.getWidth() / 2, 10);
+        title.setPosition(Resources.LargePanel.getWidth() / 2 - title.getWidth() / 2, 10);
 
         tLocked = new Text(0, 0, Resources.mFont_Red48, "Locked", Resources.mEngine.getVertexBufferObjectManager());
-		tLocked.setPosition(Resources.LanderSelectFrame.getWidth() / 2 - tLocked.getWidth() / 2, 335);
+		tLocked.setPosition(Resources.LargePanel.getWidth() / 2 - tLocked.getWidth() / 2, 335);
 		tLocked.setVisible(false);
         tLocked.setZIndex(101);
 
         tTapToSelect = new Text(0, 0, Resources.mFont_Cyan24, "Tap to Select", Resources.mEngine.getVertexBufferObjectManager());
-        tTapToSelect.setPosition(Resources.LanderSelectFrame.getWidth()/2 - tTapToSelect.getWidth()/2, 350);
+        tTapToSelect.setPosition(Resources.LargePanel.getWidth()/2 - tTapToSelect.getWidth()/2, 350);
         tTapToSelect.setVisible(false);
         tTapToSelect.setZIndex(101);
 
@@ -83,6 +83,7 @@ public class LanderSelectScene extends GameScene {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 if (pSceneTouchEvent.isActionUp() && !transitioning){
+                    Resources.soundButtonBlip.play();
                     Prev();
                 }
                 return true;
@@ -94,6 +95,7 @@ public class LanderSelectScene extends GameScene {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 if (pSceneTouchEvent.isActionUp() && !transitioning){
+                    Resources.soundButtonBlip.play();
                     Next();
                 }
                 return true;
@@ -147,6 +149,7 @@ public class LanderSelectScene extends GameScene {
         ButtonSprite backButton = new ButtonSprite(40, 40, Resources.PanelBackButton, Resources.mEngine.getVertexBufferObjectManager(), new ButtonSprite.OnClickListener() {
             @Override
             public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {
+                Resources.soundButtonConfirm.play();
                 listener.onCancel();
             }
         });
@@ -211,7 +214,7 @@ public class LanderSelectScene extends GameScene {
 
 	private void ShowLanderInfo(final int Index){
 		tName.setText(landers.get(Index).getName());
-		tName.setPosition(Resources.LanderSelectFrame.getWidth() / 2 - tName.getWidth() / 2, 70);
+		tName.setPosition(Resources.LargePanel.getWidth() / 2 - tName.getWidth() / 2, 70);
 		
 		tDescription.setText(landers.get(Index).getDescription());
 

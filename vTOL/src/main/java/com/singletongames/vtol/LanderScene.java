@@ -281,9 +281,11 @@ public class LanderScene extends GameScene implements SensorEventListener {
 			@Override
 			public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {
 				if (!paused){
+                    Resources.soundButtonBlip.play();
 					Pause();
 				}
 				else{
+                    Resources.soundButtonBlip.play();
 					Resume();
 				}
 			}
@@ -413,18 +415,21 @@ public class LanderScene extends GameScene implements SensorEventListener {
 								ButtonSprite restartbutton = new ButtonSprite(Resources.CAMERA_WIDTH/2 - Resources.RestartButton.getWidth() - 20, text2.getY() + text2.getHeight() + 50, Resources.RestartButton, Resources.mEngine.getVertexBufferObjectManager(), new OnClickListener() {
 									@Override
 									public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {
-										Restart();
+                                        Resources.soundButtonClick.play();
+                                        Restart();
 									}
 								});
 								ButtonSprite menubutton = new ButtonSprite(Resources.CAMERA_WIDTH/2 - Resources.MenuButton.getWidth()/2, restartbutton.getY() + restartbutton.getHeight() + 50, Resources.MenuButton, Resources.mEngine.getVertexBufferObjectManager(), new OnClickListener() {
 									@Override
 									public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {
-										MainMenu();
+                                        Resources.soundButtonConfirm.play();
+                                        MainMenu();
 									}
 								});	
 								ButtonSprite nextbutton = new ButtonSprite(Resources.CAMERA_WIDTH/2 + 20, restartbutton.getY(), Resources.NextButton, Resources.mEngine.getVertexBufferObjectManager(), new OnClickListener() {
 									@Override
 									public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {
+                                        Resources.soundButtonClick.play();
                                         final Door door = Resources.mCurrentLevel.getDoor();
                                         if (door != null) {
                                             door.addListener(new IDoorListener() {
@@ -823,17 +828,20 @@ public class LanderScene extends GameScene implements SensorEventListener {
 			public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem,	float pMenuItemLocalX, float pMenuItemLocalY) {
 				switch (pMenuItem.getID()){
 					case 1:{
-						//main menu button									
+						//main menu button
+                        Resources.soundButtonConfirm.play();
 						MainMenu();
 						break;
 					}
 					case 2:{
 						//resume button
+                        Resources.soundButtonBlip.play();
 						Resume();
 						break;
 					}
 					case 3:{
 						//restart button
+                        Resources.soundButtonClick.play();
 						Restart();
 						break;
 					}

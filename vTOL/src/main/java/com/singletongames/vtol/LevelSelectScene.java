@@ -34,7 +34,8 @@ public class LevelSelectScene extends GameScene {
 		ButtonSprite backButton = new ButtonSprite(20, 20, Resources.BackButton, Resources.mEngine.getVertexBufferObjectManager(), new OnClickListener() {				
 			@Override
 			public void onClick(ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {
-				Util.FadeToBlack(mThis, new ChapterSelectScene());
+                Resources.soundButtonConfirm.play();
+                Util.FadeToBlack(mThis, new ChapterSelectScene());
 			}
 		});
 		this.registerTouchArea(backButton);
@@ -60,9 +61,9 @@ public class LevelSelectScene extends GameScene {
 					leftPadding + (columnIndex*columnSize) + columnSize/2 - Resources.chapterIcons.get(lvl.getChapterID()).getWidth()/2, 
 					topPadding + (rowIndex*rowSize)  + rowSize/2 - Resources.chapterIcons.get(lvl.getChapterID()).getHeight()/2, Resources.chapterIcons.get(lvl.getChapterID()), Resources.mEngine.getVertexBufferObjectManager(), new OnClickListener() {				
 				@Override
-				public void onClick(final ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {				
-					//Resources.mArcadeButton1.play();
-					
+				public void onClick(final ButtonSprite pButtonSprite, float pTouchAreaLocalX,	float pTouchAreaLocalY) {
+                    Resources.soundButtonClick.play();
+
 					mThis.setChildScene(new LanderSelectScene(new ILanderSelectListener() {						
 						@Override
 						public void onSelect() {
