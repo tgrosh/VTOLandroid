@@ -1,14 +1,14 @@
 package com.singletongames.vtol;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LevelDB extends SQLiteOpenHelper {
 	private static LevelDB instance = new LevelDB(Resources.mActivity);
@@ -24,7 +24,7 @@ public class LevelDB extends SQLiteOpenHelper {
 	static final String fLevelTime = "LevelTime";
 	private List<Level> mAllLevels = new ArrayList<Level>();
 	
-	static final int mDBVersion = 11;
+	static final int mDBVersion = 12;
 	
 	public LevelDB(Context context) {
 		// THE VALUE OF 1 ON THE NEXT LINE REPRESENTS THE VERSION NUMBER OF THE DATABASE
