@@ -310,7 +310,11 @@
     <property name="id" value="0"/>
    </properties>
   </object>
-  <object id="119" gid="6" x="1710" y="584" height="255"/>
+  <object id="119" gid="6" x="1710" y="584" height="255">
+   <properties>
+    <property name="exit" value=""/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup color="#aaff00" name="Objectives"/>
 </map>

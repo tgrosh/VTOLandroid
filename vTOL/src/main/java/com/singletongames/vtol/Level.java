@@ -262,8 +262,11 @@ public class Level implements IDisposable {
                                 float height = obj.getHeight();
                                 if (height == 0) height = (Resources.DoorBase.getHeight()*2) + Resources.DoorBottom.getHeight() + Resources.DoorTop.getHeight();
 
-                                door = new Door(obj.getX(), obj.getY() - Resources.DoorBase.getHeight(), height, null);
+                                Door door = new Door(obj.getX(), obj.getY() - Resources.DoorBase.getHeight(), height, null);
                                 door.setZIndex(10);
+                                if (obj.getTMXObjectProperties().containsTMXProperty("exit","")) {
+                                    this.door = door;
+                                }
                                 scene.attachChild(door);
                             }
 							else if (tileProp.equals("LANDER")){

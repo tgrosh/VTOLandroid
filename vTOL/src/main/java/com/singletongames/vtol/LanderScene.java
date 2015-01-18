@@ -35,7 +35,6 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
 import org.andengine.entity.sprite.Sprite;
@@ -381,14 +380,15 @@ public class LanderScene extends GameScene implements SensorEventListener {
 
 	protected void endScene(boolean success) {
 		sceneComplete = true;
-		
-		disableThrottle();
+
+        disableThrottle();
 		currentLander.stopEngines();
-				
-		TimerHandler timer = new TimerHandler(1f, false, new ITimerCallback() {			
+        Resources.mEngine.unregisterUpdateHandler(Resources.mPhysicsWorld);
+
+        TimerHandler timer = new TimerHandler(1f, false, new ITimerCallback() {
 			@Override
 			public void onTimePassed(TimerHandler pTimerHandler) {
-				setHudElementsVisible(false);
+                setHudElementsVisible(false);
 				
 				Text text1 = new Text(0,0,Resources.mFont_Green96, "MISSION", Resources.mEngine.getVertexBufferObjectManager());
 				text1.setPosition(Resources.CAMERA_WIDTH/2 - text1.getWidth()/2, Resources.CAMERA_HEIGHT/2 - text1.getHeight() - 30);
@@ -705,33 +705,6 @@ public class LanderScene extends GameScene implements SensorEventListener {
 				mHud.unregisterTouchArea(pingButton);
 			}
 		}
-	}
-	
-	protected void ShowFireworks(final float x, final float y) {
-		fireworksCount = 5;
-		
-		Resources.mEngine.registerUpdateHandler(new TimerHandler(.5f, false, new ITimerCallback() {			
-			
-			@Override
-			public void onTimePassed(TimerHandler pTimerHandler) {
-				int randX = Resources.rand.nextInt(600) - 300;
-				int randY = Resources.rand.nextInt(60) - 30;
-				
-				AnimatedSprite fireworks = new AnimatedSprite(x + randX - Resources.fireworks.getTextureRegion(0).getWidth()/2, y + randY - Resources.fireworks.getTextureRegion(0).getHeight()/2, Resources.fireworks, Resources.mEngine.getVertexBufferObjectManager());
-				fireworks.setZIndex(1);
-				fireworks.setScale(2f);
-				
-				mThis.attachChild(fireworks);
-				mThis.sortChildren();
-				
-				fireworks.animate(50, false);
-				
-				fireworksCount--;
-				if (fireworksCount>0){
-					pTimerHandler.reset();
-				}
-			}
-		}));		
 	}
 
 	private void setHudElementsVisible(boolean visible) {

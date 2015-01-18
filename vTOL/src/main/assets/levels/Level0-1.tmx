@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="33" height="26" tilewidth="60" tileheight="60" backgroundcolor="#efeac8" nextobjectid="104">
- <tileset firstgid="301" source="tiles/Objects.tsx"/>
+ <tileset firstgid="1" source="tiles/Objects.tsx"/>
  <objectgroup color="#bab69b" name="background3">
   <properties>
    <property name="sceneLayer" value=""/>
@@ -303,9 +303,13 @@
   </object>
  </objectgroup>
  <objectgroup color="#b4b4b4" draworder="index" name="objects">
-  <object id="101" gid="303" x="540" y="1005"/>
-  <object id="102" gid="306" x="1230" y="585" height="255"/>
-  <object id="103" gid="305" x="690" y="957"/>
+  <object id="101" gid="3" x="540" y="1005"/>
+  <object id="102" gid="6" x="1230" y="585" height="255">
+   <properties>
+    <property name="exit" value=""/>
+   </properties>
+  </object>
+  <object id="103" gid="5" x="690" y="957"/>
  </objectgroup>
  <objectgroup color="#aaff00" name="Objectives" opacity="0.24">
   <object id="94" x="420" y="240" width="765" height="360">
