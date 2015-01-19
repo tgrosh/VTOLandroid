@@ -218,7 +218,7 @@ public class LanderSelectScene extends GameScene {
 		
 		tDescription.setText(landers.get(Index).getDescription());
 
-		sInfoProgress1.setCurrentTileIndex((int) (landers.get(Index).getEngineThrustPct() * 10f));
+		sInfoProgress1.setCurrentTileIndex((int) (landers.get(Index).getPowerPct() * 10f));
 		sInfoProgress2.setCurrentTileIndex((int) (landers.get(Index).getToughnessPct() * 10f));
 		sInfoProgress3.setCurrentTileIndex((int) (landers.get(Index).getFuelCapacityPct() * 10f));
 		sInfoProgress4.setCurrentTileIndex((int) (landers.get(Index).getDensityPct() * 10f));

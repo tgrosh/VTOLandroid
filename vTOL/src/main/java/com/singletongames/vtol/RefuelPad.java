@@ -20,10 +20,7 @@ import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
-import org.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
-import org.andengine.util.debug.Debug;
 import org.andengine.util.modifier.IModifier;
-import org.andengine.util.modifier.SequenceModifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -214,7 +211,7 @@ public class RefuelPad extends PhysicsSprite {
         fuelingTimer = new TimerHandler(1f, true, new ITimerCallback() {
             @Override
             public void onTimePassed(TimerHandler pTimerHandler) {
-                Sprite fuelIcon = new Sprite(215,40,Resources.FuelIcon, Resources.mEngine.getVertexBufferObjectManager());
+                Sprite fuelIcon = new Sprite(370,40,Resources.FuelIcon, Resources.mEngine.getVertexBufferObjectManager());
                 fuelIcon.setAlpha(0);
                 fuelIcon.setScale(.5f);
                 MoveModifier mover = new MoveModifier(1.5f,fuelIcon.getX(),fuelIcon.getX(), fuelIcon.getY(), fuelIcon.getY()-50f);
@@ -252,10 +249,10 @@ public class RefuelPad extends PhysicsSprite {
 
     private static Vector2[] getVertices() {
         Vector2[] vertices = new Vector2[4];
-        vertices[0] = Util.getBodyPoint(Resources.refuelPad, new Vector2(16, 90));
-        vertices[1] = Util.getBodyPoint(Resources.refuelPad, new Vector2(184, 90));
-        vertices[2] = Util.getBodyPoint(Resources.refuelPad, new Vector2(188, 100));
-        vertices[3] = Util.getBodyPoint(Resources.refuelPad, new Vector2(12, 100));
+        vertices[0] = Util.getBodyPoint(Resources.refuelPad, new Vector2(122, 80));
+        vertices[1] = Util.getBodyPoint(Resources.refuelPad, new Vector2(403, 80));
+        vertices[2] = Util.getBodyPoint(Resources.refuelPad, new Vector2(403, 120));
+        vertices[3] = Util.getBodyPoint(Resources.refuelPad, new Vector2(122, 120));
 
         return vertices;
     }

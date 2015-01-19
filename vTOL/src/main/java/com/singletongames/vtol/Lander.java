@@ -183,8 +183,6 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 		});
 				
 		Resources.mEngine.registerUpdateHandler(new IUpdateHandler() {
-			float counter = 0.0f;
-			
 			@Override
 			public void reset() {
 			}
@@ -228,12 +226,27 @@ public abstract class Lander extends PhysicsAnimatedSprite {
                     healthRemaining += ((repairRate * totalHealth) * pSecondsElapsed);
                 }
 
+                if (enginesOn && airborn) {
+                    if (mBody.getLinearVelocity().x > info.getSpeedLimit()) {
+                        //Debug.d("**Too fast (right), slowing down");
+                        mBody.applyLinearImpulse(new Vector2(info.getSpeedLimit() - mBody.getLinearVelocity().x, 0), mBody.getWorldCenter());
+                    }
+                    if (mBody.getLinearVelocity().x < -info.getSpeedLimit()) {
+                        //Debug.d("**Too fast (left), slowing down");
+                        mBody.applyLinearImpulse(new Vector2(-info.getSpeedLimit() - mBody.getLinearVelocity().x, 0), mBody.getWorldCenter());
+                    }
+                    if (mBody.getLinearVelocity().y < -info.getSpeedLimit()) {
+                        //Debug.d("**Too fast (up), slowing down");
+                        mBody.applyLinearImpulse(new Vector2(0, -info.getSpeedLimit() - mBody.getLinearVelocity().y), mBody.getWorldCenter());
+                    }
+                }
+
 				float mainEngineThrust = 0f;
 				float bodyAngle = mBody.getAngle();
 				airborn = (baseContacts.size() == 0);
 				
 				if (currentFuel > 0f){								
-					mainEngineThrust = info.getEngineThrust() * currentThrottle;
+					mainEngineThrust = info.getPower() * currentThrottle;
 					
 					if (Math.abs(bodyAngle) < .1f) bodyAngle = 0;
 					float bodyAngleSin = (float) Math.sin(bodyAngle); 
@@ -325,7 +338,8 @@ public abstract class Lander extends PhysicsAnimatedSprite {
                             //Debug.w("Tried to Flip Over! desiredAngle: " + desiredAngle + ", currentAngle: " + (Math.toDegrees(bodyAngle) % 360) + ", resulting in degreesToGo: " + degreesToGo);
                             degreesToGo += 360f;
                         }
-                        mBody.setAngularVelocity((float) (1f * (degreesToGo / 20f))); //TODo
+
+                        mBody.setAngularVelocity((float) (1f * (degreesToGo * info.getTurnRate())));
 												
 						for (int x=0; x<getExhaustPoints().size(); x++){
 							Vector2 bodyPoint = new Vector2(getExhaustPoints().get(x).x/PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT,getExhaustPoints().get(x).y/PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
@@ -545,6 +559,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 	}
 		
 	public void setAngle(float angle){
+        angle = Math.max(-info.getAngleLimit(), Math.min(info.getAngleLimit(), angle));
 		desiredAngle = (360f + angle) % 360f;
 	}
 	

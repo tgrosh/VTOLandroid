@@ -761,15 +761,16 @@ public class LanderScene extends GameScene implements SensorEventListener {
         			float accellerometerSpeed0 = event.values[0];
 	                float accellerometerSpeed1 = event.values[1];
 	                float accellerometerSpeed = accellerometerSpeed0;
+                    float accelerometerScale = 9f;
 
 	                int rotation = Resources.mActivity.getWindowManager().getDefaultDisplay().getRotation();
         			switch (rotation){
 	        			case Surface.ROTATION_0:{
-	        				accellerometerSpeed = accellerometerSpeed0; 
+	        				accellerometerSpeed = accellerometerSpeed0;
 	        				break;
 	        			}
 	        			case Surface.ROTATION_90:{
-	        				accellerometerSpeed = accellerometerSpeed1 * -1; 
+	        				accellerometerSpeed = accellerometerSpeed1 * -1;
 	        				break;
 	        			}
 	        			case Surface.ROTATION_180:{
@@ -783,7 +784,7 @@ public class LanderScene extends GameScene implements SensorEventListener {
         			}
 	                
 	                if (Resources.mCurrentLevel != null && Resources.mCurrentLevel.getLander() != null){
-	                	Resources.mCurrentLevel.getLander().setAngle(accellerometerSpeed*-9f);
+	                	Resources.mCurrentLevel.getLander().setAngle(accellerometerSpeed*-accelerometerScale);
 	                }
         		}
                 break;

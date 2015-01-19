@@ -14,7 +14,6 @@ import com.singletongames.vtol.Util.BodyShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.andengine.util.debug.Debug;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,12 +125,12 @@ public class PhysicsAnimatedSprite extends AnimatedSprite {
 
     private void debugFixtureDefs() {
         for (FixtureDef def: mFixtureDefs){
-            Debug.d("**Lander fixture def:");
+            //Debug.d("**Lander fixture def:");
             PolygonShape poly = (PolygonShape) def.shape;
             for (int vertIndex=0;vertIndex<poly.getVertexCount(); vertIndex++){
                 Vector2 vertex = new Vector2();
                 poly.getVertex(vertIndex, vertex);
-                Debug.d("***Vector: " + vertex.x + "," + vertex.y);
+                //Debug.d("***Vector: " + vertex.x + "," + vertex.y);
             }
         }
     }
@@ -155,7 +154,7 @@ public class PhysicsAnimatedSprite extends AnimatedSprite {
 	@Override
 	public void setFlippedHorizontal(boolean pFlippedHorizontal) {
 		super.setFlippedHorizontal(pFlippedHorizontal);
-        Debug.d("**flipped");
+        //Debug.d("**flipped");
 		ApplyPhysics();
 	}
 

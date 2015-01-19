@@ -18,7 +18,9 @@ public class LanderDB extends SQLiteOpenHelper {
 	static final String fID = "ID";
 	static final String fName = "Name";
 	static final String fDescription = "Description";
-	static final String fMaxThrust = "MaxThrust";
+    static final String fSpeedLimit = "SpeedLimit";
+    static final String fAgility = "Agility";
+	static final String fPower = "Power";
 	static final String fMaxFuel = "MaxFuel";
 	static final String fFuelPerSecond = "FuelPerSecond";
 	static final String fToughness = "Toughness";
@@ -30,7 +32,7 @@ public class LanderDB extends SQLiteOpenHelper {
     // THE VALUE ON THE NEXT LINE REPRESENTS THE VERSION NUMBER OF THE DATABASE
     // IN THE FUTURE IF YOU MAKE CHANGES TO THE DATABASE, YOU NEED TO INCREMENT THIS NUMBER
     // DOING SO WILL CAUSE THE METHOD onUpgrade() TO AUTOMATICALLY GET TRIGGERED
-	static final int mDBVersion = 25;
+	static final int mDBVersion = 30;
 	
 	public LanderDB(Context context) {
 		super(context, dbName, null, mDBVersion);
@@ -43,7 +45,9 @@ public class LanderDB extends SQLiteOpenHelper {
 				fID + " INTEGER PRIMARY KEY , " +
 				fName + " TEXT, " +
 				fDescription + " TEXT, " +
-				fMaxThrust + " REAL, " +
+                fSpeedLimit + " REAL, " +
+                fAgility + " REAL, " +
+                fPower + " REAL, " +
 				fMaxFuel + " REAL, " +
 				fFuelPerSecond + " REAL, " +
 				fToughness + " REAL, " +
@@ -51,11 +55,11 @@ public class LanderDB extends SQLiteOpenHelper {
 				fLocked + " TEXT " +
 				")");
 
-        //id, name, desc, thrust, fuelCapacityPct, fuelPerSecond, toughnessPct, densityPct, locked
+        //id, name, desc, speedLimit, agility, power, fuelCapacityPct, fuelPerSecond, toughnessPct, densityPct, locked
 		addLander(db, new LanderInfo(0, "Hauler", "The workhorse of the VTOL fleet, the Hauler is a stable, durable ship, capable of a wide range of missions.",
-                .5f, .6f, 10f, .6f, .5f, false));
+                .2f, .1f, .5f, .6f, 10f, .6f, .5f, false));
 		addLander(db, new LanderInfo(1, "Luna", "A mainstay of the V.A.S.A space fleet for decades, this lander excels in low gravity environments.",
-                .2f, .8f, 5f, .1f, .2f, true));
+                .5f, .3f, .2f, .8f, 10f, .1f, .2f, true));
 	}
 
 	@Override
@@ -73,14 +77,16 @@ public class LanderDB extends SQLiteOpenHelper {
 				int ID = myCursor.getInt(0);
 				String Name = myCursor.getString(1);
 				String Description = myCursor.getString(2);
-				float maxThrust = myCursor.getFloat(3);
-				float maxFuel = myCursor.getFloat(4);
-				float fuelPerSecond = myCursor.getFloat(5);
-				float toughness = myCursor.getFloat(6);
-				float density = myCursor.getFloat(7);
-				boolean Locked = myCursor.getString(8).equals("true");				
+                float speedLimit = myCursor.getFloat(3);
+                float agility = myCursor.getFloat(4);
+                float power = myCursor.getFloat(5);
+				float maxFuel = myCursor.getFloat(6);
+				float fuelPerSecond = myCursor.getFloat(7);
+				float toughness = myCursor.getFloat(8);
+				float density = myCursor.getFloat(9);
+				boolean Locked = myCursor.getString(10).equals("true");
 
-				LanderInfo item = new LanderInfo(ID, Name, Description, maxThrust, maxFuel, fuelPerSecond, toughness, density, Locked);
+				LanderInfo item = new LanderInfo(ID, Name, Description, speedLimit, agility, power, maxFuel, fuelPerSecond, toughness, density, Locked);
 				mAllLanders.add(item);
 			}
 		}
@@ -103,7 +109,9 @@ public class LanderDB extends SQLiteOpenHelper {
         cv.put(fID, info.getId());
         cv.put(fName, info.getName());
         cv.put(fDescription, info.getDescription());
-        cv.put(fMaxThrust, info.getEngineThrustPct());
+        cv.put(fSpeedLimit, info.getSpeedLimitPct());
+        cv.put(fAgility, info.getAgilityPct());
+        cv.put(fPower, info.getPowerPct());
         cv.put(fMaxFuel, info.getFuelCapacityPct());
         cv.put(fFuelPerSecond, info.getFuelPerSecond());
         cv.put(fToughness, info.getToughnessPct());
@@ -120,7 +128,9 @@ public class LanderDB extends SQLiteOpenHelper {
 		ContentValues cv = new ContentValues();
 		cv.put(fName, info.getName());
         cv.put(fDescription, info.getDescription());
-        cv.put(fMaxThrust, info.getEngineThrustPct());
+        cv.put(fSpeedLimit, info.getSpeedLimitPct());
+        cv.put(fAgility, info.getAgilityPct());
+        cv.put(fPower, info.getPowerPct());
         cv.put(fMaxFuel, info.getFuelCapacityPct());
         cv.put(fFuelPerSecond, info.getFuelPerSecond());
         cv.put(fToughness, info.getToughnessPct());
