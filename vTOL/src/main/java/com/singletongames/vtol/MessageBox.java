@@ -54,6 +54,10 @@ public class MessageBox {
         tTitle.setPosition(panelRegion.getWidth() / 2 - tTitle.getWidth() / 2, 10);
         sFrame.attachChild(tTitle);
 
+        Text tTapToContinue = new Text(0, 0, Resources.mFont_Cyan24, "Tap to Continue", Resources.mEngine.getVertexBufferObjectManager());
+        tTitle.setPosition(panelRegion.getWidth() / 2 - tTitle.getWidth() / 2, sFrame.getHeight() - 30);
+        sFrame.attachChild(tTapToContinue);
+
 		String[] messages = message.split("\\n");
 		int currentMsgY = messageStartY;
 		int pSpace = 20;

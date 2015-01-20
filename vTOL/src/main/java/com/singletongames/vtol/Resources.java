@@ -32,7 +32,7 @@ public class Resources {
 
     public static final boolean SHOW_FPS = false;
     public static boolean DEBUG_DRAW = false;
-	public static boolean ClearPrefernces = true;
+	public static boolean ClearPrefernces = false;
 	
 	public static int TrainingProgress = 0;
 	

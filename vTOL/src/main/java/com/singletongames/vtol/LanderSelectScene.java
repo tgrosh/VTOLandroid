@@ -33,6 +33,7 @@ public class LanderSelectScene extends GameScene {
 	private AnimatedSprite sInfoProgress2;
 	private AnimatedSprite sInfoProgress3;
 	private AnimatedSprite sInfoProgress4;
+    private AnimatedSprite sInfoProgress5;
 	private Text tName;
 	private List<Sprite> landerSprites;
 	private Sprite currentLanderSprite;
@@ -131,20 +132,22 @@ public class LanderSelectScene extends GameScene {
 		tDescription.setAutoWrapWidth(sInfoFrameLeft.getWidth() - 60);
 		tDescription.setPosition(sInfoFrameLeft.getX() + 30, sInfoFrameLeft.getY() + 15);
 		
-		Text attPower = new Text(0, 0, Resources.mFont_Cyan24, "Power", Resources.mEngine.getVertexBufferObjectManager());
-		attPower.setPosition(sInfoFrameRight.getX() + sInfoFrameRight.getWidth()/2 - attPower.getWidth() + 25, sInfoFrameRight.getY() + 15);
-		Text attToughness = new Text(0, 0, Resources.mFont_Cyan24, "Toughness", Resources.mEngine.getVertexBufferObjectManager());
-		attToughness.setPosition(sInfoFrameRight.getX() + sInfoFrameRight.getWidth()/2 - attToughness.getWidth() + 25, attPower.getY() + 25);
-		Text attFuel = new Text(0, 0, Resources.mFont_Cyan24, "Fuel", Resources.mEngine.getVertexBufferObjectManager());
-		attFuel.setPosition(sInfoFrameRight.getX() + sInfoFrameRight.getWidth()/2 - attFuel.getWidth() + 25, attToughness.getY() + 25);
-		Text attWeight = new Text(0, 0, Resources.mFont_Cyan24, "Weight", Resources.mEngine.getVertexBufferObjectManager());
-		attWeight.setPosition(sInfoFrameRight.getX() + sInfoFrameRight.getWidth() / 2 - attWeight.getWidth() + 25, attFuel.getY() + 25);
+		Text attPower = new Text(0, 0, Resources.mFont_Cyan18, "Power", Resources.mEngine.getVertexBufferObjectManager());
+		attPower.setPosition(sInfoFrameRight.getX() + sInfoFrameRight.getWidth()/2 - attPower.getWidth(), sInfoFrameRight.getY() + 18);
+		Text attSpeed = new Text(0, 0, Resources.mFont_Cyan18, "Top Speed", Resources.mEngine.getVertexBufferObjectManager());
+		attSpeed.setPosition(sInfoFrameRight.getX() + sInfoFrameRight.getWidth()/2 - attSpeed.getWidth(), attPower.getY() + 21);
+		Text attHandling = new Text(0, 0, Resources.mFont_Cyan18, "Agility", Resources.mEngine.getVertexBufferObjectManager());
+		attHandling.setPosition(sInfoFrameRight.getX() + sInfoFrameRight.getWidth()/2 - attHandling.getWidth(), attSpeed.getY() + 21);
+		Text attToughness = new Text(0, 0, Resources.mFont_Cyan18, "Toughness", Resources.mEngine.getVertexBufferObjectManager());
+		attToughness.setPosition(sInfoFrameRight.getX() + sInfoFrameRight.getWidth() / 2 - attToughness.getWidth(), attHandling.getY() + 21);
+        Text attFuel = new Text(0, 0, Resources.mFont_Cyan18, "Fuel", Resources.mEngine.getVertexBufferObjectManager());
+        attFuel.setPosition(sInfoFrameRight.getX() + sInfoFrameRight.getWidth() / 2 - attFuel.getWidth(), attToughness.getY() + 21);
 
-        sInfoProgress1 = new AnimatedSprite(sInfoFrameRight.getX() + sInfoFrameRight.getWidth()/2 + 30, sInfoFrameRight.getY() + 25, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
-        sInfoProgress2 = new AnimatedSprite(sInfoProgress1.getX(), sInfoProgress1.getY() + 25, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
-        sInfoProgress3 = new AnimatedSprite(sInfoProgress1.getX(), sInfoProgress2.getY() + 25, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
-        sInfoProgress4 = new AnimatedSprite(sInfoProgress1.getX(), sInfoProgress3.getY() + 25, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
-
+        sInfoProgress1 = new AnimatedSprite(sInfoFrameRight.getX() + sInfoFrameRight.getWidth()/2 + 5, sInfoFrameRight.getY() + 23, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
+        sInfoProgress2 = new AnimatedSprite(sInfoProgress1.getX(), sInfoProgress1.getY() + 20, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
+        sInfoProgress3 = new AnimatedSprite(sInfoProgress1.getX(), sInfoProgress2.getY() + 20, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
+        sInfoProgress4 = new AnimatedSprite(sInfoProgress1.getX(), sInfoProgress3.getY() + 20, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
+        sInfoProgress5 = new AnimatedSprite(sInfoProgress1.getX(), sInfoProgress4.getY() + 20, Resources.LanderSelectInfoProgress, Resources.mEngine.getVertexBufferObjectManager());
 
         ButtonSprite backButton = new ButtonSprite(40, 40, Resources.PanelBackButton, Resources.mEngine.getVertexBufferObjectManager(), new ButtonSprite.OnClickListener() {
             @Override
@@ -163,14 +166,16 @@ public class LanderSelectScene extends GameScene {
         panelLarge.attachChild(tDescription);
 
         panelLarge.attachChild(attPower);
+        panelLarge.attachChild(attSpeed);
+        panelLarge.attachChild(attHandling);
         panelLarge.attachChild(attToughness);
         panelLarge.attachChild(attFuel);
-        panelLarge.attachChild(attWeight);
 
         panelLarge.attachChild(sInfoProgress1);
         panelLarge.attachChild(sInfoProgress2);
         panelLarge.attachChild(sInfoProgress3);
         panelLarge.attachChild(sInfoProgress4);
+        panelLarge.attachChild(sInfoProgress5);
 
 		panelLarge.attachChild(sArrowLeft);
 		panelLarge.attachChild(sArrowRight);
@@ -219,9 +224,10 @@ public class LanderSelectScene extends GameScene {
 		tDescription.setText(landers.get(Index).getDescription());
 
 		sInfoProgress1.setCurrentTileIndex((int) (landers.get(Index).getPowerPct() * 10f));
-		sInfoProgress2.setCurrentTileIndex((int) (landers.get(Index).getToughnessPct() * 10f));
-		sInfoProgress3.setCurrentTileIndex((int) (landers.get(Index).getFuelCapacityPct() * 10f));
-		sInfoProgress4.setCurrentTileIndex((int) (landers.get(Index).getDensityPct() * 10f));
+		sInfoProgress2.setCurrentTileIndex((int) (landers.get(Index).getSpeedLimitPct() * 10f));
+		sInfoProgress3.setCurrentTileIndex((int) (landers.get(Index).getAgilityPct() * 10f));
+		sInfoProgress4.setCurrentTileIndex((int) (landers.get(Index).getToughnessPct() * 10f));
+        sInfoProgress5.setCurrentTileIndex((int) (landers.get(Index).getFuelCapacityPct() * 10f));
 		
 		//if current lander sprite is not the one we need to show
 		if (!currentLanderSprite.equals(landerSprites.get(Index))){		
