@@ -32,7 +32,7 @@ public class LanderDB extends SQLiteOpenHelper {
     // THE VALUE ON THE NEXT LINE REPRESENTS THE VERSION NUMBER OF THE DATABASE
     // IN THE FUTURE IF YOU MAKE CHANGES TO THE DATABASE, YOU NEED TO INCREMENT THIS NUMBER
     // DOING SO WILL CAUSE THE METHOD onUpgrade() TO AUTOMATICALLY GET TRIGGERED
-	static final int mDBVersion = 30;
+	static final int mDBVersion = 31;
 	
 	public LanderDB(Context context) {
 		super(context, dbName, null, mDBVersion);
@@ -57,7 +57,7 @@ public class LanderDB extends SQLiteOpenHelper {
 
         //id, name, desc, speedLimit, agility, power, fuelCapacityPct, fuelPerSecond, toughnessPct, densityPct, locked
 		addLander(db, new LanderInfo(0, "Hauler", "The workhorse of the VTOL fleet, the Hauler is a stable, durable ship, capable of a wide range of missions.",
-                .2f, .1f, .5f, .6f, 10f, .6f, .5f, false));
+                .5f, .1f, .5f, .6f, 10f, .6f, .5f, false));
 		addLander(db, new LanderInfo(1, "Luna", "A mainstay of the V.A.S.A space fleet for decades, this lander excels in low gravity environments.",
                 .5f, .3f, .2f, .8f, 10f, .1f, .2f, true));
 	}

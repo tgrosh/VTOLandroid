@@ -91,8 +91,8 @@ public class LanderScene extends GameScene implements SensorEventListener {
 		mHud = Util.NewHud(Resources.mEngine.getCamera());
 		mPreview = preview;
 		
-		Resources.mCurrentLevel = LevelDB.getInstance().getLevel(chapterID, levelID);
-        //Resources.mCurrentLevel = new Level(Resources.mEngine, 0, 0, "0-0", false, false, false, 0);
+		//Resources.mCurrentLevel = LevelDB.getInstance().getLevel(chapterID, levelID);
+        Resources.mCurrentLevel = new Level(Resources.mEngine, 0, 0, "0-0", false, false, false, 0);
 
 		TimerHandler delay = new TimerHandler(1f, new ITimerCallback() {			
 			@Override

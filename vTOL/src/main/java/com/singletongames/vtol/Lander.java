@@ -559,7 +559,7 @@ public abstract class Lander extends PhysicsAnimatedSprite {
 	}
 		
 	public void setAngle(float angle){
-        angle = Math.max(-info.getAngleLimit(), Math.min(info.getAngleLimit(), angle));
+        //angle = Math.max(-info.getAngleLimit(), Math.min(info.getAngleLimit(), angle));
 		desiredAngle = (360f + angle) % 360f;
 	}
 	
